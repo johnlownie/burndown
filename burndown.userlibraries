@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="lib">
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/google-http-client-1.17.0-rc.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/jxl.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-io-1.3.1.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/json-lib-2.3-jdk15.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/httpclient-4.5.1.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/guava-18.0.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-beanutils.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-lang-2.5.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/mail.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/activation-1.1.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-lang3-3.5.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/javax.json-api-1.0.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-digester.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-fileupload-1.2.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/jsoup-1.8.1.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/javax.json-1.0.4.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-codec-1.9.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/google-api-client-1.17.0-rc.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/beanstream-1.0.0-SNAPSHOT.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/gson-2.3.1.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/google-oauth-client-1.17.0-rc.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/mysql-connector-java-5.1.39-bin.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/ezmorph-1.0.6.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-collections-3.2.1.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/commons-logging-1.2.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/itextpdf-5.5.5.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/struts-1.2.9.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/httpcore-4.4.3.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/log4j-1.2.9.jar" />
+    <archive path="D:/jet/projects/jetsphere/burndown/lib/axis2-transport-http-1.6.3.jar" />
+  </library>
+  <library name="jsp-api">
+    <archive path="D:/jet/services/apache/apache-tomcat-8.5.54/lib/jsp-api.jar" />
+    <archive path="D:/jet/services/apache/apache-tomcat-8.5.54/lib/servlet-api.jar" />
+  </library>
+</eclipse-userlibraries>
+

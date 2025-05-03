@@ -1,0 +1,33 @@
+table.tree {
+    margin: 0 auto;
+    padding: 0;
+}
+
+#viewport {
+    min-height: 100%;
+    padding-bottom: 3em;
+}
+
+#icons-top, #icons-bottom {
+    border-top: 1px solid #E7E8E6;
+    clear: both;
+    text-align: center;
+    width: 100%;
+}
+
+#icons-top {
+    border-bottom: 1px solid #E7E8E6;
+}
+#icons-bottom {
+    border-top: 1px solid #E7E8E6;
+    bottom: 0;
+    height: 3em;
+    position: absolute;
+}
+
+table.tree-icons {
+    border-collapse: separate;
+    border-spacing: 2px;
+    margin: 0 auto;
+    padding: 0;
+}

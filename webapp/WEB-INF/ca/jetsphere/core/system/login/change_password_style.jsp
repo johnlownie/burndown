@@ -1,0 +1,2 @@
+<link rel="stylesheet" type="text/css" href="styles/templates/default/css/login.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="plugins/bootstrap-validator/formValidation.min.css" media="all"/>

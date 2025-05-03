@@ -1,0 +1,123 @@
+div.actions {
+    color: #2C79B3;
+    /*display: inline-block;*/
+    line-height: normal;
+    margin: 10px;
+    text-align: center !important;
+}
+
+div.actions p {
+    color: #2C79B3;
+    display: inline-block;
+    line-height: normal;
+    margin: 5px;
+    text-align: left;
+}
+
+div.buttons, div.query div.buttons, div.edit div.buttons {
+    clear: both;
+    color: #666;
+    font-size: 11px;
+    font-weight: normal;
+    padding: 15px 0;
+    text-align: center;
+}
+
+div.buttons div {
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+div.panel, div.edit  {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+div.edit p {
+    color:  #666;
+    font-size:  11px;
+    line-height:  14px;
+    margin: 8px 0;
+    text-align:  left;
+}
+
+div.edit div {
+    text-align: left;
+}
+
+div.edit div p {
+    display: inline-block;
+}
+
+div.edit div p span {
+    color: #ff0000;
+}
+
+div.empty {
+    margin-top: 20px;
+}
+
+div.error {
+    color: maroon;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: center;
+    width: 66%;
+}
+
+div.error ul li {
+    background: url(../images/empty.gif) no-repeat 0px 0px;
+    color: maroon;
+    font-family: trebuchet MS, trebuchet, verdana, geneva, arial, helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 15px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    text-align: left;
+}
+
+div.info, div.info span {
+    color: #304ba0;
+    margin-bottom: 8px;
+    text-align: center;
+}
+
+div.lockout {
+    color: maroon;
+    margin: 0 auto;
+    padding-top: 8px;
+    text-align: center;
+    width: 500px;
+}
+
+div.preface {
+    color: #0C70AA;
+    font-size: 11px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+div.table {
+    display: inline-table;
+    padding: 10px 0;
+}
+
+div.table div.inner {
+    float: left;
+    left: -50%;
+    position: relative;
+}
+
+div.title {
+    padding:  0;
+    text-align: center;
+}
+
+div.title h2 span {
+    border-bottom: 1px solid #FF5000;
+    color: #2C79B3;
+    font-size: 16px;
+    font-weight: normal;
+}

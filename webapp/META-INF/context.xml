@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/burndown">
+  <Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" logAbandoned="true" maxIdle="4" maxTotal="8" maxWaitMillis="5000" minEvictableIdleTimeMillis="60000" minIdle="1" name="jdbc/connection" password="sa" removeAbandonedOnBorrow="true" removeAbandonedTimeout="60" testOnBorrow="true" testWhileIdle="true" timeBetweenEvictionRunsMillis="30000" type="javax.sql.DataSource" url="jdbc:mysql://192.168.24.70:3306/jet_burndown?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false" username="root" validationQuery="SELECT 1" validationQueryTimeout="30"/>
+</Context>

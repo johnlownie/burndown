@@ -1,0 +1,69 @@
+.tvdsb {
+    background-color: #fff;
+    border: 1px solid #333;
+}
+
+.tvdsb .fc-toolbar {
+    background-image: -webkit-gradient(
+            linear,
+            left top,
+            left bottom,
+            color-stop(0, #4C72A3),
+            color-stop(1, #333C8B)
+    );
+    background-image: -o-linear-gradient(bottom, #4C72A3 0%, #333C8B 100%);
+    background-image: -moz-linear-gradient(bottom, #4C72A3 0%, #333C8B 100%);
+    background-image: -webkit-linear-gradient(bottom, #4C72A3 0%, #333C8B 100%);
+    background-image: -ms-linear-gradient(bottom, #4C72A3 0%, #333C8B 100%);
+    background-image: linear-gradient(to bottom, #4C72A3 0%, #333C8B 100%);
+    height: 3em;
+    margin-bottom: 0;
+}
+
+.tvdsb .fc-toolbar .fc-left, .tvdsb .fc-toolbar .fc-center, .tvdsb .fc-toolbar .fc-right {
+    margin: 4px 4px 0px 4px;
+}
+
+.tvdsb .fc-toolbar .fc-center h2 {
+    color: #fff;
+    font-size: 1.5em;
+    line-height: 1.5em;
+    margin: 0 !important;
+    text-transform: uppercase;
+}
+.tvdsb th {
+    background: #000;
+    color: #fff;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.tvdsb .general {
+    background: #fff;
+    border: none;
+    color: #000;
+    line-height: 18px;
+}
+
+.tvdsb .paday {
+    background: #cb2228;
+    border: none;
+    line-height: 18px;
+}
+
+.tvdsb .holiday {
+    background: #7eb6e4;
+    border: none;
+    line-height: 18px;
+}
+
+.tvdsb .exam {
+    background: #abce8e;
+    border: none;
+    line-height: 18px;
+}
+
+.tvdsb .general .fc-content, .tvdsb .paday .fc-content, .tvdsb .holiday .fc-content, .tvdsb .exam .fc-content {
+    font-weight: bold;
+    text-align: center;
+}

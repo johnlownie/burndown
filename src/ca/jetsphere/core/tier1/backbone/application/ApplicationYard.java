@@ -1,0 +1,83 @@
+package ca.jetsphere.core.tier1.backbone.application;
+
+import ca.jetsphere.core.jdbc.JDBC;
+import ca.jetsphere.core.tier1.backbone.company.Company;
+import ca.jetsphere.core.tier1.backbone.company.CompanyYard;
+import ca.jetsphere.core.tier1.backbone.user.User;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Iterator;
+
+/**
+ * 
+ */
+
+public class ApplicationYard
+{
+    /**
+     *
+     */
+
+    static public void delete ( JDBC jdbc, int company_id ) throws Exception
+    {
+    ApplicationSession applications = new ApplicationSession ( jdbc, company_id );
+
+    Iterator it = applications.iterator ( true );
+
+    while ( it.hasNext() )
+
+    { Application application = ( Application ) it.next(); application.delete ( jdbc ); }
+
+    }
+
+    /**
+     *
+     */
+
+    static public Application getDefaultApplication ( JDBC jdbc, HttpServletRequest request ) throws Exception
+    {
+    Company company = CompanyYard.getDefault ( jdbc ); Application application = getDefaultApplication ( jdbc, company.getId() );
+
+    if ( application.isValid() ) return application; else ApplicationSession.query ( jdbc, request, company.getId(), false );
+
+    return ApplicationSession.getSelected ( request );
+    }
+
+    /**
+     *
+     */
+
+    static public Application getDefaultApplication ( JDBC jdbc, int company_id )
+    {
+    Application application = new Application();
+
+    application.query ( jdbc, "select * from jet_base_application where application_company_id = " + company_id + " and application_default = 1" );
+
+    return application;
+    }
+
+    /**
+     *
+     */
+
+    static public void setApplications ( JDBC jdbc, HttpServletRequest request, User user )
+    {
+    ApplicationSession applications = ApplicationSession.getInstance ( request );
+
+    String query = "select distinct jet_base_application.* from jet_base_user" +
+        " inner join jet_base_role on find_in_set (role_id, user_role_ids)" +
+        " inner join jet_base_application on application_id = role_application_id" +
+        " where user_id = " + user.getId();
+
+    applications.query ( jdbc, query );
+    }
+
+    /**
+     *
+     */
+
+    static public void setDefaultApplication ( JDBC jdbc, HttpServletRequest request ) throws Exception
+
+    { ApplicationSession.setSelected ( request, getDefaultApplication ( jdbc, request ) ); }
+
+}

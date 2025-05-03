@@ -1,0 +1,44 @@
+.table th, .table td {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.table td:first-child {
+    text-align: left;
+}
+
+.deleteDlg .modal-body {
+    padding: 15px 15px 0 15px;
+}
+
+.modal40 > .modal-dialog {
+    width: 40% !important;
+}
+
+.modal50 > .modal-dialog {
+    width: 50% !important;
+}
+
+.modal60 > .modal-dialog {
+    width: 60% !important;
+}
+
+.modal70 > .modal-dialog {
+    width: 70% !important;
+}
+
+.modal80 > .modal-dialog {
+    width: 80% !important;
+}
+
+.modal-body {
+    padding: 0;
+}
+
+.modal-footer {
+    margin-bottom: 0;
+}
+
+.chosen-container {
+    margin-bottom: 0;
+}

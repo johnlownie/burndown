@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+  <form-beans>
+      <form-bean name="[bb_query]" type="ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm" />
+
+        <form-bean name="[category]" type="ca.jetsphere.burndown.tier1.backbone.category.Category" />
+        <form-bean name="[transaction]" type="ca.jetsphere.burndown.tier1.backbone.transaction.Transaction" />
+  </form-beans>
+
+  <global-exceptions>
+      <exception handler="ca.jetsphere.core.common.MyExceptionHandler" key="global.error.message" path="/500.do" scope="request" type="java.lang.Exception" />
+  </global-exceptions>
+
+  <global-forwards>
+  </global-forwards>
+
+  <action-mappings>
+
+      <!-- OVERRIDDEN ACTIONS -->
+
+      <action name="[user]" path="/login" scope="request" type="ca.jetsphere.burndown.security.login.LoginAction">
+          <forward name="invalid" path="/login.do" redirect="true" />
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/login/login.jsp" />
+          <forward name="pending" path="/register.do" redirect="true" />
+          <forward name="period" path="/my_period_edit.do" redirect="true" />
+      </action>
+
+      <!-- BACKBONE ACTIONS -->
+
+      <action name="[category]" path="/category_edit" scope="session" type="ca.jetsphere.burndown.tier2.backbone.category.CategoryEditAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_edit.jsp" />
+          <forward name="success" path="/category_query.do" redirect="true" />
+      </action>
+
+      <action name="[bb_query]" path="/category_query" scope="request" type="ca.jetsphere.burndown.tier2.backbone.category.CategoryDoAction" validate="false">
+          <forward name="edit" path="/category_edit.do" redirect="true" />
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_query.jsp" />
+          <forward name="insert" path="/category_edit.do" redirect="true" />
+          <forward name="success" path="/category_query.do" redirect="true" />
+      </action>
+
+      <action name="[transaction]" path="/transaction_edit" scope="session" type="ca.jetsphere.burndown.tier2.backbone.transaction.TransactionEditAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/transaction/transaction_edit.jsp" />
+          <forward name="success" path="/transaction_query.do" redirect="true" />
+      </action>
+
+      <action name="[bb_query]" path="/transaction_import" scope="request" type="ca.jetsphere.burndown.tier2.backbone.transaction.TransactionImportAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/transaction/transaction_import.jsp" />
+          <forward name="insert" path="/category_edit.do" redirect="true" />
+          <forward name="success" path="/transaction_query.do" redirect="true" />
+      </action>
+
+      <action name="[bb_query]" path="/transaction_query" scope="request" type="ca.jetsphere.burndown.tier2.backbone.transaction.TransactionDoAction" validate="false">
+          <forward name="edit" path="/transaction_edit.do" redirect="true" />
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/transaction/transaction_query.jsp" />
+          <forward name="insert" path="/transaction_edit.do" redirect="true" />
+          <forward name="success" path="/transaction_query.do" redirect="true" />
+      </action>
+
+      <!-- ADMINISTRATOR ACTIONS -->
+
+      <action name="[bb_query]" path="/adm_dashboard" scope="session" type="ca.jetsphere.bd.tier2.roles.adm.dashboard.DashboardDoAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/roles/adm/dashboard/dashboard.jsp" />
+          <forward name="success" path="/adm_dashboard.do" redirect="true" />
+      </action>
+
+      <!-- EU ACTIONS -->
+
+      <action name="[mp_query]" path="/my_dashboard" scope="session" type="ca.jetsphere.bd.tier2.roles.eu.dashboard.DashboardDoAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/roles/eu/dashboard/dashboard.jsp" />
+          <forward name="success" path="/my_dashboard.do" redirect="true" />
+      </action>
+
+  </action-mappings>
+
+  <controller contentType="text/html;charset=UTF-8" locale="true" nocache="false" processorClass="ca.jetsphere.burndown.security.RequestProcessor"  />
+
+  <message-resources null="false" parameter="application.version, core, burndown" />
+
+</struts-config>

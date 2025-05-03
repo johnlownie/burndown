@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="make" name="burndown">
+    <property name="properties.dir" value="."/>
+    <property file="${properties.dir}/build.properties"/>
+
+    <property name="dest" value="classes.ant"/>
+    <property name="tomcat.libraries" value="${tomcat.home}/lib"/>
+    <property name="lib" value="lib"/>
+
+    <buildnumber file="resources/build.number"/>
+
+    <path id="project.class.path">
+        <pathelement location="${dest}"/>
+        <pathelement location="${lib}"/>
+
+        <fileset dir="${lib}">
+            <include name="*.jar"/>
+        </fileset>
+
+        <pathelement location="${tomcat.libraries}/jsp-api.jar"/>
+        <pathelement location="${tomcat.libraries}/servlet-api.jar"/>
+
+        <pathelement location="${jdk.home}/demo/jfc/Java2D/Java2Demo.jar"/>
+        <pathelement location="${jdk.home}/demo/plugin/jfc/Java2D/Java2Demo.jar"/>
+        <pathelement location="${jdk.home}/jre/javaws/javaws.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/charsets.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/ext/dnsns.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/ext/ldapsec.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/ext/localedata.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/ext/sunjce_provider.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/im/indicim.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/im/thaiim.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/jce.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/jsse.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/plugin.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/rt.jar"/>
+        <pathelement location="${jdk.home}/jre/lib/sunrsasign.jar"/>
+        <pathelement location="${jdk.home}/lib/dt.jar"/>
+        <pathelement location="${jdk.home}/lib/htmlconverter.jar"/>
+        <pathelement location="${jdk.home}/lib/tools.jar"/>
+    </path>
+
+    <!--Patternset to exclude files from the output directory:-->
+
+    <patternset id="dest.exclude">
+        <exclude name="Temporary_Files/"/>
+        <exclude name="Generated Source/"/>
+        <exclude name="package cache/"/>
+        <exclude name="dependency cache/"/>
+        <exclude name="jsp cache/"/>
+    </patternset>
+
+    <!-- Make -->
+
+    <target name="make" depends="init,build"/>
+
+    <!-- Build -->
+
+    <target name="build" depends="init,preclean,compile,archive"/>
+
+    <!-- Package -->
+
+    <target name="package" depends="init,build,libraries"/>
+
+    <!-- Hot Deploy Package -->
+
+    <target name="hd.package" depends="init,build,libraries,purge"/>
+
+    <!-- Deploy -->
+
+    <target name="deploy" depends="init,build,libraries,war" />
+
+    <!-- Initialize -->
+
+    <target name="init">
+        <tstamp>
+            <format property="TODAY" pattern="yyyyMMddHHmm"/>
+        </tstamp>
+        <property name="Generated.Source" value="${dest}/Temporary_Files"/>
+        <property name="src" value="src"/>
+        <property name="src2" value="resources"/>
+
+        <property name="webapp.name" value="webapp"/>
+        <property name="webapp.web-inf" value="${webapp.name}/WEB-INF"/>
+        <property name="webapp.meta-inf" value="${webapp.name}/META-INF"/>
+        <property name="webapp.libraries" value="${webapp.web-inf}/lib"/>
+
+        <property name="deploy.mail.server" value="localhost"/>
+        <property name="deploy.mail.user" value="root"/>
+        <property name="deploy.mail.pass" value="sa"/>
+        <property name="deploy.mail.return.address" value="support@jetsphere.ca"/>
+
+        <property name="deploy.sql.type" value="MYSQL"/>
+        <property name="deploy.sql.server" value="localhost"/>
+        <property name="deploy.sql.name" value="${webapp.name}"/>
+        <property name="deploy.sql.port" value="3306"/>
+        <property name="deploy.sql.user" value="root"/>
+        <property name="deploy.sql.pass" value="sa"/>
+
+        <property name="deploy.web.name" value="order"/>
+        <property name="deploy.web.application" value="default"/>
+        <property name="deploy.web.brand" value="default"/>
+        <property name="deploy.web.template" value="dropdown"/>
+        <property name="deploy.web.type" value="TOMCAT"/>
+        <property name="deploy.web.server" value="localhost"/>
+        <property name="deploy.web.port" value="80"/>
+        <property name="deploy.web.user" value="admin1"/>
+        <property name="deploy.web.pass" value="01prism10"/>
+
+        <property name="deploy.context.xml" value="deploy/context.xml"/>
+        <property name="deploy.log4j.properties" value="deploy/log4j.properties"/>
+        <property name="deploy.web.xml" value="deploy/${deploy.web.brand}/web.xml"/>
+    </target>
+
+    <!-- Javadoc -->
+
+    <target name="javadoc"/>
+
+    <!-- Resource -->
+
+    <target name="resource" depends="init">
+        <copy todir="${dest}/">
+            <fileset dir="${src}">
+                <include name="**/*.jpe"/>
+                <include name="**/*.jpeg"/>
+                <include name="**/*.rmf"/>
+                <include name="**/*.wav"/>
+                <include name="**/*.mid"/>
+                <include name="**/*.midi"/>
+                <include name="**/*.au"/>
+                <include name="**/*.gif"/>
+                <include name="**/*.png"/>
+                <include name="**/*.jpg"/>
+                <include name="**/*.aiff"/>
+                <include name="**/*.properties"/>
+            </fileset>
+            <fileset dir="${src2}">
+                <include name="**/*.jpe"/>
+                <include name="**/*.jpeg"/>
+                <include name="**/*.rmf"/>
+                <include name="**/*.wav"/>
+                <include name="**/*.mid"/>
+                <include name="**/*.midi"/>
+                <include name="**/*.au"/>
+                <include name="**/*.gif"/>
+                <include name="**/*.png"/>
+                <include name="**/*.jpg"/>
+                <include name="**/*.aiff"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <!-- PreClean -->
+
+    <target name="preclean" depends="init">
+        <delete failonerror="false" includeemptydirs="true">
+            <fileset dir="${dest}"/>
+            <fileset dir="${Generated.Source}"/>
+            <fileset dir="${webapp.libraries}"/>
+        </delete>
+        <delete file="*.jar" failonerror="false"/>
+        <delete file="*.war" failonerror="false"/>
+        <mkdir dir="${dest}"/>
+        <mkdir dir="${Generated.Source}"/>
+    </target>
+
+    <!-- PostClean -->
+
+    <target name="postclean" depends="init">
+        <delete failonerror="false" includeemptydirs="true">
+            <fileset dir="${dest}"/>
+            <fileset dir="${Generated.Source}"/>
+        </delete>
+    </target>
+
+    <!-- Compile -->
+
+    <target name="compile" depends="init,precompile,javacompile,postcompile"/>
+
+    <!-- PreCompile -->
+
+    <target name="precompile" depends="init"/>
+
+    <!-- JavaCompile -->
+
+    <target name="javacompile" depends="init">
+        <javac debug="true" deprecation="true" destdir="${dest}" nowarn="true" source="1.8" target="1.8">
+            <src path="${src}"/>
+            <src path="${src2}"/>
+            <src path="${Generated.Source}"/>
+            <classpath refid="project.class.path"/>
+        </javac>
+    </target>
+
+    <!-- PostCompile -->
+
+    <target name="postcompile" depends="init"/>
+
+    <!-- Archive -->
+
+    <target name="archive" depends="init,resource">
+        <manifest file="MANIFEST.MF">
+            <attribute name="Built-By" value="${user.name}"/>
+            <section name="common">
+                <attribute name="Build-Jdk" value="${ant.java.version}"/>
+                <attribute name="Specification-Title" value="JetSphere Enterprise Suite"/>
+                <attribute name="Specification-Vendor" value="JetSphere, LLC"/>
+                <attribute name="Implementation-Version" value="1.0.${build.number}_v${TODAY}"/>
+            </section>
+        </manifest>
+        <jar compress="false" destfile="core.jar" manifest="MANIFEST.MF">
+            <fileset dir="${dest}">
+                <patternset refid="dest.exclude"/>
+                <include name="ca/jetsphere/core/**/*.*"/>
+                <include name="application.version.properties"/>
+                <include name="core.properties"/>
+            </fileset>
+        </jar>
+        <jar compress="false" destfile="burndown.jar" manifest="MANIFEST.MF">
+            <fileset dir="${dest}">
+                <patternset refid="dest.exclude"/>
+                <include name="ca/jetsphere/burndown/**/*.*"/>
+                <include name="burndown.properties"/>
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="libraries" depends="init">
+        <copy todir="${webapp.libraries}/">
+            <fileset dir="${lib}" includes="**/*.jar"/>
+            <fileset dir="." includes="core.jar"/>
+            <fileset dir="." includes="burndown.jar"/>
+        </copy>
+    </target>
+
+    <!-- Stamp -->
+
+    <target name="stamp" depends="init">
+        <echo message="Stamping: Online Ordering System with ${deploy.web.name} " />
+        <replace file="${deploy.context.xml}">
+            <replacefilter token="@WEB-APP@" value="${deploy.web.name}"/>
+            <replacefilter token="@SQL-SERVER@" value="${deploy.sql.server}"/>
+            <replacefilter token="@SQL-PORT@" value="${deploy.sql.port}"/>
+            <replacefilter token="@SQL-NAME@" value="${deploy.sql.name}"/>
+            <replacefilter token="@SQL-USER@" value="${deploy.sql.user}"/>
+            <replacefilter token="@SQL-PASS@" value="${deploy.sql.pass}"/>
+        </replace>
+        <move file="${deploy.context.xml}" tofile="${webapp.meta-inf}/context.xml" overwrite="true"/>
+        <move file="${deploy.log4j.properties}" tofile="${webapp.web-inf}/classes/log4j.properties" overwrite="true"/>
+    </target>
+
+    <!-- War -->
+
+    <target name="war" depends="init,libraries,stamp">
+        <war compress="false" destfile="${deploy.web.name}.war" webxml="${webapp.web-inf}/web.xml">
+            <fileset dir="${webapp.name}">
+                <include name="**/*.*"/>
+            </fileset>
+        </war>
+    </target>
+
+    <!-- Purge -->
+
+    <target name="purge" depends="init">
+        <echo>Purging: ${deploy.web.brand} Webapp: ${webapp.name} WEB-INF: ${webapp.web-inf}</echo>
+        <!--<delete file="${webapp.name}/packtag.properties"/>-->
+    </target>
+
+</project>

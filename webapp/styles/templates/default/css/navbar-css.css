@@ -1,0 +1,120 @@
+#navwrap {
+    /*background:url(../images/shadow.gif) repeat-x bottom;*/
+    height: 45px;
+    position: relative;
+}
+
+#nav {
+    background: url(../images/grad2.gif) repeat-x top #0064a1;
+    height: 32px;
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+#nav li {
+    float: left;
+    position: relative;
+}
+
+#nav li a, #nav li span.separator {
+    color: #fff;
+    display: block;
+    font-size: 100%;
+    font-weight: bold;
+    line-height: 32px;
+    padding: 0 20px;
+    text-decoration: none;
+}
+
+#nav li a img {
+    padding: 7px;
+    float: left;
+}
+
+#nav li a span {
+    white-space: nowrap;
+}
+
+#nav li a.active, #nav li a.active:hover {
+    background: url(../images/grad2-2.gif) repeat-x top #2B6484;
+}
+
+#nav li:hover, #nav li a:hover {
+    background: url(../images/grad2-2.gif) repeat-x top #2B6484;
+}
+
+/*--- DROPDOWN ---*/
+
+#nav ul {
+    background: rgba(255,255,255,0);
+    display: none;
+    list-style: none;
+    position: absolute;
+    z-index: 999;
+}
+
+#nav li:hover ul.level1, #nav li:hover ul.level1 li:hover ul.level2,
+#nav li:hover ul.level1 li:hover ul.level2 li:hover ul.level3, #nav li:hover ul.level1 li:hover ul.level2 li:hover ul.level3 li:hover ul.level4,
+#nav li:hover ul.level1 li:hover ul.level2 li:hover ul.level3 li:hover ul.level4 li:hover ul.level5 {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#nav ul li {
+    border: 1px solid #999;
+    float: none;
+    margin-top: 1px;
+}
+
+#nav ul li a, #nav ul li span.separator {
+    color: #2b2b2b;
+    font-weight: normal;
+    line-height: 24px;
+    padding: 0 5px;
+    white-space: nowrap;
+    width: 14em;
+}
+
+#nav li ul li {
+    background: #f7f7f7 none;
+    color: #2b2b2b;
+    text-align: left;
+}
+
+#nav ul li:hover {
+    background: #f7f7f7 none;
+}
+
+#nav ul li:hover a {
+    color: #2b2b2b;
+    font-weight: normal;
+    line-height: 24px;
+}
+
+#nav li:hover ul li a:hover, #nav li:hover ul li span.separator:hover {
+    background: #dfdfdf none;
+    cursor: pointer;
+}
+
+#nav li ul.level1 li ul {
+    left: 12em;
+    top: -2px;
+}
+
+ul.level0 > li.child > span.separator > span,
+ul.level0 > li.child > a > span {
+    background: url('../images/down-arrow.png') no-repeat right center;
+    padding-left: 0;
+    padding-right: 12px;
+}
+
+ul.level1 > li.child  > a  > span, ul.level1 > li.child span.separator span {
+    background: url('../images/right-arrow.png') no-repeat right center;
+    padding-left: 0;
+    padding-right: 12px;
+}

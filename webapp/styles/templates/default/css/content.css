@@ -1,0 +1,85 @@
+html>body #containerwrap {}
+
+#containerwrap {
+    background-color: #ffffff;
+    margin: 0 auto;
+    min-height: 100%;
+    padding: 0;
+    padding-bottom: 4em;
+    position: relative;
+}
+
+#container #mainbody {
+    margin: 0 auto;
+    min-height: 100%;
+    position: relative;
+    width: 95%;
+}
+
+#container #container {
+    background:none;
+    min-height: 100%;
+}
+
+#container {
+}
+
+#mainbody {
+    /*float:right;*/
+}
+
+.ja-moduletable {
+    margin: 10px 0;
+}
+
+.ja-moduletable h3 {
+    background: url(../images/pattern-sep.png) repeat-x left bottom;
+    font-family: 'Tienne' !important;
+    font-weight: normal;
+    margin: 0 0 10px;
+    padding: 0 0 14px;
+    text-align: left;
+    text-shadow: 1px 1px 0 #F0E5DB, 1px 2px 0 #B1B1B2;
+    text-transform: uppercase;
+}
+
+table.body {
+    border-spacing:0px;
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+}
+
+table.separator {
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:15px;
+    margin-bottom:15px;
+    width:200px;
+}
+
+table.profile, table.verified {
+    margin-left:auto;
+    margin-right:auto;
+}
+
+table.profile tr td {
+    color:#666;
+    font-size:11px;
+}
+
+table.actions {
+    margin: 12px auto;
+}
+
+table.actions td {
+    color: #0C70AA;
+    font-size: 11px;
+    padding-top: 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+table.actions td select {
+    min-width: 200px;
+}

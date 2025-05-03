@@ -1,0 +1,32 @@
+#pathway {
+    border:1px solid #E7E8E6;
+    border-bottom:none;
+    padding:5px 15px;
+    color:#626A69;
+    font-weight:bold;
+    background:#F8F8F7;
+    clear:both;
+    text-align:right;
+}
+
+#pathway strong {
+    margin-right:5px;
+}
+
+#pathway a {
+    color:#626A69;
+    font-weight:normal;
+}
+
+#pathway img {
+    margin:1px 5px;
+}
+
+#left {
+    float:left;
+}
+
+#left a {
+    color:#626A69;
+    font-weight:normal;
+}

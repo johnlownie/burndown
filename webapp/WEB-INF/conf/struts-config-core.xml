@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+    <form-beans>
+        <form-bean name="[calendar_event]" type="ca.jetsphere.core.tier1.common.calendar_event.CalendarEvent" />
+        <form-bean name="[empty]" type="ca.jetsphere.core.tier2.common.EmptyActionForm" />
+        <form-bean name="[query]" type="ca.jetsphere.core.tier2.common.QueryActionForm" />
+
+        <form-bean name="[action]" type="ca.jetsphere.core.tier1.backbone.action.Action" />
+        <form-bean name="[application]" type="ca.jetsphere.core.tier1.backbone.application.Application" />
+        <form-bean name="[audit]" type="ca.jetsphere.core.tier1.backbone.audit.Audit" />
+        <form-bean name="[brand]" type="ca.jetsphere.core.tier1.backbone.brand.Brand" />
+        <form-bean name="[bu]" type="ca.jetsphere.core.tier1.backbone.bu.Bu" />
+        <form-bean name="[bu_member]" type="ca.jetsphere.core.tier1.backbone.bu_member.BuMember" />
+        <form-bean name="[clock]" type="ca.jetsphere.core.common.Clock" />
+        <form-bean name="[company]" type="ca.jetsphere.core.tier1.backbone.company.Company" />
+        <form-bean name="[company_member]" type="ca.jetsphere.core.tier1.backbone.company_member.CompanyMember" />
+        <form-bean name="[credit_card]" type="ca.jetsphere.core.tier1.backbone.merchant.credit_card.CreditCard" />
+        <form-bean name="[email]" type="ca.jetsphere.core.tier1.backbone.email.Email" />
+        <form-bean name="[knock]" type="ca.jetsphere.core.tier1.system.knock.KnockForm" />
+        <form-bean name="[log]" type="ca.jetsphere.core.tier1.system.log.Log" />
+        <form-bean name="[mail_server]" type="ca.jetsphere.core.tier1.backbone.mail_server.MailServer" />
+        <form-bean name="[message]" type="ca.jetsphere.core.email.Message" />
+        <form-bean name="[notification]" type="ca.jetsphere.core.tier1.backbone.notification.Notification" />
+        <form-bean name="[period]" type="ca.jetsphere.core.tier1.backbone.period.Period" />
+        <form-bean name="[policy]" type="ca.jetsphere.core.tier1.backbone.policy.Policy" />
+        <form-bean name="[role]" type="ca.jetsphere.core.tier1.backbone.role.Role" />
+        <form-bean name="[role_right]" type="ca.jetsphere.core.tier1.backbone.role_right.RoleRight" />
+        <form-bean name="[user]" type="ca.jetsphere.core.tier1.backbone.user.User" />
+    </form-beans>
+
+    <global-forwards>
+        <forward name="login" path="/login.do" />
+        <forward name="register" path="/register.do" />
+    </global-forwards>
+
+    <action-mappings>
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/400.jsp" path="/400" />
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/403.jsp" path="/403" />
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/404.jsp" path="/404" />
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/420.jsp" path="/420" />
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/500.jsp" path="/500" />
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/lockedout.jsp" path="/lockedout" />
+
+        <action forward="/common/maintenance.html" path="/maintenance" />
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/nowizard.jsp" path="/nowizard" />
+
+        <action forward="/WEB-INF/ca/jetsphere/core/system/errors/timeout.jsp" path="/timeout" />
+
+        <action name="[action]" path="/action_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.action.ActionEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/action/action_edit.jsp" />
+            <forward name="success" path="/action_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/action_query" scope="request" type="ca.jetsphere.core.tier2.backbone.action.ActionDoAction" validate="false">
+            <forward name="edit" path="/action_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/action/action_query.jsp" />
+            <forward name="insert" path="/action_edit.do" redirect="true" />
+            <forward name="success" path="/action_query.do" redirect="true" />
+        </action>
+
+        <action name="[application]" path="/application_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.application.ApplicationEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/application/application_edit.jsp" />
+            <forward name="success" path="/application_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/application_query" scope="request" type="ca.jetsphere.core.tier2.backbone.application.ApplicationDoAction" validate="false">
+            <forward name="edit" path="/application_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/application/application_query.jsp" />
+            <forward name="insert" path="/application_edit.do" redirect="true" />
+            <forward name="success" path="/application_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/audit_query" scope="request" type="ca.jetsphere.core.tier2.backbone.audit.AuditDoAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/audit/audit_query.jsp" />
+            <forward name="success" path="/action_query.do" redirect="true" />
+        </action>
+
+        <action name="[brand]" path="/brand_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.brand.BrandEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/brand/brand_edit.jsp" />
+            <forward name="success" path="/brand_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/brand_query" scope="request" type="ca.jetsphere.core.tier2.backbone.brand.BrandDoAction" validate="false">
+            <forward name="edit" path="/brand_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/brand/brand_query.jsp" />
+            <forward name="insert" path="/brand_edit.do" redirect="true" />
+            <forward name="success" path="/brand_query.do" redirect="true" />
+        </action>
+
+        <action name="[bu]" path="/bu_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.bu.BuEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/bu/bu_edit.jsp" />
+            <forward name="success" path="/bu_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/bu_member_query" scope="session" type="ca.jetsphere.core.tier2.backbone.bu_member.BuMemberDoAction" validate="false">
+            <forward name="edit" path="/bu_member_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/bu_member/bu_member_query.jsp" />
+            <forward name="insert" path="/bu_member_edit.do" redirect="true" />
+            <forward name="success" path="/bu_member_query.do" redirect="true" />
+        </action>
+
+        <action name="[bu_member]" path="/bu_member_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.bu_member.BuMemberEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/bu_member/bu_member_edit.jsp" />
+            <forward name="success" path="/bu_member_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/bu_query" scope="session" type="ca.jetsphere.core.tier2.backbone.bu.BuDoAction" validate="false">
+            <forward name="edit" path="/bu_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/bu/bu_query.jsp" />
+            <forward name="insert" path="/bu_edit.do" redirect="true" />
+            <forward name="success" path="/bu_query.do" redirect="true" />
+        </action>
+
+        <action name="[user]" path="/change_password" scope="request" type="ca.jetsphere.core.tier2.backbone.user.ChangePasswordAction">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/user/profile/profile.jsp" />
+            <forward name="success" path="/user_profile.do" redirect="true" />
+        </action>
+
+        <action name="[company]" path="/company_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.company.CompanyEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/company/company_edit.jsp" />
+            <forward name="success" path="/company_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/company_query" scope="request" type="ca.jetsphere.core.tier2.backbone.company.CompanyDoAction" validate="false">
+            <forward name="edit" path="/company_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/company/company_query.jsp" />
+            <forward name="insert" path="/company_edit.do" redirect="true" />
+            <forward name="success" path="/company_query.do" redirect="true" />
+        </action>
+
+        <action name="[company_member]" path="/company_member_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.company_member.CompanyMemberEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/company_member/company_member_edit.jsp" />
+            <forward name="success" path="/company_member_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/company_member_query" scope="request" type="ca.jetsphere.core.tier2.backbone.company_member.CompanyMemberDoAction" validate="false">
+            <forward name="edit" path="/company_member_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/company_member/company_member_query.jsp" />
+            <forward name="insert" path="/company_member_edit.do" redirect="true" />
+            <forward name="success" path="/company_member_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/unsubscribe" scope="session" type="ca.jetsphere.core.tier2.backbone.company_member.CompanyMemberUnsubscribedAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/company_member/company_member_unsubscribed.jsp" />
+            <forward name="success" path="/login.do" redirect="true" />
+        </action>
+
+        <action name="[email]" path="/email_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.email.EmailEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/email/email_edit.jsp" />
+            <forward name="success" path="/email_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/email_query" scope="request" type="ca.jetsphere.core.tier2.backbone.email.EmailDoAction" validate="false">
+            <forward name="edit" path="/email_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/email/email_query.jsp" />
+            <forward name="insert" path="/email_edit.do" redirect="true" />
+            <forward name="success" path="/email_query.do" redirect="true" />
+        </action>
+
+        <action name="[knock]" path="/knock_edit" scope="session" type="ca.jetsphere.core.tier2.system.knock.KnockEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/knock/knock_edit.jsp" />
+            <forward name="success" path="/knock_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/knock_query" scope="request" type="ca.jetsphere.core.tier2.system.knock.KnockDoAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/knock/knock_query.jsp" />
+            <forward name="success" path="/knock_query.do" redirect="true" />
+        </action>
+
+        <action name="[clock]" path="/lockout" scope="session" type="ca.jetsphere.core.security.login.LockOutAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/security/lockout.jsp" />
+            <forward name="success" path="/lockout.do" redirect="true" />
+        </action>
+
+        <action name="[log]" path="/log_edit" scope="session" type="ca.jetsphere.core.tier2.system.log.LogEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/log/log_edit.jsp" />
+            <forward name="success" path="/log_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/log_query" scope="session" type="ca.jetsphere.core.tier2.system.log.LogDoAction" validate="false">
+            <forward name="edit" path="/log_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/log/log_query.jsp" />
+            <forward name="success" path="/log_query.do" redirect="true" />
+        </action>
+
+        <action path="/logout" type="ca.jetsphere.core.security.login.LogoutAction">
+            <forward name="success" path="/login.do" redirect="true" />
+        </action>
+
+        <action name="[mail_server]" path="/mail_server_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.mail_server.MailServerEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/mail_server/mail_server_edit.jsp" />
+            <forward name="success" path="/mail_server_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/mail_server_query" scope="request" type="ca.jetsphere.core.tier2.backbone.mail_server.MailServerDoAction" validate="false">
+            <forward name="edit" path="/mail_server_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/mail_server/mail_server_query.jsp" />
+            <forward name="insert" path="/mail_server_edit.do" redirect="true" />
+            <forward name="success" path="/mail_server_query.do" redirect="true" />
+        </action>
+
+        <action name="[message]" path="/mail_server_test" scope="session" type="ca.jetsphere.core.tier2.backbone.mail_server.MailServerTestAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/mail_server/mail_server_test.jsp" />
+            <forward name="success" path="/mail_server_test.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/maintenance_edit" scope="request" type="ca.jetsphere.core.security.maintenance.MaintenanceEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/security/maintenance/maintenance_edit.jsp"/>
+        </action>
+
+        <action name="[notification]" path="/notification_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.notification.NotificationEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/notification/notification_edit.jsp" />
+            <forward name="success" path="/notification_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/notification_query" scope="request" type="ca.jetsphere.core.tier2.backbone.notification.NotificationDoAction" validate="false">
+            <forward name="edit" path="/notification_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/notification/notification_query.jsp" />
+            <forward name="insert" path="/notification_edit.do" redirect="true" />
+            <forward name="success" path="/notification_query.do" redirect="true" />
+        </action>
+
+        <action name="[period]" path="/period_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.period.PeriodEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/period/period_edit.jsp" />
+            <forward name="success" path="/period_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/period_query" scope="request" type="ca.jetsphere.core.tier2.backbone.period.PeriodDoAction" validate="false">
+            <forward name="edit" path="/period_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/period/period_query.jsp" />
+            <forward name="insert" path="/period_edit.do" redirect="true" />
+            <forward name="success" path="/period_query.do" redirect="true" />
+        </action>
+
+        <action name="[policy]" path="/policy_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.policy.PolicyEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/policy/policy_edit.jsp" />
+            <forward name="success" path="/policy_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/policy_query" scope="request" type="ca.jetsphere.core.tier2.backbone.policy.PolicyDoAction" validate="false">
+            <forward name="edit" path="/policy_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/policy/policy_query.jsp" />
+            <forward name="insert" path="/policy_edit.do" redirect="true" />
+            <forward name="success" path="/policy_query.do" redirect="true" />
+        </action>
+
+        <action name="[empty]" path="/read_only_query" scope="request" type="ca.jetsphere.core.tier2.common.ReadOnlyQueryAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/common/read_only_query.jsp" />
+            <forward name="success" path="/read_only_query.do" redirect="true" />
+        </action>
+
+        <action name="[user]" path="/registerwe" scope="request" type="ca.jetsphere.core.tier2.backbone.user.registration.RegistrationWithEmailAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/user/registration/registration_with_email.jsp" />
+            <forward name="invalid" path="/WEB-INF/ca/jetsphere/core/system/login/login.jsp" />
+            <forward name="welcome" path="/login.do" redirect="true"/>
+        </action>
+
+        <action name="[user]" path="/register" scope="request" type="ca.jetsphere.core.tier2.backbone.user.registration.RegistrationWithoutEmailAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/user/registration/registration_without_email.jsp" />
+            <forward name="invalid" path="/WEB-INF/ca/jetsphere/core/system/login/login.jsp" />
+            <forward name="success" path="/login.do" redirect="true"/>
+        </action>
+
+        <action name="[user]" path="/reset_password" scope="request" type="ca.jetsphere.core.security.login.ResetPasswordAction">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/system/login/reset_password.jsp" />
+            <forward name="change" path="/WEB-INF/ca/jetsphere/core/system/login/change_password.jsp" />
+            <forward name="success" path="/login.do" redirect="true" />
+        </action>
+
+        <action name="[role]" path="/role_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.role.RoleEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/role/role_edit.jsp" />
+            <forward name="success" path="/role_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/role_query" scope="request" type="ca.jetsphere.core.tier2.backbone.role.RoleDoAction" validate="false">
+            <forward name="edit" path="/role_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/role/role_query.jsp" />
+            <forward name="insert" path="/role_edit.do" redirect="true" />
+            <forward name="success" path="/role_query.do" redirect="true" />
+        </action>
+
+        <action name="[role_right]" path="/role_right_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.role_right.RoleRightEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/role_right/role_right_edit.jsp" />
+            <forward name="success" path="/role_right_query.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/role_right_query" scope="session" type="ca.jetsphere.core.tier2.backbone.role_right.RoleRightDoAction" validate="false">
+            <forward name="edit" path="/role_right_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/role_right/role_right_query.jsp" />
+            <forward name="insert" path="/role_right_edit.do" redirect="true" />
+            <forward name="success" path="/role_right_query.do" redirect="true" />
+        </action>
+
+        <action name="[user]" path="/user_edit" scope="session" type="ca.jetsphere.core.tier2.backbone.user.UserEditAction" validate="false">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/user/user_edit.jsp" />
+            <forward name="success" path="/user_query.do" redirect="true" />
+        </action>
+
+        <action name="[company_member]" path="/user_profile" scope="session" type="ca.jetsphere.core.tier2.backbone.user.profile.UserProfileDoAction">
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/user/profile/profile.jsp" />
+            <forward name="success" path="/user_profile.do" redirect="true" />
+        </action>
+
+        <action name="[query]" path="/user_query" scope="request" type="ca.jetsphere.core.tier2.backbone.user.UserDoAction" validate="false">
+            <forward name="edit" path="/user_edit.do" redirect="true" />
+            <forward name="failure" path="/WEB-INF/ca/jetsphere/core/backbone/user/user_query.jsp" />
+            <forward name="insert" path="/user_edit.do" redirect="true" />
+            <forward name="success" path="/user_query.do" redirect="true" />
+        </action>
+
+    </action-mappings>
+
+</struts-config>

@@ -1,0 +1,13 @@
+<%@ taglib uri="/WEB-INF/struts-tiles.tld" prefix="tiles" %>
+
+<tiles:insert page="/WEB-INF/templates/default/site.jsp" flush="true">
+
+<tiles:put name="style" value="/WEB-INF/ca/jetsphere/core/backbone/company_member/company_member_query_style.jsp"/>
+
+<tiles:put name="head" value="/WEB-INF/ca/jetsphere/core/backbone/company_member/company_member_query_head.jsp"/>
+
+<tiles:put name="body" value="/WEB-INF/ca/jetsphere/core/backbone/company_member/company_member_query_body.jsp"/>
+
+<tiles:put name="script" value="/WEB-INF/ca/jetsphere/core/backbone/company_member/company_member_query_script.jsp"/>
+
+</tiles:insert>

@@ -1,0 +1,2 @@
+<link rel="stylesheet" type="text/css" href="plugins/bootstrap-select/bootstrap-select.min.css" media="all"/>
+<link rel="stylesheet" type="text/css" href="plugins/chosen/chosen.min.css" media="all"/>

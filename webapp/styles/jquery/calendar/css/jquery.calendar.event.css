@@ -1,0 +1,20 @@
+.modal-dialog {
+    width: 380px;
+}
+
+table.edit {
+    margin: 0 auto;
+}
+
+table.edit td {
+    padding: 3px 5px;
+    text-align: left;
+}
+
+table.edit td:first-child {
+    text-align: right;
+}
+
+table.edit td label {
+    margin-bottom: 0;
+}

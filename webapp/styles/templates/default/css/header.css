@@ -1,0 +1,143 @@
+#header {
+    height:60px;
+    line-height:normal;
+    position:relative;
+}
+
+#header a {
+}
+
+h1.logo {
+    font-size:200%;
+    margin:0;
+    padding:0;
+}
+
+h1.logo a {
+    bottom:5px;
+    display:block;
+    height:52px;
+    left:0;
+    position:absolute;
+}
+
+h1.logo a span {
+    position:absolute;
+    top:-1000px;
+}
+
+h1.logo-text a {
+    bottom:35px;
+    left:15px;
+    outline:none;
+    position:absolute;
+    text-decoration:none;
+}
+
+#guest {
+    padding:4px 8px;
+    position:absolute;
+    right:0;
+    top:35px;
+}
+
+#guest span {
+    color:black;
+    font-size:11px;
+    font-weight:bold;
+    text-transform:uppercase;
+}
+
+#lockout {
+    top:15px;
+    padding:4px 8px;
+    position:absolute;
+    right:0;
+}
+
+#topnav {
+    line-height: 12px;
+    padding: 4px 8px;
+    position: absolute;
+    right: 0;
+    top: 35px;
+}
+
+#whoami {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#whoami li {
+    float: left;
+    padding-right: 5px;
+    position: relative;
+}
+
+#whoami li:last-child {
+    padding-left: 10px;
+}
+
+#whoami a {
+    display: block;
+}
+
+#whoami a:hover {
+    color: #626A69;
+    text-decoration: none;
+}
+
+#whoami span.haschild {
+    background: url('../images/down-arrow-dark.png') no-repeat right center;
+    padding-left: 0;
+    padding-right: 12px;
+    font-weight: bold;
+}
+
+#whoami span.haschild:hover {
+    cursor: pointer;
+}
+
+#whoami li:hover ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#whoami span.separator {
+    padding-left: 3px;
+}
+
+/*--- DROPDOWN ---*/
+
+#whoami ul {
+    background: #fff;
+    display: none;
+    list-style: none;
+    position: absolute;
+    right: 0;
+    z-index: 999;
+}
+
+#whoami ul li {
+    border: 1px solid #999;
+    float: none;
+    margin-top: 1px;
+    text-align: left;
+}
+
+#whoami ul li:last-child {
+    padding-left: 0px;
+}
+
+#whoami ul li a {
+    line-height: 24px;
+    padding: 0 5px;
+    width: 8em;
+}
+
+#whoami ul li:hover {
+    background: #eee;
+    border: 1px solid #999;
+}

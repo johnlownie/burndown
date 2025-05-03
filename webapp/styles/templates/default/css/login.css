@@ -1,0 +1,26 @@
+.img-default {
+    background-image: url("../images/bg-birds.jpg");
+    background-color: #ccc;
+
+}
+
+#container.cls-container .cls-brand .brand-icon, #container.cls-container .cls-brand .company {
+    font-family: "Tangerine", cursive;
+    font-size: 42px;
+    font-weight: normal;
+}
+
+#container.cls-container .cls-brand .brand-icon, #container.cls-container .cls-brand .system {
+    font-size: 16px;
+}
+
+@media (min-width: 460px) {
+
+    #container.cls-container .cls-brand .brand-icon, #container.cls-container .cls-brand .company {
+        font-size: 64px;
+    }
+
+    #container.cls-container .cls-brand .brand-icon, #container.cls-container .cls-brand .system {
+        font-size: 20px;
+    }
+}
