@@ -2,6 +2,7 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <html:form action="/category_edit" method="post" styleId="editForm" styleClass="form-horizontal">
+<html:hidden property="parentId"/><html:hidden property="insertType"/>
 
 <div class="panel-body">
 

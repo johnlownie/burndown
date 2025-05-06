@@ -36,6 +36,7 @@ public class RoleRightYard
     static public int getCount ( JDBC jdbc, int role_id, int parent_id )
 
     { return QueryYard.query ( jdbc, "select count(1) from jet_base_role_right where role_right_role_id = " + role_id + " and role_right_parent_id = " + parent_id ); }
+
     /**
      *
      */

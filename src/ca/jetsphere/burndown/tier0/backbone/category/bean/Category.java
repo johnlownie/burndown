@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 /**
  *
  */
-
 abstract public class Category extends Tree
 {
     int       category_id          ;
@@ -27,7 +26,6 @@ abstract public class Category extends Tree
     /**
      *
      */
-
     public void clear()
     {
     setId         (  -1  );
@@ -46,7 +44,6 @@ abstract public class Category extends Tree
     /**
      *
      */
-
     public void copy ( Bolt category )
     {
     setId         ( ( ( Category ) category ).getId         () );
@@ -65,7 +62,6 @@ abstract public class Category extends Tree
     /**
      *
      */
-
     public void get ( ResultSet rs ) throws Exception
     {
     setId         ( rs.getInt       ( "category_id"          ) );
@@ -84,13 +80,11 @@ abstract public class Category extends Tree
     /**
      *
      */
-
     static public String key() { return "category"; }
 
     /**
      *
      */
-
     public int       getId         () { return category_id          ; }
     public String    getUuid       () { return category_uuid        ; }
     public int       getCompanyId  () { return category_company_id  ; }
@@ -106,7 +100,6 @@ abstract public class Category extends Tree
     /**
      *
      */
-
     public void setId         ( int       category_id          ) { this.category_id          = category_id          ; }
     public void setUuid       ( String    category_uuid        ) { this.category_uuid        = category_uuid        ; }
     public void setCompanyId  ( int       category_company_id  ) { this.category_company_id  = category_company_id  ; }

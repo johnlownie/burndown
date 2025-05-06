@@ -30,7 +30,7 @@ public class TransactionYard
     
     sb.append ( " and transaction_date = " + DockYard.quote ( transaction.getDate ().toString() ) );
     
-    return QueryYard.size ( jdbc, sb.toString() ) > 0;
+    return QueryYard.query ( jdbc, sb.toString() ) > 0;
     }
     
     /**

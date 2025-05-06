@@ -1,0 +1,11 @@
+<script type="text/javascript" src="plugins/bootstrap-validator/formValidation.min.js"></script>
+<script type="text/javascript" src="plugins/bootstrap-validator/framework/bootstrap.min.js"></script>
+<script type="text/javascript" src="plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="plugins/datatables/media/js/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" src="plugins/datatables/extensions/Buttons/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="plugins/datatables/extensions/Buttons/js/buttons.print.js"></script>
+<script type="text/javascript" src="plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script type="text/javascript" src="plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="js/jquery/core/calendar/jquery.datepicker.js"></script>
+<script type="text/javascript" src="js/jquery/burndown/report/jquery.report.validator.js"></script>
+<script type="text/javascript" src="plugins/print-area/jquery.PrintArea.js"></script>

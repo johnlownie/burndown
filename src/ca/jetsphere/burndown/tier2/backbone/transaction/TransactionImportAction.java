@@ -43,7 +43,9 @@ public class TransactionImportAction extends AbstractDoAction
     {
     Transaction transaction = ( Transaction ) it.next();
     
-    if ( TransactionYard.exists ( jdbc, transaction ) ) continue;
+    if ( TransactionYard.exists ( jdbc, transaction ) )
+        
+    { Common.trace ( "Exists" ); continue; }
     
     transaction.setId ( -1 ); transaction.setPeriodId ( period.getId() ); transaction.save ( jdbc );
     }

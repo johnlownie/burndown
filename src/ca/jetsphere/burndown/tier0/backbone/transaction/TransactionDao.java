@@ -28,8 +28,8 @@ public class TransactionDao extends AbstractDao
     Transaction transaction = ( Transaction ) bolt;
 
     String s = "insert into jet_burndown_transaction" +
-            " ( transaction_uuid, transaction_period_id, transaction_name, transaction_bank_id, transaction_account_id, transaction_account_type, transaction_type, transaction_amount, transaction_memo, transaction_fitid, transaction_date, transaction_last_update, transaction_created )" +
-            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+            " ( transaction_uuid, transaction_period_id, transaction_category_id, transaction_name, transaction_bank_id, transaction_account_id, transaction_account_type, transaction_type, transaction_amount, transaction_memo, transaction_fitid, transaction_date, transaction_last_update, transaction_created )" +
+            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
     ps.setStatement ( s, new String [] { "transaction_id" } );
 
@@ -37,17 +37,18 @@ public class TransactionDao extends AbstractDao
 
     ps.setString    (  1, transaction.getUuid        () );
     ps.setInt       (  2, transaction.getPeriodId    () );
-    ps.setString    (  3, transaction.getName        () );
-    ps.setString    (  4, transaction.getBankId      () );
-    ps.setString    (  5, transaction.getAccountId   () );
-    ps.setString    (  6, transaction.getAccountType () );
-    ps.setInt       (  7, transaction.getType        () );
-    ps.setInt       (  8, transaction.getAmount      () );
-    ps.setString    (  9, transaction.getMemo        () );
-    ps.setString    ( 10, transaction.getFitId       () );
-    ps.setDate      ( 11, transaction.getDate        () );
-    ps.setTimestamp ( 12, transaction.getLastUpdate  () );
-    ps.setTimestamp ( 13, transaction.getCreated     () );
+    ps.setInt       (  3, transaction.getCategoryId  () );
+    ps.setString    (  4, transaction.getName        () );
+    ps.setString    (  5, transaction.getBankId      () );
+    ps.setString    (  6, transaction.getAccountId   () );
+    ps.setString    (  7, transaction.getAccountType () );
+    ps.setInt       (  8, transaction.getType        () );
+    ps.setInt       (  9, transaction.getAmount      () );
+    ps.setString    ( 10, transaction.getMemo        () );
+    ps.setString    ( 11, transaction.getFitId       () );
+    ps.setDate      ( 12, transaction.getDate        () );
+    ps.setTimestamp ( 13, transaction.getLastUpdate  () );
+    ps.setTimestamp ( 14, transaction.getCreated     () );
     }
 
     /**
@@ -57,24 +58,25 @@ public class TransactionDao extends AbstractDao
     {
     Transaction transaction = ( Transaction ) bolt;
 
-    String s = "update jet_burndown_transaction set transaction_uuid = ?, transaction_period_id = ?, transaction_name = ?, transaction_bank_id = ?, transaction_account_id = ?, transaction_account_type = ?, transaction_type = ?, transaction_amount = ?, transaction_memo = ?, transaction_fitid = ?, transaction_date = ?, transaction_last_update = ? where transaction_id = ?";
+    String s = "update jet_burndown_transaction set transaction_uuid = ?, transaction_period_id = ?, transaction_category_id = ?, transaction_name = ?, transaction_bank_id = ?, transaction_account_id = ?, transaction_account_type = ?, transaction_type = ?, transaction_amount = ?, transaction_memo = ?, transaction_fitid = ?, transaction_date = ?, transaction_last_update = ? where transaction_id = ?";
 
     ps.setStatement ( s );
 
     transaction.setLastUpdate ( new Timestamp ( System.currentTimeMillis() ) );
 
-    ps.setString    (  1, transaction.getUuid       () );
-    ps.setInt       (  2, transaction.getPeriodId   () );
-    ps.setString    (  3, transaction.getName       () );
-    ps.setString    (  4, transaction.getBankId      () );
-    ps.setString    (  5, transaction.getAccountId   () );
-    ps.setString    (  6, transaction.getAccountType () );
-    ps.setInt       (  7, transaction.getType        () );
-    ps.setInt       (  8, transaction.getAmount      () );
-    ps.setString    (  9, transaction.getMemo        () );
-    ps.setString    ( 10, transaction.getFitId       () );
-    ps.setDate      ( 11, transaction.getDate        () );
-    ps.setTimestamp ( 12, transaction.getLastUpdate  () );
-    ps.setInt       ( 13, transaction.getId         () );
+    ps.setString    (  1, transaction.getUuid        () );
+    ps.setInt       (  2, transaction.getPeriodId    () );
+    ps.setInt       (  3, transaction.getCategoryId  () );
+    ps.setString    (  4, transaction.getName        () );
+    ps.setString    (  5, transaction.getBankId      () );
+    ps.setString    (  6, transaction.getAccountId   () );
+    ps.setString    (  7, transaction.getAccountType () );
+    ps.setInt       (  8, transaction.getType        () );
+    ps.setInt       (  9, transaction.getAmount      () );
+    ps.setString    ( 10, transaction.getMemo        () );
+    ps.setString    ( 11, transaction.getFitId       () );
+    ps.setDate      ( 12, transaction.getDate        () );
+    ps.setTimestamp ( 13, transaction.getLastUpdate  () );
+    ps.setInt       ( 14, transaction.getId          () );
     }
 }

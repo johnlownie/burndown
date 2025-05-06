@@ -2,6 +2,7 @@ package ca.jetsphere.burndown.tier0.backbone.transaction;
 
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.burndown.tier0.Registry;
+import java.sql.ResultSet;
 
 /**
  *

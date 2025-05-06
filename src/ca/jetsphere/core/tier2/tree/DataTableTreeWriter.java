@@ -1,8 +1,6 @@
 package ca.jetsphere.core.tier2.tree;
 
-import ca.jetsphere.core.common.Caption;
 import ca.jetsphere.core.common.Common;
-import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.tier1.tree.OpenSet;
 import ca.jetsphere.core.tier1.tree.Tree;
 import ca.jetsphere.core.tier1.tree.TreeMap;

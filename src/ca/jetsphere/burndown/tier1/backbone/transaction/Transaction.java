@@ -1,10 +1,10 @@
 package ca.jetsphere.burndown.tier1.backbone.transaction;
 
+import ca.jetsphere.burndown.tier1.backbone.category.CategoryYard;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
 
 import java.sql.ResultSet;
-import org.apache.struts.upload.FormFile;
 
 /**
  *
@@ -34,14 +34,14 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     public Transaction ( JDBC jdbc, ResultSet rs ) throws Exception
 
-    { this(); get ( jdbc, rs ); }
+    { this(); get ( jdbc, rs ); foreign ( jdbc ); }
 
     /**
      *
      */
     static public String [] captions()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.account.id", "last.update", "actions" }; }
+    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "last.update", "actions" }; }
     /**
      *
      */
@@ -76,7 +76,8 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] fields()
 
-    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_account_id", "transaction_last_update", "transaction_uuid" }; }
+    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_last_update", "transaction_uuid" }; }
+
     /**
      *
      */
@@ -88,19 +89,13 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      *
      */
 
-    public void foreign ( JDBC jdbc ) throws Exception
-
-    { getPayload ( jdbc ); }
-
-    /**
-     *
-     */
-
     public Object get ( String s )
     {
-    if ( "transaction_type"   .equals ( s ) ) return getTypeAsString ( getType() );
+    if ( "transaction_amount"      .equals ( s ) ) return DockYard.toMoney ( getAmount() );
+    
+    if ( "transaction_category_id" .equals ( s ) ) return CategoryYard.getTreeName( getCategory().getParentId(), getCategory().getName() );
 
-    if ( "transaction_amount" .equals ( s ) ) return DockYard.toMoney ( getAmount() );
+    if ( "transaction_type"        .equals ( s ) ) return getTypeAsString ( getType() );
 
     return super.get ( s );
     }

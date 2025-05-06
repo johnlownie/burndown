@@ -1,0 +1,25 @@
+.table-responsive {
+    padding: 0 2px;
+}
+
+#caption-wrapper {
+    font-size: 1em;
+    margin: 5px;
+    text-align: left;
+}
+
+#caption-wrapper div label {
+    width: 80px;
+}
+
+#table th, #table td {
+    font-size: 11px;
+    text-align: center;
+}
+
+#table th:first-child, #table td:first-child {
+    text-align: left;
+}
+
+#table td:last-child {
+}

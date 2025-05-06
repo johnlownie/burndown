@@ -37,12 +37,6 @@ abstract public class RoleRightMap extends TreeSession
      *
      */
 
-    public RoleRight getRight ( int id ) { return ( RoleRight ) getTree ( id ); }
-
-    /**
-     *
-     */
-
     protected String getQuery ( int id )
 
     { return "select * from jet_base_role_right left join jet_base_action on role_right_action_id = action_id where role_right_role_id = " + id; }

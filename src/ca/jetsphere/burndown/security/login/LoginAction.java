@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class LoginAction extends ca.jetsphere.core.security.login.LoginAction
 {
-
     /**
      *
      */
@@ -34,5 +33,4 @@ public class LoginAction extends ca.jetsphere.core.security.login.LoginAction
 
     return store.getForward ( "period" );
     }
-
 }

@@ -38,7 +38,7 @@ abstract public class Transaction extends Bolt implements IBean
     setId          (  -1  );
     setUuid        (  ""  );
     setPeriodId    (  -1  );
-    setCategoryId  (  -1  );
+    setCategoryId  (   1  );
     setName        (  ""  );
     setBankId      (  ""  );
     setAccountId   (  ""  );

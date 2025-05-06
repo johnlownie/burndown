@@ -4,6 +4,7 @@ import ca.jetsphere.core.common.ISessionObject;
 import ca.jetsphere.core.common.SessionCache;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.burndown.tier0.backbone.category.CategoryMap;
+import ca.jetsphere.core.tier1.tree.Tree;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
@@ -59,6 +60,18 @@ public class CategorySession extends CategoryMap implements ISessionObject
      *
      */
     static public Category getSelected ( HttpServletRequest request ) { return ( Category ) getInstance ( request ).getSelected(); }
+
+    /**
+     *
+     */
+    public void paste ( Tree parent, Tree child )
+    {
+    Category p = ( Category ) parent; Category c = ( Category ) child;
+
+    c.setCompanyId ( p.getCompanyId() ); c.setParentId ( p.getId() ); c.setParentUuid ( p.getUuid() ); c.setOrdinal ( p.getChildCount() );
+
+    p.addChild ( c );
+    }
 
     /**
      *

@@ -4,8 +4,12 @@
 
 <tiles:put name="style" value="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_query_style.jsp"/>
 
+<tiles:put name="head" value="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_query_head.jsp"/>
+
 <tiles:put name="body" value="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_query_body.jsp"/>
 
 <tiles:put name="script" value="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_query_script.jsp"/>
+
+<tiles:put name="foot" value="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_query_foot.jsp"/>
 
 </tiles:insert>

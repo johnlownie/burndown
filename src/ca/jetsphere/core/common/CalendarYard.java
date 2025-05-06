@@ -377,6 +377,21 @@ public class CalendarYard
      *
      */
 
+    static public String getFirstDayOfMonth ( String date )
+    {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
+
+    LocalDate initial = LocalDate.parse ( date, formatter );
+
+    LocalDate lastDay = initial.with( firstDayOfMonth() );
+
+    return lastDay.format ( formatter );
+    }
+
+    /**
+     *
+     */
+
     static public String getFridayOnlyDelivery()
     {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
@@ -462,6 +477,29 @@ public class CalendarYard
     }
 
     /**
+     * 
+     */
+    
+    static public List<String> getMonthsBetween ( String start_date, String end_date, String in_format, String out_format )
+    {
+    List<String> monthsList = new ArrayList<>(); DateFormat dateFormat = getSimpleDateFormat ( "MMM" );
+    
+    Date startDate = getDate ( start_date, "yyyy-MM-dd" ); Date endDate = getDate ( end_date, "yyyy-MM-dd" );
+
+    Calendar calendar = Calendar.getInstance(); calendar.setTime ( startDate );
+
+    try {
+        
+        while ( calendar.getTime().getTime() <= endDate.getTime() )
+
+        { monthsList.add ( dateFormat.format ( calendar.getTime() ) ); calendar.add ( Calendar.MONTH, 1 ); }
+    
+    } catch ( Exception e ) { Common.trace ( e ); }
+    
+    finally { return monthsList; }
+    }
+    
+    /**
      *
      */
 
@@ -472,6 +510,21 @@ public class CalendarYard
     LocalDate localDate = LocalDate.parse ( date, formatter );
 
     localDate = localDate.plusDays ( 1 );
+
+    return localDate.format ( formatter );
+    }
+    
+    /**
+     *
+     */
+
+    static public String getNextMonth ( String date )
+    {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
+
+    LocalDate localDate = LocalDate.parse ( date, formatter );
+
+    localDate = localDate.plusMonths ( 1 );
 
     return localDate.format ( formatter );
     }

@@ -1,6 +1,10 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategorySession" %>
+
+<% CategorySession categories = CategorySession.getInstance ( request ); request.setAttribute ( "categories", categories.iterator ( true ) ); %>
+
 <html:form action="/transaction_edit" method="post" styleId="editForm" styleClass="form-horizontal">
 
 <div class="panel-body">
@@ -10,6 +14,24 @@
 <label class="col-md-4 control-label"><bean:message key="name"/></label>
 
 <div class="col-md-6"><html:text property="name" styleId="name" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="type"/></label>
+
+<div class="col-md-6"><html:text property="type" styleId="type" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="amount"/></label>
+
+<div class="col-md-6"><html:text property="amount" styleId="amount" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="category"/></label>
+
+<div  class="col-md-6"><html:select property="categoryId" styleId="categoryId" styleClass="form-control"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div>
 
 </div>
 
