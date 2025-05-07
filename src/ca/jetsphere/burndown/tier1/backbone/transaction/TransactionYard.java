@@ -4,6 +4,7 @@ import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.jdbc.QueryYard;
+import java.util.Iterator;
 import org.apache.struts.upload.FormFile;
 
 /**
@@ -71,4 +72,27 @@ public class TransactionYard
     } catch ( Exception e ) { Common.trace ( e ); }
 
     }
+    
+    /**
+     * 
+     */
+    static public void setUncategorized ( JDBC jdbc, int category_id, String name )
+    {
+    String query = "select * from jet_burndown_transaction where transaction_category_id = 1 and transaction_name like '%" + name.substring ( 0, 4 ) + "%'";
+    
+    TransactionSession transactions = new TransactionSession(); transactions.query( jdbc, query );
+    
+    Iterator it = transactions.iterator();
+    
+    while ( it.hasNext() )
+    { 
+    Transaction transaction = ( Transaction ) it.next(); transaction.setCategoryId ( category_id ); 
+    
+    try {
+        
+        transaction.update ( jdbc );
+    
+    } catch ( Exception e ) { Common.trace ( e ); }
+    
+    } }
 }

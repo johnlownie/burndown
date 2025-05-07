@@ -2,8 +2,9 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategorySession" %>
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategoryYard" %>
 
-<% CategorySession categories = CategorySession.getInstance ( request ); request.setAttribute ( "categories", categories.iterator ( true ) ); %>
+<% CategorySession categories = CategorySession.getInstance ( request ); request.setAttribute ( "categories", categories.iterator ( CategoryYard.BY_ORDINAL ) ); %>
 
 <html:form action="/transaction_edit" method="post" styleId="editForm" styleClass="form-horizontal">
 
@@ -31,7 +32,7 @@
 
 <label class="col-md-4 control-label"><bean:message key="category"/></label>
 
-<div  class="col-md-6"><html:select property="categoryId" styleId="categoryId" styleClass="form-control"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div>
+<div class="col-md-6"><html:select property="categoryId" styleId="categoryId" styleClass="form-control"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div>
 
 </div>
 

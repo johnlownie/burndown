@@ -35,7 +35,7 @@
           <forward name="success" path="/category_query.do" redirect="true" />
       </action>
 
-      <action name="[bb_query]" path="/category_query" scope="session" type="ca.jetsphere.burndown.tier2.backbone.category.CategoryDoAction" validate="false">
+      <action name="[bb_query]" path="/category_query" scope="request" type="ca.jetsphere.burndown.tier2.backbone.category.CategoryDoAction" validate="false">
           <forward name="edit" path="/category_edit.do" redirect="true" />
           <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_query.jsp" />
           <forward name="insert" path="/category_edit.do" redirect="true" />

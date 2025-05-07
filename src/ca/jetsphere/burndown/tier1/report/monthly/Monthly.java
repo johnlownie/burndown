@@ -1,12 +1,17 @@
 package ca.jetsphere.burndown.tier1.report.monthly;
 
+import ca.jetsphere.burndown.tier1.backbone.category.CategoryYard;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
+import ca.jetsphere.core.bolt.rs.ResultSetBolt;
 import ca.jetsphere.core.bolt.rs.ResultSetBoltMap;
 import ca.jetsphere.core.common.CalendarYard;
+import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.common.Pair;
 import ca.jetsphere.core.jdbc.JDBC;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -54,41 +59,76 @@ public class Monthly
 
     return sb.toString();
     }
-
+    
     /**
-     *
+     * 
      */
-    public String getQuery ( int period_id, int category_id, int transaction_type, String start_date, String end_date )
+    private String getQuery ( Map.Entry<Integer, String> category, Pair[] monthDates, int period_id, int transaction_type, String start_date, String end_date )
     {
     StringBuilder sb = new StringBuilder();
-    
-    List<String> monthNames = CalendarYard.getMonthsBetween ( start_date, end_date, "yyyy-MM-dd", "MMM" );
 
-    Pair[] monthDates = getMonthDates ( start_date, monthNames.size() );
-
-    sb.append ( "select category_name as 'Category'" );
+    sb.append ( "select " + DockYard.quote ( category.getValue() ) + " as 'Category'" );
 
     sb.append ( getMonthsQuery ( monthDates ) );
     
     sb.append ( " from jet_burndown_category " );
     sb.append ( " inner join jet_burndown_transaction on transaction_category_id = category_id" );
-    sb.append ( " where transaction_period_id = " + period_id );
+    sb.append ( " where (category_id = " + category.getKey() + " or category_lineage like '%/" + DockYard.zeroPad ( category.getKey(), 2 ) + "/%')" );
+    sb.append ( " and transaction_period_id = " + period_id );
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
-    sb.append ( category_id > 0 ? " and transaction_category_id = " + category_id : "" );
     sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
-    sb.append ( " group by category_id" );
-    sb.append ( " order by category_lineage" );
+    sb.append ( " group by " + DockYard.quote ( category.getValue() ) );
 
     return sb.toString();
+    }
+    
+    /**
+     * 
+     */
+    private void getReport ( JDBC jdbc, String query, ResultSetBoltMap rsbm )
+    {
+    ResultSetBoltMap categories = new ResultSetBoltMap ( jdbc, query );
+    
+    Iterator it = categories.iterator();
+    
+    while ( it.hasNext() )
+    
+    { ResultSetBolt rsb = ( ResultSetBolt ) it.next(); rsbm.add ( rsbm.size(), rsb ); }
+
+    rsbm.setCaptions ( categories.getCaptions() );
+    }
+    
+    /**
+     * 
+     */
+    private ResultSetBoltMap getReport ( JDBC jdbc, int company_id, int period_id, int transaction_type, String start_date, String end_date )
+    {
+    ResultSetBoltMap rsbm = new ResultSetBoltMap();
+    
+    List<String> monthNames = CalendarYard.getMonthsBetween ( start_date, end_date, "yyyy-MM-dd", "MMM" );
+
+    Pair[] monthDates = getMonthDates ( start_date, monthNames.size() );
+    
+    Map categories = CategoryYard.getTreeNames ( jdbc, company_id );
+    
+    Iterator<Map.Entry<Integer, String>> it = categories.entrySet().iterator();
+    
+    while ( it.hasNext() )
+    {
+    Map.Entry<Integer, String> category = it.next();
+     
+    String query = getQuery ( category, monthDates, period_id, transaction_type, start_date, end_date );
+     
+    getReport ( jdbc, query, rsbm );
+    }
+
+    return rsbm;
     }
 
     /**
      *
      */
     public ResultSetBoltMap getReport ( JDBC jdbc, QueryActionForm qaf ) throws Exception
-    {
-    String query = getQuery ( qaf.getPeriodId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
 
-    return new ResultSetBoltMap ( jdbc, query );
-    }
+    { return getReport ( jdbc, qaf.getCompanyId(), qaf.getPeriodId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() ); }
 }

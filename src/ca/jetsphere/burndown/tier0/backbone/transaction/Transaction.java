@@ -37,5 +37,5 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
     /**
      *
      */
-    public boolean update ( JDBC jdbc ) throws Exception { return Registry.getTransactionDao().update(jdbc, this); }
+    public boolean update ( JDBC jdbc ) throws Exception { return Registry.getTransactionDao().update ( jdbc, this ); }
 }

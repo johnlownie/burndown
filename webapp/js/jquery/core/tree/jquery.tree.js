@@ -79,7 +79,7 @@ $(document).on("click", ".editBtn", function(event) {
         title: $(".panel").attr("data-title"),
         dataString: "insert=true&type=3&csrf=" + $(this).attr("data-id"),
         size: $(".panel").attr("modal-size") == "" ? "modal60" : $(".panel").attr("modal-size")
-    })
+    });
 })
 .on("mouseout", ".node", function() {
     $(this).removeClass("node-hovered");

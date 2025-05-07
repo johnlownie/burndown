@@ -392,6 +392,21 @@ public class CalendarYard
      *
      */
 
+    static public String getFirstDayOfYear ( String date )
+    {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
+
+    LocalDate initial = LocalDate.parse ( date, formatter );
+
+    LocalDate lastDay = initial.with( firstDayOfYear() );
+
+    return lastDay.format ( formatter );
+    }
+
+    /**
+     *
+     */
+
     static public String getFridayOnlyDelivery()
     {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
@@ -423,6 +438,21 @@ public class CalendarYard
     LocalDate initial = LocalDate.parse ( date, formatter );
 
     LocalDate lastDay = initial.with( lastDayOfMonth() );
+
+    return lastDay.format ( formatter );
+    }
+
+    /**
+     *
+     */
+
+    static public String getLastDayOfYear ( String date )
+    {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
+
+    LocalDate initial = LocalDate.parse ( date, formatter );
+
+    LocalDate lastDay = initial.with( lastDayOfYear() );
 
     return lastDay.format ( formatter );
     }

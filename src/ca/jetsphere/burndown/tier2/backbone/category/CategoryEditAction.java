@@ -83,6 +83,8 @@ public class CategoryEditAction extends AbstractEditAction
     public ActionForward insert ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
     try {
+        
+        Common.trace ( " In Insert" );
 
         CategorySession categories = CategorySession.getInstance ( store.getRequest() ); categories.clearSelected ( store.getRequest() );
 
@@ -99,10 +101,10 @@ public class CategoryEditAction extends AbstractEditAction
         if ( sibling != null && sibling.isValid() ) sibling.getPayload ( jdbc );
 
         form.clear(); form.setParentId ( is_child ? sibling.getId() : sibling.getParentId() ); form.setInsertType ( is_before ? 1 : 2 );
-
+        
     } catch ( Exception e ) { Common.trace ( e ); }
 
-    finally { return query ( jdbc, store, errors ); }
+    finally { Common.trace ( " returning query" ); return query ( jdbc, store, errors ); }
     }
 
     /**
@@ -152,7 +154,7 @@ public class CategoryEditAction extends AbstractEditAction
 
     category.setCompanyId ( parent.getCompanyId() ); category.setParentUuid ( parent.getUuid() );
 
-    category.setDepth ( parent.getDepth() + 1 ); category.setLineage ( parent.getLineage() + parent.getId() + "/" );
+    category.setDepth ( parent.getDepth() + 1 ); category.setLineage ( parent.getLineage() + DockYard.zeroPad ( parent.getId(), 2 ) + "/" );
 
     if ( category.getOrdinal() < 0 ) category.setOrdinal ( CategoryYard.getCount ( jdbc, parent.getCompanyId(), parent.getId() ) );
     }

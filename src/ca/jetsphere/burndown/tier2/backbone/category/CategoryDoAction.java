@@ -8,6 +8,7 @@ import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.tier1.backbone.company.Company;
 import ca.jetsphere.core.tier1.backbone.company.CompanySession;
+import ca.jetsphere.core.tier1.tree.OpenSet;
 import ca.jetsphere.core.tier1.tree.TreeYard;
 import ca.jetsphere.core.tier2.common.AbstractDoAction;
 import ca.jetsphere.core.tier2.common.ActionStore;
@@ -44,6 +45,8 @@ public class CategoryDoAction extends AbstractDoAction
         jsonObject.put ( "success", errors.isEmpty() );
 
         out.write ( jsonObject.toString() );
+        
+        DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
 
     } catch ( Exception e ) { Common.trace ( e ); }
 
@@ -74,6 +77,8 @@ public class CategoryDoAction extends AbstractDoAction
         jsonObject.put ( "success", errors.isEmpty() );
 
         out.write ( jsonObject.toString() );
+        
+        DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
 
     } catch ( Exception e ) { Common.trace ( e ); }
 
@@ -104,7 +109,9 @@ public class CategoryDoAction extends AbstractDoAction
 //        String s = jsonWriter.get ( store.getRequest(), id );
 
         out.write ( jsonObject.toString() );
-
+        
+        DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
+        
     } catch ( Exception e ) { Common.trace ( e ); }
 
     finally { return null; }
@@ -124,6 +131,10 @@ public class CategoryDoAction extends AbstractDoAction
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
 
+        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
+        
+        if ( openSet == null ) openSet = qaf.getOpenSet();
+
         CategorySession categories = CategorySession.getInstance ( store.getRequest() );
 
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
@@ -132,7 +143,7 @@ public class CategoryDoAction extends AbstractDoAction
 
         DataTableTreeWriter dataTableTreeWriter = new DataTableTreeWriter ( categories, Category.captions(), Category.fields() );
 
-        dataTableTreeWriter.print ( out, store.getRequest(), qaf.getOpenSet() );
+        dataTableTreeWriter.print ( out, store.getRequest(), openSet );
 
     } catch ( Exception e ) { Common.trace ( this, e ); }
 

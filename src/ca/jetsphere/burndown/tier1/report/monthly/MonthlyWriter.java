@@ -16,7 +16,6 @@ public class MonthlyWriter extends TableWriter
     /**
      *
      */
-
     public MonthlyWriter ( BoltMap bolts, String[] captions, String[] fields, String report_type )
 
     { super ( bolts, captions, fields ); setType ( report_type ); setTotal ( new int [ captions.length ] ); }
@@ -24,20 +23,18 @@ public class MonthlyWriter extends TableWriter
     /**
      *
      */
-
     protected void column ( int row, int column )
     {
     Object o = getRowColumn ( row, column );
 
     int value = DockYard.toInt ( o ); if ( column > 0 ) column_total [ column ] += value;
 
-    if ( column > 0 ) format ( row, column ); else super.column ( row, column );
+    if ( column > 0 ) format ( row, column ); else formatCategory ( row, column );
     }
 
     /**
      *
      */
-
     protected void footer()
 
     { write ( "<tfoot class=\"bg-gray text-bold\">" ); write ( getTotals() ); write ( "</tfoot>" ); }
@@ -45,12 +42,29 @@ public class MonthlyWriter extends TableWriter
     /**
      *
      */
-
     public void format ( int row, int column )
     {
     int c = DockYard.toInt ( getRowColumn ( row, column ) );
 
     write ( "<td>" ); write ( DockYard.toMoney ( DockYard.toInt ( c ) ) ); write ( "</td>" );
+    }
+
+    /**
+     *
+     */
+    public void formatCategory ( int row, int column )
+    {
+    String category = ( String ) getRowColumn ( row, column );
+    
+    int depth = DockYard.toInt ( DockYard.getToken ( category, 1 ) );
+    
+    String name = DockYard.getToken ( category, 2 );
+    
+    for ( int i = 0; i < depth; i++ )
+        
+    { name = "--- " + name; }
+
+    write ( "<td>" ); write ( name ); write ( "</td>" );
     }
 
     /**
@@ -109,7 +123,6 @@ public class MonthlyWriter extends TableWriter
     /**
      *
      */
-
     public void setTotal ( int[]  column_total ) { this.column_total = column_total ; }
     public void setType  ( String report_type  ) { this.report_type  = report_type  ; }
 }
