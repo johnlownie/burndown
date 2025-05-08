@@ -12,6 +12,16 @@
 
 <div class="col-md-6"><html:text property="name" styleId="name" styleClass="form-control"/></div>
 
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="category.included"/></label>
+
+<div class="col-md-6"><div class="checkbox">
+
+<label class="form-checkbox form-normal form-primary form-text"><html:checkbox property="included" styleId="active"/> <bean:message key="category.included"/></label><input type="hidden" name="included" value="false"/>
+
+</div></div>
+
 </div>
 
 </div>

@@ -72,7 +72,7 @@ public class QueryActionForm extends ca.jetsphere.core.tier2.common.QueryActionF
      */
     public void setPeriodId   ( int     query_form_period_id   ) { this.query_form_period_id   = query_form_period_id   ; }
     public void setStatusId   ( int     query_form_status_id   ) { this.query_form_status_id   = query_form_status_id   ; }
-    public void setTypeId     ( int     query_form_type        ) { this.query_form_type_id     = query_form_type        ; }
+    public void setTypeId     ( int     query_form_type_id     ) { this.query_form_type_id     = query_form_type_id     ; }
     public void setCategoryId ( int     query_form_category_id ) { this.query_form_category_id = query_form_category_id ; }
     public void setToggle     ( boolean query_form_toggle      ) { this.query_form_toggle      = query_form_toggle      ; }
     public void setYesNo      ( boolean query_form_yes_no      ) { this.query_form_yes_no      = query_form_yes_no      ; }

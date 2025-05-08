@@ -20,6 +20,7 @@ abstract public class Category extends Tree
     String    category_lineage     ;
     int       category_ordinal     ;
     String    category_name        ;
+    boolean   category_included    ;
     Timestamp category_last_update ;
     Timestamp category_created     ;
 
@@ -28,17 +29,18 @@ abstract public class Category extends Tree
      */
     public void clear()
     {
-    setId         (  -1  );
-    setUuid       (  ""  );
-    setCompanyId  (  -1  );
-    setParentId   (  -1  );
-    setParentUuid (  ""  );
-    setDepth      (  -1  );
-    setLineage    (  ""  );
-    setOrdinal    (  -1  );
-    setName       (  ""  );
-    setLastUpdate ( null );
-    setCreated    ( null );
+    setId         (  -1   );
+    setUuid       (  ""   );
+    setCompanyId  (  -1   );
+    setParentId   (  -1   );
+    setParentUuid (  ""   );
+    setDepth      (  -1   );
+    setLineage    (  ""   );
+    setOrdinal    (  -1   );
+    setName       (  ""   );
+    setIncluded   ( false );
+    setLastUpdate ( null  );
+    setCreated    ( null  );
     }
 
     /**
@@ -49,12 +51,13 @@ abstract public class Category extends Tree
     setId         ( ( ( Category ) category ).getId         () );
     setUuid       ( ( ( Category ) category ).getUuid       () );
     setCompanyId  ( ( ( Category ) category ).getCompanyId  () );
-    setParentId   ( ( ( Category ) category ).getParentId  () );
-    setParentUuid ( ( ( Category ) category ).getParentUuid() );
-    setDepth      ( ( ( Category ) category ).getDepth     () );
-    setLineage    ( ( ( Category ) category ).getLineage   () );
-    setOrdinal    ( ( ( Category ) category ).getOrdinal   () );
+    setParentId   ( ( ( Category ) category ).getParentId   () );
+    setParentUuid ( ( ( Category ) category ).getParentUuid () );
+    setDepth      ( ( ( Category ) category ).getDepth      () );
+    setLineage    ( ( ( Category ) category ).getLineage    () );
+    setOrdinal    ( ( ( Category ) category ).getOrdinal    () );
     setName       ( ( ( Category ) category ).getName       () );
+    setIncluded   ( ( ( Category ) category ).getIncluded   () );
     setLastUpdate ( ( ( Category ) category ).getLastUpdate () );
     setCreated    ( ( ( Category ) category ).getCreated    () );
     }
@@ -73,6 +76,7 @@ abstract public class Category extends Tree
     setLineage    ( rs.getString    ( "category_lineage"     ) );
     setOrdinal    ( rs.getInt       ( "category_ordinal"     ) );
     setName       ( rs.getString    ( "category_name"        ) );
+    setIncluded   ( rs.getBoolean   ( "category_included"    ) );
     setLastUpdate ( rs.getTimestamp ( "category_last_update" ) );
     setCreated    ( rs.getTimestamp ( "category_created"     ) );
     }
@@ -94,6 +98,7 @@ abstract public class Category extends Tree
     public String    getLineage    () { return category_lineage     ; }
     public int       getOrdinal    () { return category_ordinal     ; }
     public String    getName       () { return category_name        ; }
+    public Boolean   getIncluded   () { return category_included    ; }
     public Timestamp getLastUpdate () { return category_last_update ; }
     public Timestamp getCreated    () { return category_created     ; }
 
@@ -109,6 +114,7 @@ abstract public class Category extends Tree
     public void setLineage    ( String    category_lineage     ) { this.category_lineage     = category_lineage     ; }
     public void setOrdinal    ( int       category_ordinal     ) { this.category_ordinal     = category_ordinal     ; }
     public void setName       ( String    category_name        ) { this.category_name        = category_name        ; }
+    public void setIncluded   ( Boolean   category_included    ) { this.category_included    = category_included    ; }
     public void setLastUpdate ( Timestamp category_last_update ) { this.category_last_update = category_last_update ; }
     public void setCreated    ( Timestamp category_created     ) { this.category_created     = category_created     ; }
 }

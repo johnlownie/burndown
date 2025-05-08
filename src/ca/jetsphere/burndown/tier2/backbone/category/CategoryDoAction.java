@@ -33,12 +33,14 @@ public class CategoryDoAction extends AbstractDoAction
     try {
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+        
+        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
 
         boolean expand = DockYard.toBoolean ( store.getRequest(), "expand" );
 
         CategorySession categories = CategorySession.getInstance ( store.getRequest() );
 
-        if ( expand ) TreeYard.expand ( qaf.getOpenSet(), categories.getRoot() ); else TreeYard.collapse ( qaf.getOpenSet(), categories.getRoot() );
+        if ( expand ) TreeYard.expand ( openSet, categories.getRoot() ); else TreeYard.collapse ( openSet, categories.getRoot() );
 
         PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
 
@@ -46,8 +48,6 @@ public class CategoryDoAction extends AbstractDoAction
 
         out.write ( jsonObject.toString() );
         
-        DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
-
     } catch ( Exception e ) { Common.trace ( e ); }
 
     finally { return null; }
@@ -61,14 +61,16 @@ public class CategoryDoAction extends AbstractDoAction
     try {
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+        
+        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
 
         int id = DockYard.toInteger ( store.getRequest(), "nodeId" );
 
         CategorySession categories = CategorySession.getInstance ( store.getRequest() );
 
-        Category roleRight = ( Category ) categories.get ( id );
+        Category category = ( Category ) categories.get ( id );
 
-        qaf.getOpenSet().toggle ( roleRight.getId() );
+        openSet.toggle ( category.getId() );
 
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
 
@@ -78,8 +80,6 @@ public class CategoryDoAction extends AbstractDoAction
 
         out.write ( jsonObject.toString() );
         
-        DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
-
     } catch ( Exception e ) { Common.trace ( e ); }
 
     finally { return null; }
@@ -93,10 +93,12 @@ public class CategoryDoAction extends AbstractDoAction
     try {
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+        
+        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
 
         CategorySession categories = CategorySession.query ( jdbc, store.getRequest(), qaf.getCompanyId(), false );
 
-        TreeYard.collapse ( qaf.getOpenSet(), categories.getRoot() );
+        TreeYard.collapse ( openSet, categories.getRoot() );
 
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
 
@@ -109,8 +111,6 @@ public class CategoryDoAction extends AbstractDoAction
 //        String s = jsonWriter.get ( store.getRequest(), id );
 
         out.write ( jsonObject.toString() );
-        
-        DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
         
     } catch ( Exception e ) { Common.trace ( e ); }
 
@@ -133,8 +133,6 @@ public class CategoryDoAction extends AbstractDoAction
 
         OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
         
-        if ( openSet == null ) openSet = qaf.getOpenSet();
-
         CategorySession categories = CategorySession.getInstance ( store.getRequest() );
 
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
@@ -158,6 +156,8 @@ public class CategoryDoAction extends AbstractDoAction
     QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
 
     qaf.getOpenSet().clear();
+        
+    DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
 
     CategorySession categories = CategorySession.query ( jdbc, store.getRequest(), company.getId(), false );
 

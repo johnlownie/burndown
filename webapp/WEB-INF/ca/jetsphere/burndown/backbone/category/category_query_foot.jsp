@@ -10,7 +10,7 @@
             },
             columns: [
                 { "data": "category_name" },
-                { "data": "category_ordinal" },
+                { "data": "category_included" },
                 { "data": "category_uuid" }
             ],
             createdRow: function( row, data, dataIndex ) {

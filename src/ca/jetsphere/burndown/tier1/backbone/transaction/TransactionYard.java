@@ -12,6 +12,8 @@ import org.apache.struts.upload.FormFile;
  */
 public class TransactionYard
 {
+    static public int DEFAULT_CATEGORY = 1;
+    
     /**
      * 
      */
@@ -37,29 +39,21 @@ public class TransactionYard
     /**
      * 
      */
-    static public int getCategoryIdBySimilarTransaction ( JDBC jdbc, Transaction transaction )
+    static public int getCategoryIdBySimilarTransaction ( JDBC jdbc, String name )
     {
     StringBuilder sb = new StringBuilder(); Transaction similar = new Transaction();
     
-    sb.append ( "select * from jet_burndown_transaction where transaction_name = " + DockYard.quote ( transaction.getName() ) );
-    
-    sb.append ( " and transaction_account_id = " + DockYard.quote ( transaction.getAccountId () ) );
-    
-    sb.append ( " and transaction_type = " + transaction.getType () );
-    
-    sb.append ( " and transaction_fitid = " + DockYard.quote ( transaction.getFitId () ) );
-    
-    sb.append ( " and transaction_date = " + DockYard.quote ( transaction.getDate ().toString() ) );
+    sb.append ( "select * from jet_burndown_transaction where transaction_name like " + DockYard.quote ( name.substring ( 0, name.length() > 14 ? 14 : name.length() ) + "%" ) + " limit 1" );
     
     similar.query ( jdbc, sb.toString() );
     
-    return similar.isValid() ? similar.getCategoryId() : -1;
+    return similar.isValid() ? similar.getCategoryId() : DEFAULT_CATEGORY;
     }
  
     /**
      *
      */
-    static public void parseAttachment ( TransactionSession transactions, FormFile formFile )
+    static public void parseAttachment ( JDBC jdbc, TransactionSession transactions, FormFile formFile )
     {
     if ( formFile == null || formFile.getFileSize() == 0 ) return;
 
@@ -67,7 +61,7 @@ public class TransactionYard
     
         OfxParser ofxParser = new OfxParser();
     
-        ofxParser.parse ( transactions, formFile.getInputStream() );
+        ofxParser.parse ( jdbc, transactions, formFile.getInputStream() );
 
     } catch ( Exception e ) { Common.trace ( e ); }
 
@@ -78,7 +72,7 @@ public class TransactionYard
      */
     static public void setUncategorized ( JDBC jdbc, int category_id, String name )
     {
-    String query = "select * from jet_burndown_transaction where transaction_category_id = 1 and transaction_name like '%" + name.substring ( 0, 4 ) + "%'";
+    String query = "select * from jet_burndown_transaction where transaction_category_id = 1 and transaction_name like '%" + name.substring ( 0, name.length() > 10 ? 10 : name.length() ) + "%'";
     
     TransactionSession transactions = new TransactionSession(); transactions.query( jdbc, query );
     

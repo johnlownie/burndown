@@ -157,9 +157,9 @@ public class CalendarYard
 
         DateFormat df = new SimpleDateFormat ( format );
 
-        return df.parse ( s );
+        return df.parse ( s.substring ( 0, format.length() ) );
 
-    } catch ( Exception e ) { return null; }
+    } catch ( Exception e ) { Common.trace ( "Error - unable to parse " + s + " (" + format + ")" ); return null; }
 
     }
 

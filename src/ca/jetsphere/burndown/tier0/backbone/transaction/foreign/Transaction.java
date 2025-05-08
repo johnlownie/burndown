@@ -19,7 +19,7 @@ abstract public class Transaction extends ca.jetsphere.burndown.tier0.backbone.t
     /**
      *
      */
-    public void foreign ( JDBC jdbc ) throws Exception
+    public void foreign ( JDBC jdbc )
 
     { setCategory ( new Category ( jdbc, getCategoryId() ) ); }
 

@@ -154,7 +154,7 @@ public class CategoryEditAction extends AbstractEditAction
 
     category.setCompanyId ( parent.getCompanyId() ); category.setParentUuid ( parent.getUuid() );
 
-    category.setDepth ( parent.getDepth() + 1 ); category.setLineage ( parent.getLineage() + DockYard.zeroPad ( parent.getId(), 2 ) + "/" );
+    category.setDepth ( parent.getDepth() + 1 ); category.setLineage ( parent.getLineage() + DockYard.zeroPad ( parent.getOrdinal(), 2 ) + "/" );
 
     if ( category.getOrdinal() < 0 ) category.setOrdinal ( CategoryYard.getCount ( jdbc, parent.getCompanyId(), parent.getId() ) );
     }

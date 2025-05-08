@@ -3,14 +3,17 @@ package ca.jetsphere.burndown.tier2.backbone.transaction;
 import ca.jetsphere.burndown.tier1.backbone.category.CategorySession;
 import ca.jetsphere.burndown.tier1.backbone.transaction.Transaction;
 import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionYard;
+import ca.jetsphere.core.bolt.Bolt;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.tier1.backbone.company.Company;
 import ca.jetsphere.core.tier1.backbone.company.CompanySession;
+import ca.jetsphere.core.tier1.backbone.period.PeriodSession;
 import ca.jetsphere.core.tier2.common.AbstractEditAction;
 import ca.jetsphere.core.tier2.common.ActionStore;
 import ca.jetsphere.core.tier2.common.Errors;
 import java.io.PrintWriter;
+import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONObject;
 import org.apache.struts.action.ActionForward;
 
@@ -63,5 +66,15 @@ public class TransactionEditAction extends AbstractEditAction
     CategorySession.query ( jdbc, store.getRequest(), company.getId(), true );
 
     return store.getForward ( "failure" );
+    }
+
+    /**
+     *
+     */
+    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
+    {
+    Transaction transaction = ( Transaction ) bolt; int period_id = PeriodSession.getSelected ( request ).getId();
+    
+    transaction.setPeriodId ( period_id );
     }
 }

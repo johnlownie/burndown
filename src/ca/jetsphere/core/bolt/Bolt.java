@@ -208,7 +208,7 @@ abstract public class Bolt extends MetaBolt implements Comparable
 
         if ( rs.next() ) get ( jdbc, rs );
 
-    } catch ( Exception e ) { Common.trace ( this, e ); }
+    } catch ( Exception e ) { Common.trace ( query ); Common.trace ( this, e ); }
 
     finally { try { if ( rs != null ) rs.close(); } catch ( SQLException e ) { ; } try { if ( statement != null ) statement.close(); } catch ( SQLException e ) { ; } }
     }

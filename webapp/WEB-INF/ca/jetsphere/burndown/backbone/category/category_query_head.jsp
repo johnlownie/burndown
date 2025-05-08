@@ -3,7 +3,7 @@
         text-align: left;
     }
 
-    .table td:last-child, .table td:nth-child(4) {
+    .table td:last-child, .table td:nth-child(2) {
         text-align: center;
     }
 </style>

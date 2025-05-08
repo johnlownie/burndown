@@ -37,7 +37,7 @@ public class MonthlyWriter extends TableWriter
      */
     protected void footer()
 
-    { write ( "<tfoot class=\"bg-gray text-bold\">" ); write ( getTotals() ); write ( "</tfoot>" ); }
+    { write ( "<tfoot class=\"bg-gray text-bold\">" ); /* write ( getTotals() ); */ write ( "</tfoot>" ); }
 
     /**
      *
@@ -46,7 +46,7 @@ public class MonthlyWriter extends TableWriter
     {
     int c = DockYard.toInt ( getRowColumn ( row, column ) );
 
-    write ( "<td>" ); write ( DockYard.toMoney ( DockYard.toInt ( c ) ) ); write ( "</td>" );
+    write ( "<td>" ); write ( c != 0 ? DockYard.toMoney ( DockYard.toInt ( c ) ) : "" ); write ( "</td>" );
     }
 
     /**

@@ -2,7 +2,7 @@ $(document).ready(function () {
     $("#table").find("th:last").addClass("all");
 
     var table = $("#table").dataTable({
-        processing: true,
+        processing: false,
         ajax: {
             url: $("#queryForm").attr("action") + "?json=true",
             type: "GET",
@@ -10,6 +10,9 @@ $(document).ready(function () {
                 d.companyId     = $("#queryForm select[name='companyId']" ).val();
                 d.applicationId = $("#queryForm select[name='applicationId']" ).val();
                 d.periodId      = $("#queryForm select[name='periodId']" ).val();
+                d.typeId        = $("#queryForm select[name='typeId']" ).val();
+                d.categoryId    = $("#queryForm select[name='categoryId']" ).val();
+                d.roleId        = $("#queryForm select[name='roleId']" ).val();
                 d.treeSetId     = $("#queryForm select[name='treeSetId']" ).val();
             }
         },

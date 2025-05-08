@@ -31,8 +31,8 @@ public class CategoryDao extends AbstractDao
     Category category = ( Category ) bolt;
 
     String s = "insert into jet_burndown_category" +
-            " ( category_uuid, category_company_id, category_parent_id, category_parent_uuid, category_depth, category_lineage, category_ordinal, category_name, category_last_update, category_created )" +
-            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+            " ( category_uuid, category_company_id, category_parent_id, category_parent_uuid, category_depth, category_lineage, category_ordinal, category_name, category_included, category_last_update, category_created )" +
+            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
     ps.setStatement ( s, new String [] { "category_id" } );
 
@@ -46,8 +46,9 @@ public class CategoryDao extends AbstractDao
     ps.setString    (  6, category.getLineage    () );
     ps.setInt       (  7, category.getOrdinal    () );
     ps.setString    (  8, category.getName       () );
-    ps.setTimestamp (  9, category.getLastUpdate () );
-    ps.setTimestamp ( 10, category.getCreated    () );
+    ps.setBoolean   (  9, category.getIncluded   () );
+    ps.setTimestamp ( 10, category.getLastUpdate () );
+    ps.setTimestamp ( 11, category.getCreated    () );
     }
 
     /**
@@ -58,7 +59,7 @@ public class CategoryDao extends AbstractDao
     {
     Category category = ( Category ) bolt;
 
-    String s = "update jet_burndown_category set category_uuid = ?, category_company_id = ?, category_parent_id = ?, category_parent_uuid = ?, category_depth = ?, category_lineage = ?, category_ordinal = ?, category_name = ?, category_last_update = ? where category_id = ?";
+    String s = "update jet_burndown_category set category_uuid = ?, category_company_id = ?, category_parent_id = ?, category_parent_uuid = ?, category_depth = ?, category_lineage = ?, category_ordinal = ?, category_name = ?, category_included = ?, category_last_update = ? where category_id = ?";
 
     ps.setStatement ( s );
 
@@ -72,8 +73,9 @@ public class CategoryDao extends AbstractDao
     ps.setString    (  6, category.getLineage    () );
     ps.setInt       (  7, category.getOrdinal    () );
     ps.setString    (  8, category.getName       () );
-    ps.setTimestamp (  9, category.getLastUpdate () );
-    ps.setInt       ( 10, category.getId         () );
+    ps.setBoolean   (  9, category.getIncluded   () );
+    ps.setTimestamp ( 10, category.getLastUpdate () );
+    ps.setInt       ( 11, category.getId         () );
     }
 
 }

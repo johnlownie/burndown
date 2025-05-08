@@ -12,6 +12,12 @@
 
 <div class="form-group">
 
+<label class="col-md-4 control-label"><bean:message key="date"/></label>
+
+<div class="col-md-6"><div class="input-group date"><html:text property="dateAsString" styleId="date" styleClass="form-control" size="12" readonly="false"/><span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span></div></div>
+
+</div><div class="form-group">
+
 <label class="col-md-4 control-label"><bean:message key="name"/></label>
 
 <div class="col-md-6"><html:text property="name" styleId="name" styleClass="form-control"/></div>
@@ -20,11 +26,11 @@
 
 <label class="col-md-4 control-label"><bean:message key="type"/></label>
 
-<div class="col-md-6"><html:text property="type" styleId="type" styleClass="form-control"/></div>
+<div class="col-sm-6"><html:select property="type" styleId="type" styleClass="form-control"><html:option value="-1"><bean:message key="please.select"/></html:option><html:option value="1"><bean:message key="transaction.type.debit"/></html:option><html:option value="2"><bean:message key="transaction.type.credit"/></html:option></html:select></div>
 
 </div><div class="form-group">
 
-<label class="col-md-4 control-label"><bean:message key="amount"/></label>
+<label class="col-md-4 control-label"><bean:message key="transaction.amount"/></label>
 
 <div class="col-md-6"><html:text property="amount" styleId="amount" styleClass="form-control"/></div>
 

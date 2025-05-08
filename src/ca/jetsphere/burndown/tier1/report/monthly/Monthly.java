@@ -77,6 +77,7 @@ public class Monthly
     sb.append ( " and transaction_period_id = " + period_id );
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
     sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
+    sb.append ( " and category_included" );
     sb.append ( " group by " + DockYard.quote ( category.getValue() ) );
 
     return sb.toString();

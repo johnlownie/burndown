@@ -1,23 +1,23 @@
 package ca.jetsphere.burndown.tier1.backbone.transaction;
 
+import ca.jetsphere.core.common.CalendarYard;
+import ca.jetsphere.core.jdbc.JDBC;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 
 /**
  *
  */
 public class OfxParser
 {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyyMMddHHmmss" );
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyyMMdd" );
 
     /**
      * 
@@ -100,8 +100,9 @@ public class OfxParser
             } else if ( lastOpenTag().equals ( "MEMO" ) ) {
                 lastTransaction().setMemo ( text );
             } else if ( lastOpenTag().equals ( "DTPOSTED" ) ) {
-                LocalDate date = LocalDate.parse ( text.substring ( 0, 14 ), formatter );
-                lastTransaction().setDate ( java.sql.Date.valueOf ( date ) );
+                Date date = CalendarYard.getDate ( text, "yyyyMMdd" );
+//                LocalDate date = LocalDate.parse ( text.length() > 8 ? text.substring ( 0, 7 ) : text, formatter );
+                lastTransaction().setDate ( new java.sql.Date ( date.getTime() ) );
             } else if ( lastOpenTag().equals ( "FITID" ) ) {
                 lastTransaction().setFitId ( text );
             } 
@@ -165,7 +166,7 @@ public class OfxParser
             
         int next = content.indexOf ( "<", position );
             
-        if( next == -1 ) { next=content.length(); }
+        if( next == -1 ) { next = content.length(); }
             
         String text = content.substring ( position, next ).trim();
             
@@ -178,7 +179,7 @@ public class OfxParser
     /**
      * 
      */
-    public void parse ( TransactionSession transactions, InputStream is ) throws IOException
+    public void parse ( JDBC jdbc, TransactionSession transactions, InputStream is ) throws IOException
     {
     Collector collector = new Collector();
     
@@ -194,7 +195,9 @@ public class OfxParser
     
     Transaction transaction = ( Transaction ) it.next(); 
     
-    transaction.setId ( id ); 
+    int similar = TransactionYard.getCategoryIdBySimilarTransaction ( jdbc, transaction.getName() );
+    
+    transaction.setId ( id ); transaction.setCategoryId ( similar ); transaction.foreign ( jdbc );
     
     transactions.add ( transaction ); }
     }

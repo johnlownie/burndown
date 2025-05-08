@@ -1,6 +1,7 @@
 package ca.jetsphere.burndown.tier1.backbone.transaction;
 
 import ca.jetsphere.burndown.tier1.backbone.category.CategoryYard;
+import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
 
@@ -41,13 +42,13 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] captions()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "last.update", "actions" }; }
+    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.account", "actions" }; }
     /**
      *
      */
     static public String [] captions_import()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.memo", "transaction.fit.id", "transaction.bank.id", "transaction.account.id", "transaction.account.type" }; }
+    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.fit.id", "transaction.bank.id", "transaction.account.id", "transaction.account.type" }; }
 
     @Override
     public boolean equals( Object o )
@@ -76,14 +77,14 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] fields()
 
-    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_last_update", "transaction_uuid" }; }
+    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_account_id", "transaction_uuid" }; }
 
     /**
      *
      */
     static public String [] fields_import()
 
-    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_memo", "transaction_fitid", "transaction_bank_id", "transaction_account_id", "transaction_account_type" }; }
+    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_fitid", "transaction_bank_id", "transaction_account_id", "transaction_account_type" }; }
 
     /**
      *
@@ -136,4 +137,10 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
         
     return result;
     }
+    
+    /**
+     * 
+     */
+    public String getDateAsString () { return CalendarYard.getDateTimeFormat ( getDate(), "yyyy-MM-dd" ); }
+    public void   setDateAsString ( String date ) { setDate ( new java.sql.Date ( CalendarYard.getDate ( date, "yyyy-MM-dd" ).getTime() ) ); }
 }

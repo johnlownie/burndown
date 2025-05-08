@@ -13,12 +13,15 @@
     }
 
     #table th, #table td {
+        text-align: right;
     }
 
     #table td:first-child {
+        text-align: left;
     }
 
     #table td:last-child {
+        text-align: right;
     }
 
 </style>
