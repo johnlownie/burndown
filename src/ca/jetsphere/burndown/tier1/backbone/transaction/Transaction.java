@@ -42,7 +42,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] captions()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.account", "actions" }; }
+    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.account.id", "actions" }; }
     /**
      *
      */

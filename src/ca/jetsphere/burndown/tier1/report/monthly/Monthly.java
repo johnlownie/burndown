@@ -5,11 +5,11 @@ import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.bolt.rs.ResultSetBolt;
 import ca.jetsphere.core.bolt.rs.ResultSetBoltMap;
 import ca.jetsphere.core.common.CalendarYard;
-import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.common.Pair;
 import ca.jetsphere.core.jdbc.JDBC;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,22 +63,24 @@ public class Monthly
     /**
      * 
      */
-    private String getQuery ( Map.Entry<Integer, String> category, Pair[] monthDates, int period_id, int transaction_type, String start_date, String end_date )
+    private String getQuery ( int category_id, String category_name, Pair[] monthDates, int period_id, int transaction_type, String start_date, String end_date )
     {
     StringBuilder sb = new StringBuilder();
 
-    sb.append ( "select " + DockYard.quote ( category.getValue() ) + " as 'Category'" );
+    sb.append ( "select " + DockYard.quote ( category_name ) + " as 'Category'" );
 
     sb.append ( getMonthsQuery ( monthDates ) );
     
     sb.append ( " from jet_burndown_category " );
+    sb.append ( " inner join (" );
+    sb.append ( " select concat(category_lineage, lpad(category_ordinal, 2, 0), '/') as 'ParentLineage' from jet_burndown_category where category_id = " + category_id );
+    sb.append ( " ) as table1 on (category_id = " + category_id + " or category_lineage like table1.ParentLineage)" );
     sb.append ( " inner join jet_burndown_transaction on transaction_category_id = category_id" );
-    sb.append ( " where (category_id = " + category.getKey() + " or category_lineage like '%/" + DockYard.zeroPad ( category.getKey(), 2 ) + "/%')" );
-    sb.append ( " and transaction_period_id = " + period_id );
+    sb.append ( " where transaction_period_id = " + period_id );
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
     sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
     sb.append ( " and category_included" );
-    sb.append ( " group by " + DockYard.quote ( category.getValue() ) );
+    sb.append ( " group by " + DockYard.quote ( category_name ) );
 
     return sb.toString();
     }
@@ -94,7 +96,11 @@ public class Monthly
     
     while ( it.hasNext() )
     
-    { ResultSetBolt rsb = ( ResultSetBolt ) it.next(); rsbm.add ( rsbm.size(), rsb ); }
+    {
+        ResultSetBolt rsb = ( ResultSetBolt ) it.next(); 
+    
+    rsbm.add ( rsbm.size(), rsb ); 
+    }
 
     rsbm.setCaptions ( categories.getCaptions() );
     }
@@ -110,18 +116,15 @@ public class Monthly
 
     Pair[] monthDates = getMonthDates ( start_date, monthNames.size() );
     
-    Map categories = CategoryYard.getTreeNames ( jdbc, company_id );
+    LinkedHashMap<Integer, String> categories = ( LinkedHashMap ) CategoryYard.getTreeNames ( jdbc, company_id );
     
-    Iterator<Map.Entry<Integer, String>> it = categories.entrySet().iterator();
-    
-    while ( it.hasNext() )
-    {
-    Map.Entry<Integer, String> category = it.next();
+    categories.forEach((category_id, category_name) -> {
+        
+        String query = getQuery ( category_id, category_name, monthDates, period_id, transaction_type, start_date, end_date );
      
-    String query = getQuery ( category, monthDates, period_id, transaction_type, start_date, end_date );
-     
-    getReport ( jdbc, query, rsbm );
-    }
+        getReport ( jdbc, query, rsbm );
+
+    });
 
     return rsbm;
     }

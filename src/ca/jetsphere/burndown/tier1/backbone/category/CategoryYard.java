@@ -48,7 +48,7 @@ public class CategoryYard
      */
     static public Map<Integer, String> getTreeNames ( JDBC jdbc, int company_id )
     {
-    String query = "select category_id, concat(category_depth, ':', category_name) from jet_burndown_category where category_company_id = " + company_id + " and category_included order by concat(category_lineage, lpad(category_id, 2, 0), '/', lpad(category_ordinal, 2, 0))";
+    String query = "select category_id, concat(category_depth, ':', category_name) from jet_burndown_category where category_company_id = " + company_id + " and category_included order by concat(category_lineage, lpad(category_ordinal, 2, 0))";
     
     return QueryYard.getIntStringMap ( jdbc, query, 1, 2 );
     }

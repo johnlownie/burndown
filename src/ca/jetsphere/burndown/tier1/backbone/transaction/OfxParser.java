@@ -79,8 +79,17 @@ public class OfxParser
                 lastTransaction().setAccountType ( lastBankAccount().getAccountType() );
                 
                 switch ( text ) {
-                    case "DEBIT": lastTransaction().setType ( 1 ); break;
-                    case "CREDIT": lastTransaction().setType ( 2 ); break;
+                    case "DEBIT": 
+                    case "XFER": 
+                    case "POS": 
+                    case "PAYMENT": 
+                        lastTransaction().setType ( 1 );
+                        break;
+                    case "CREDIT": 
+                    case "DEP": 
+                    case "INT": 
+                        lastTransaction().setType ( 2 );
+                        break;
                 }
             } else if ( lastOpenTag().equals ( "TRNAMT" ) ) {
                 lastTransaction().setAmount ( ( int ) ( Double.parseDouble ( text ) * 100 ) );

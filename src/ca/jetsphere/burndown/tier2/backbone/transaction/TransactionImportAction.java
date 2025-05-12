@@ -12,6 +12,7 @@ import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionSession;
 import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionYard;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.common.CalendarYard;
+import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.tier1.backbone.period.Period;
 import ca.jetsphere.core.tier1.backbone.period.PeriodSession;
 
@@ -47,6 +48,8 @@ public class TransactionImportAction extends AbstractDoAction
     if ( TransactionYard.exists ( jdbc, transaction ) ) continue;
     
     if ( !CalendarYard.isBetween ( transaction.getDateAsString(), period.getStartDateAsString(), period.getEndDateAsString() ) ) continue;
+    
+    if ( DockYard.isWhiteSpace ( transaction.getName() ) ) { transaction.setName ( transaction.getMemo() ); transaction.setMemo ( "" ); }
     
     transaction.setId ( -1 ); transaction.setPeriodId ( period.getId() ); transaction.save ( jdbc );
     }
