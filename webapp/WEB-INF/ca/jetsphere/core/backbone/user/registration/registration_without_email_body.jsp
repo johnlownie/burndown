@@ -18,9 +18,7 @@
 
 <% if ( DockYard.isStaging ( request ) ) { %><p><bean:message key="for.demonstration.purposes.only"/></p><% } %>
 
-<p class="pad-no"><bean:message key="sign.up.to.place.lunch.orders.for.your.kids"/></p>
-
-<p class="pad-no"><bean:message key="already.registered.message"/></p>
+<p class="pad-no"><bean:message key="sign.up.to.create.an.account"/></p>
 
 <p class="text-xs text-right text-danger"><bean:message key="error.all.fields.are.required"/></p>
 
