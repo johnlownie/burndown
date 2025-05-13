@@ -12,7 +12,7 @@
 
 <div class="searchbx">
 
-<html:form action="/adm_dashboard" method="post" styleId="queryForm" styleClass="form-horizontal">
+<html:form action="/mgr_dashboard" method="post" styleId="queryForm" styleClass="form-horizontal">
 
 <div class="input-group custom-search-form" style="width: 100%;">
 
@@ -27,5 +27,17 @@
 </div>
 
 <div id="page-content">
+
+<div class="row">
+
+<div class="col-sm-4">
+
+<jsp:include page="dashboard_by_category.jsp" flush="true"/>
+
+</div><div class="col-sm-8">
+    
+<jsp:include page="dashboard_by_month.jsp" flush="true"/>
+
+</div></div>
 
 </div>

@@ -1,44 +1,18 @@
 package ca.jetsphere.burndown.tier1.report.monthly;
 
-import ca.jetsphere.burndown.tier1.backbone.category.CategoryYard;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
-import ca.jetsphere.core.bolt.rs.ResultSetBolt;
 import ca.jetsphere.core.bolt.rs.ResultSetBoltMap;
 import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.common.Pair;
 import ca.jetsphere.core.jdbc.JDBC;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  */
 public class Monthly
 {
-    /**
-     *
-     */
-    public Pair[] getMonthDates ( String start_date, int num_of_months )
-    {
-    Pair[] months = new Pair [ num_of_months ];
-
-    QueryActionForm qaf = new QueryActionForm();
-
-    for ( int i = 0; i < num_of_months; i++ )
-    {
-    String month_start = CalendarYard.getFirstDayOfMonth ( start_date ); String month_end = CalendarYard.getLastDayOfMonth ( start_date );
-
-    months [ i ] = new Pair ( month_start, month_end );
-
-    start_date = CalendarYard.getNextMonth ( start_date );
-    }
-
-    return months;
-    }
-
     /**
      *
      */
@@ -63,76 +37,38 @@ public class Monthly
     /**
      * 
      */
-    private String getQuery ( int category_id, String category_name, Pair[] monthDates, int period_id, int transaction_type, String start_date, String end_date )
+    private String getQuery ( Pair[] monthDates, int period_id, int transaction_type, String start_date, String end_date )
     {
     StringBuilder sb = new StringBuilder();
 
-    sb.append ( "select " + DockYard.quote ( category_name ) + " as 'Category'" );
+    sb.append ( "select concat(p.category_depth, ':', p.category_name) as 'Category'" );
 
     sb.append ( getMonthsQuery ( monthDates ) );
     
-    sb.append ( " from jet_burndown_category " );
-    sb.append ( " inner join (" );
-    sb.append ( " select concat(category_lineage, lpad(category_ordinal, 2, 0), '/') as 'ParentLineage' from jet_burndown_category where category_id = " + category_id );
-    sb.append ( " ) as table1 on (category_id = " + category_id + " or category_lineage like table1.ParentLineage)" );
-    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = category_id" );
+    sb.append ( " from jet_burndown_category p" );
+    sb.append ( " inner join jet_burndown_category c on (c.category_id = p.category_id or c.category_parent_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
+    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id" );
     sb.append ( " where transaction_period_id = " + period_id );
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
     sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
-    sb.append ( " and category_included" );
-    sb.append ( " group by " + DockYard.quote ( category_name ) );
+    sb.append ( " and p.category_included and c.category_included" );
+    sb.append ( " group by p.category_name" );
+    sb.append ( " order by concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/')" );
 
     return sb.toString();
-    }
-    
-    /**
-     * 
-     */
-    private void getReport ( JDBC jdbc, String query, ResultSetBoltMap rsbm )
-    {
-    ResultSetBoltMap categories = new ResultSetBoltMap ( jdbc, query );
-    
-    Iterator it = categories.iterator();
-    
-    while ( it.hasNext() )
-    
-    {
-        ResultSetBolt rsb = ( ResultSetBolt ) it.next(); 
-    
-    rsbm.add ( rsbm.size(), rsb ); 
-    }
-
-    rsbm.setCaptions ( categories.getCaptions() );
-    }
-    
-    /**
-     * 
-     */
-    private ResultSetBoltMap getReport ( JDBC jdbc, int company_id, int period_id, int transaction_type, String start_date, String end_date )
-    {
-    ResultSetBoltMap rsbm = new ResultSetBoltMap();
-    
-    List<String> monthNames = CalendarYard.getMonthsBetween ( start_date, end_date, "yyyy-MM-dd", "MMM" );
-
-    Pair[] monthDates = getMonthDates ( start_date, monthNames.size() );
-    
-    LinkedHashMap<Integer, String> categories = ( LinkedHashMap ) CategoryYard.getTreeNames ( jdbc, company_id );
-    
-    categories.forEach((category_id, category_name) -> {
-        
-        String query = getQuery ( category_id, category_name, monthDates, period_id, transaction_type, start_date, end_date );
-     
-        getReport ( jdbc, query, rsbm );
-
-    });
-
-    return rsbm;
     }
 
     /**
      *
      */
     public ResultSetBoltMap getReport ( JDBC jdbc, QueryActionForm qaf ) throws Exception
+    { 
+    List<String> monthNames = CalendarYard.getMonthsBetween ( qaf.getStartDateAsString(), qaf.getEndDateAsString(), "yyyy-MM-dd", "MMM" );
 
-    { return getReport ( jdbc, qaf.getCompanyId(), qaf.getPeriodId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() ); }
+    Pair[] monthDates = CalendarYard.getMonthDates ( qaf.getStartDateAsString(), monthNames.size() );
+
+    String query = getQuery ( monthDates, qaf.getPeriodId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
+       
+    return new ResultSetBoltMap ( jdbc, query );
+    }
 }

@@ -67,9 +67,9 @@
 
       <!-- ADMINISTRATOR ACTIONS -->
 
-      <action name="[bb_query]" path="/adm_dashboard" scope="session" type="ca.jetsphere.bd.tier2.roles.adm.dashboard.DashboardDoAction" validate="false">
-          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/roles/adm/dashboard/dashboard.jsp" />
-          <forward name="success" path="/adm_dashboard.do" redirect="true" />
+      <action name="[bb_query]" path="/mgr_dashboard" scope="session" type="ca.jetsphere.burndown.tier2.roles.mgr.dashboard.DashboardDoAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/roles/mgr/dashboard/dashboard.jsp" />
+          <forward name="success" path="/mgr_dashboard.do" redirect="true" />
       </action>
 
       <!-- EU ACTIONS -->

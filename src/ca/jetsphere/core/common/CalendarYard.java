@@ -532,6 +532,25 @@ public class CalendarYard
     /**
      *
      */
+    static public Pair[] getMonthDates ( String start_date, int num_of_months )
+    {
+    Pair[] months = new Pair [ num_of_months ];
+
+    for ( int i = 0; i < num_of_months; i++ )
+    {
+    String month_start = getFirstDayOfMonth ( start_date ); String month_end = getLastDayOfMonth ( start_date );
+
+    months [ i ] = new Pair ( month_start, month_end );
+
+    start_date = getNextMonth ( start_date );
+    }
+
+    return months;
+    }
+
+    /**
+     *
+     */
 
     static public String getNextDay ( String date )
     {
