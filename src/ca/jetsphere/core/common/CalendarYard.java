@@ -377,7 +377,7 @@ public class CalendarYard
      *
      */
 
-    static public String getFirstDayOfMonth ( String date ) { return getFirstDayOfMonth ( "yyyy-MM-dd" ); }
+    static public String getFirstDayOfMonth ( String date ) { return getFirstDayOfMonth ( date, "yyyy-MM-dd" ); }
 
     /**
      *
