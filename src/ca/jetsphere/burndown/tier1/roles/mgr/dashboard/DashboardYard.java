@@ -130,7 +130,27 @@ public class DashboardYard
     /**
      * 
      */
-    static public void setTransactionSession ( JDBC jdbc, HttpServletRequest request, int period_id, String month )
+    static public void setTransactionsByCategory ( JDBC jdbc, HttpServletRequest request, int period_id, String category )
+    {
+    TransactionSession transactions = TransactionSession.getInstance ( request );
+    
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append ( "select jet_burndown_transaction.*" );
+    sb.append ( " from jet_burndown_category p" );
+    sb.append ( " inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')" );
+    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id " );
+    sb.append ( " and p.category_name = " + DockYard.quote ( category ) );
+    sb.append ( " and p.category_included and c.category_included" );
+    sb.append ( " and transaction_period_id = " + period_id );
+    
+    transactions.query ( jdbc, sb.toString() );
+    }
+    
+    /**
+     * 
+     */
+    static public void setTransactionsByMonth ( JDBC jdbc, HttpServletRequest request, int period_id, String month )
     {
     TransactionSession transactions = TransactionSession.getInstance ( request );
     

@@ -110,7 +110,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
     {
     if ( "transaction_amount"      .equals ( s ) ) return DockYard.toMoney ( getAmount() );
     
-    if ( "transaction_category_id" .equals ( s ) ) return CategoryYard.getTreeName( getCategory().getParentId(), getCategory().getName() );
+    if ( "transaction_category_id" .equals ( s ) ) return CategoryYard.getTreeName( getCategoryId() );
 
     if ( "transaction_type"        .equals ( s ) ) return getTypeAsString ( getType() );
 

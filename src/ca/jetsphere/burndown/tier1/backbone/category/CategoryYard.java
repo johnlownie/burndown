@@ -36,11 +36,16 @@ public class CategoryYard
     /**
      *
      */
-    static public String getTreeName ( int parent_id, String name )
+    static public String getTreeName ( int category_id )
     {
-    String parent_name = QueryYard.query( "select category_name from jet_burndown_category where category_id = " + parent_id, 1 );
+    StringBuilder sb = new StringBuilder();
     
-    return !DockYard.isWhiteSpace ( parent_name ) && !DockYard.equalsIgnoreCase ( parent_name, "[CATEGORIES]" ) ? parent_name + ": " + name : name;
+    sb.append ( "select if(p.category_depth < 1, c.category_name, concat(p.category_name, ': ', c.category_name))" );
+    sb.append ( " from jet_burndown_category c" );
+    sb.append ( " inner join jet_burndown_category p on p.category_id = c.category_parent_id" );
+    sb.append ( " where c.category_id = " + category_id );
+    
+    return QueryYard.query ( sb.toString(), 1 );
     }
     
     /**

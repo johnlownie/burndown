@@ -19,7 +19,7 @@
           ],
           donutType: 'pie'
         }).on('click', function(i, row){
-          console.log(i, row);
+            getTransactionData("export", row.label);
         });
         
         var bar = Morris.Bar({
@@ -30,7 +30,7 @@
             labels: ['Amount'],
             stacked: true
         }).on('click', function(i, row){
-            getTransactionData(row);
+            getTransactionData("fetch", row.month);
         });
 
         var table = $("#table").dataTable({
@@ -69,11 +69,10 @@
             });
         }
 
-        function getTransactionData(row) {
-            console.log(row);
+        function getTransactionData(action, row_data) {
             $.ajax({
                 url: $("#queryForm").attr("action"),
-                data: $("#queryForm").serialize() + "&fetch=true&month=" + row.month,
+                data: $("#queryForm").serialize() + "&" + action + "=true&topic=" + row_data,
                 dataType: "json",
                 type: "GET",
                 timeout: 10000

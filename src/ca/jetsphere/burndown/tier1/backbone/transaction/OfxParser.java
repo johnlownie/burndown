@@ -206,7 +206,7 @@ public class OfxParser
     
     int similar = TransactionYard.getCategoryIdBySimilarTransaction ( jdbc, transaction.getName() );
     
-    transaction.setId ( id ); transaction.setCategoryId ( similar ); transaction.foreign ( jdbc );
+    transaction.setId ( id ); transaction.setCategoryId ( similar );
     
     transactions.add ( transaction ); }
     }
