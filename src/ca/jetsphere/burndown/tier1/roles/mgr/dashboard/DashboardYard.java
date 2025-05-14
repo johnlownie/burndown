@@ -134,9 +134,11 @@ public class DashboardYard
     {
     TransactionSession transactions = TransactionSession.getInstance ( request );
     
-    String now = CalendarYard.now(); String d = now.substring ( 0, 5 ) + month + "-01";
+    String now = CalendarYard.now(); 
     
-    String start_date = CalendarYard.formatDate ( d, "yyyy-MMM-dd", "yyyy-MM-dd" ); String end_date = CalendarYard.getLastDayOfMonth ( start_date );
+    String start_date = now.substring ( 0, 5 ) + CalendarYard.getMonthAsString ( month ) + "-01";
+    
+    String end_date = CalendarYard.getLastDayOfMonth ( start_date );
     
     StringBuilder sb = new StringBuilder();
     
