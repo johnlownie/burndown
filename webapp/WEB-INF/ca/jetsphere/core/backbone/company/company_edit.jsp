@@ -13,6 +13,12 @@
 
 </div><div class="form-group">
 
+<label class="col-md-4 control-label"><bean:message key="short"/></label>
+
+<div class="col-md-6"><html:text property="short" styleId="short" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
 <label class="col-md-4 control-label"><bean:message key="street"/></label>
 
 <div class="col-md-6"><html:text property="street" styleId="street" styleClass="form-control"/></div>

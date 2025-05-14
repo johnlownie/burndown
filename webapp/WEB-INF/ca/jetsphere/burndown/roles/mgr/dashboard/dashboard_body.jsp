@@ -6,13 +6,13 @@
 
 <% PeriodSession  periods  = PeriodSession .getInstance ( request ); request.setAttribute ( "periods" , periods .iterator ( PeriodYard.BY_ORDINAL ) ); %>
 
+<html:form action="/mgr_dashboard" method="post" styleId="queryForm" styleClass="form-horizontal">
+
 <div id="page-title">
 
 <h1 class="page-header text-overflow"><bean:message key="dashboard"/></h1>
 
 <div class="searchbx">
-
-<html:form action="/mgr_dashboard" method="post" styleId="queryForm" styleClass="form-horizontal">
 
 <div class="input-group custom-search-form" style="width: 100%;">
 
@@ -20,17 +20,13 @@
 
 </div>
 
-</html:form>
-
 </div>
 
 </div>
 
 <div id="page-content">
 
-<div class="row">
-
-<div class="col-sm-4">
+<div class="row"><div class="col-sm-4">
 
 <jsp:include page="dashboard_by_category.jsp" flush="true"/>
 
@@ -40,4 +36,12 @@
 
 </div></div>
 
+<div class="row"><div class="col-sm-12">
+    
+<jsp:include page="dashboard_transactions.jsp" flush="true"/>
+
+</div></div>
+
 </div>
+
+</html:form>

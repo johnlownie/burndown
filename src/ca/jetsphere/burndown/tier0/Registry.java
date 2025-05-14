@@ -1,5 +1,6 @@
 package ca.jetsphere.burndown.tier0;
 
+import ca.jetsphere.burndown.tier0.backbone.account.AccountDao;
 import ca.jetsphere.burndown.tier0.backbone.category.CategoryDao;
 import ca.jetsphere.burndown.tier0.backbone.transaction.TransactionDao;
 import ca.jetsphere.core.bolt.Bolt;
@@ -34,6 +35,7 @@ public class Registry extends ca.jetsphere.core.tier0.Registry
     /**
      *
      */
+    public static AccountDao     getAccountDao    () { return ( AccountDao     ) context.getBean ( "account"    , AccountDao    .class ); }
     public static CategoryDao    getCategoryDao   () { return ( CategoryDao    ) context.getBean ( "category"   , CategoryDao   .class ); }
     public static TransactionDao getTransactionDao() { return ( TransactionDao ) context.getBean ( "transaction", TransactionDao.class ); }
 }

@@ -15,6 +15,7 @@ abstract public class Company extends Bolt implements IBean
     int       company_id          ;
     String    company_uuid        ;
     String    company_name        ;
+    String    company_short       ;
     String    company_street      ;
     String    company_city        ;
     String    company_province    ;
@@ -36,6 +37,7 @@ abstract public class Company extends Bolt implements IBean
     setId         ( -1 );
     setUuid       ( "" );
     setName       ( "" );
+    setShort      ( "" );
     setStreet     ( "" );
     setCity       ( "" );
     setProvince   ( "" );
@@ -58,6 +60,7 @@ abstract public class Company extends Bolt implements IBean
     setId         ( ( ( Company ) company ).getId        () );
     setUuid       ( ( ( Company ) company ).getUuid      () );
     setName       ( ( ( Company ) company ).getName      () );
+    setShort      ( ( ( Company ) company ).getShort     () );
     setStreet     ( ( ( Company ) company ).getStreet    () );
     setCity       ( ( ( Company ) company ).getCity      () );
     setProvince   ( ( ( Company ) company ).getProvince  () );
@@ -78,6 +81,7 @@ abstract public class Company extends Bolt implements IBean
     public int       getId         () { return company_id          ; }
     public String    getUuid       () { return company_uuid        ; }
     public String    getName       () { return company_name        ; }
+    public String    getShort      () { return company_short       ; }
     public String    getStreet     () { return company_street      ; }
     public String    getCity       () { return company_city        ; }
     public String    getProvince   () { return company_province    ; }
@@ -99,6 +103,7 @@ abstract public class Company extends Bolt implements IBean
     setId         ( rs.getInt       ( "company_id"          ) );
     setUuid       ( rs.getString    ( "company_uuid"        ) );
     setName       ( rs.getString    ( "company_name"        ) );
+    setShort      ( rs.getString    ( "company_short"       ) );
     setStreet     ( rs.getString    ( "company_street"      ) );
     setCity       ( rs.getString    ( "company_city"        ) );
     setProvince   ( rs.getString    ( "company_province"    ) );
@@ -125,6 +130,7 @@ abstract public class Company extends Bolt implements IBean
     public void setId         ( int       company_id          ) { this.company_id          = company_id          ; }
     public void setUuid       ( String    company_uuid        ) { this.company_uuid        = company_uuid        ; }
     public void setName       ( String    company_name        ) { this.company_name        = company_name        ; }
+    public void setShort      ( String    company_short       ) { this.company_short       = company_short       ; }
     public void setStreet     ( String    company_street      ) { this.company_street      = company_street      ; }
     public void setCity       ( String    company_city        ) { this.company_city        = company_city        ; }
     public void setProvince   ( String    company_province    ) { this.company_province    = company_province    ; }

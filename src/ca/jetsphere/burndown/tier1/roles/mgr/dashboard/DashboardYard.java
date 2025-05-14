@@ -1,12 +1,14 @@
 package ca.jetsphere.burndown.tier1.roles.mgr.dashboard;
 
+import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionSession;
 import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.common.DockYard;
-import ca.jetsphere.core.common.Pair;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.jdbc.QueryYard;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -51,13 +53,13 @@ public class DashboardYard
     
     sb.append ( "[" );
     
-    Map<Integer, String> categories = QueryYard.getIntStringMap ( jdbc, getByCategoryQuery ( period_id ), 2, 1 );
+    Map<Integer, String> categories = QueryYard.getIntStringMap ( jdbc, getByMonthQuery ( period_id ), 2, 1 );
     
     for ( Map.Entry<Integer, String> entry : categories.entrySet() )
     {
-    int value = entry.getKey(); 
-    
     sb.append ( firstCall ? "" : ", " );
+    
+    sb.append ( "{ month: " + DockYard.quote ( entry.getValue() ) + ", amount: " + Math.abs ( Math.floor ( entry.getKey() / 100 ) ) + "}" );
     
     firstCall = false;
     }
@@ -108,57 +110,43 @@ public class DashboardYard
     {
     StringBuilder sb = new StringBuilder();
     
-    String end_date = CalendarYard.now(); String start_date = CalendarYard.getFirstDayOfYear ( end_date );
+    sb.append ( "select upper(substring(date_format(date, '%M'), 1, 3)) as 'Month'" );
+//    sb.append ( " , p.category_name as 'Category'" );
+    sb.append ( " , sum(transaction_amount) as 'Amount'" );
+    sb.append ( " from jet_base_date" );
+    sb.append ( " inner join jet_burndown_transaction on transaction_date = date" );
+    sb.append ( " inner join jet_burndown_category c on c.category_id = transaction_category_id" );
+    sb.append ( " inner join jet_burndown_category p on (p.category_id = c.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
+    sb.append ( " where transaction_period_id = " + period_id );
+    sb.append ( " and p.category_depth = 1" );
+    sb.append ( " and p.category_included and c.category_included" );
+    sb.append ( " group by upper(substring(date_format(date, '%M'), 1, 3))" );
+//    sb.append ( " group by upper(substring(date_format(date, '%M'), 1, 3)), p.category_name" );
+    sb.append ( " order by date" );
     
-    List<String> monthNames = CalendarYard.getMonthsBetween ( start_date, end_date, "yyyy-MM-dd", "MMM" );
-
-    Pair[] monthDates = CalendarYard.getMonthDates ( start_date, monthNames.size() );
-
-    String query = getByMonthQuery ( monthDates, period_id, 1, start_date, end_date );
-
     return sb.toString();
     }
     
     /**
      * 
      */
-    static private String getByMonthQuery ( Pair[] monthDates, int period_id, int transaction_type, String start_date, String end_date )
+    static public void setTransactionSession ( JDBC jdbc, HttpServletRequest request, int period_id, String month )
     {
-    StringBuilder sb = new StringBuilder();
-
-    sb.append ( "select concat(p.category_depth, ':', p.category_name) as 'Category'" );
-
-    sb.append ( getByMonthsQuery ( monthDates ) );
+    TransactionSession transactions = TransactionSession.getInstance ( request );
     
-    sb.append ( " from jet_burndown_category p" );
-    sb.append ( " inner join jet_burndown_category c on (c.category_id = p.category_id or c.category_parent_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
-    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id" );
+    String now = CalendarYard.now(); String d = now.substring ( 0, 5 ) + month + "-01";
+    
+    String start_date = CalendarYard.formatDate ( d, "yyyy-MMM-dd", "yyyy-MM-dd" ); String end_date = CalendarYard.getLastDayOfMonth ( start_date );
+    
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append ( "select jet_burndown_transaction.* from jet_burndown_category" );
+    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = category_id" );
     sb.append ( " where transaction_period_id = " + period_id );
-    sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
-    sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
-    sb.append ( " and p.category_depth = 1" );
-    sb.append ( " and p.category_included and c.category_included" );
-    sb.append ( " group by p.category_name" );
-    sb.append ( " order by concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/')" );
-
-    return sb.toString();
-    }
-    /**
-     *
-     */
-    static public String getByMonthsQuery ( Pair[] monthDates )
-    {
-    StringBuilder sb = new StringBuilder();
-
-    for ( Pair monthDate: monthDates )
-    {
-    List<String> monthNames = CalendarYard.getMonthsBetween ( ( String ) monthDate.getKey(), ( String ) monthDate.getValue(), "yyyy-MM-dd", "MMM" );
+    sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) );
+    sb.append ( " and transaction_date <= " + DockYard.quote ( end_date ) );
+    sb.append ( " and category_included" );
     
-    sb.append ( ", sum(if(transaction_date >= " + DockYard.quote ( ( String ) monthDate.getKey() ) + " and transaction_date <= " + DockYard.quote ( ( String ) monthDate.getValue() ) );
-    sb.append ( ", transaction_amount" );
-    sb.append ( ", 0)) as " + DockYard.quote ( monthNames.size() > 0 ? monthNames.get ( 0 ) : "???" ) );
-    }
-
-    return sb.toString();
+    transactions.query ( jdbc, sb.toString() );
     }
 }

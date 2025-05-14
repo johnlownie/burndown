@@ -377,9 +377,15 @@ public class CalendarYard
      *
      */
 
-    static public String getFirstDayOfMonth ( String date )
+    static public String getFirstDayOfMonth ( String date ) { return getFirstDayOfMonth ( "yyyy-MM-dd" ); }
+
+    /**
+     *
+     */
+
+    static public String getFirstDayOfMonth ( String date, String pattern )
     {
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( pattern );
 
     LocalDate initial = LocalDate.parse ( date, formatter );
 

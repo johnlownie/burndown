@@ -6,6 +6,7 @@
   <form-beans>
       <form-bean name="[bb_query]" type="ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm" />
 
+        <form-bean name="[account]" type="ca.jetsphere.burndown.tier1.backbone.account.Account" />
         <form-bean name="[category]" type="ca.jetsphere.burndown.tier1.backbone.category.Category" />
         <form-bean name="[transaction]" type="ca.jetsphere.burndown.tier1.backbone.transaction.Transaction" />
   </form-beans>
@@ -29,6 +30,18 @@
       </action>
 
       <!-- BACKBONE ACTIONS -->
+
+      <action name="[account]" path="/account_edit" scope="session" type="ca.jetsphere.burndown.tier2.backbone.account.AccountEditAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/account/account_edit.jsp" />
+          <forward name="success" path="/account_query.do" redirect="true" />
+      </action>
+
+      <action name="[bb_query]" path="/account_query" scope="request" type="ca.jetsphere.burndown.tier2.backbone.account.AccountDoAction" validate="false">
+          <forward name="edit" path="/account_edit.do" redirect="true" />
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/account/account_query.jsp" />
+          <forward name="insert" path="/account_edit.do" redirect="true" />
+          <forward name="success" path="/account_query.do" redirect="true" />
+      </action>
 
       <action name="[category]" path="/category_edit" scope="session" type="ca.jetsphere.burndown.tier2.backbone.category.CategoryEditAction" validate="false">
           <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_edit.jsp" />

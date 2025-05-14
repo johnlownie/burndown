@@ -26,9 +26,30 @@
             element: 'by-month',
             data: [{nb: 0}],
             xkey: 'month',
-            ykeys: ['nb', 'e'],
-            labels: ['Hello'],
+            ykeys: ['amount'],
+            labels: ['Amount'],
             stacked: true
+        }).on('click', function(i, row){
+            getTransactionData(row);
+        });
+
+        var table = $("#table").dataTable({
+            processing: false,
+            ajax: {
+                url: $("#queryForm").attr("action") + "?json=true",
+                type: "GET",
+                data: function(d){
+                    d.companyId     = $("#queryForm select[name='companyId']" ).val();
+                    d.periodId      = $("#queryForm select[name='periodId']" ).val();
+                }
+            },
+            responsive: true,
+            paging: true,
+            ordering: true,
+            info: true,
+            searching: true,
+            iDisplayLength: 10,
+            rowReorder: true
         });
 
         function getData() {
@@ -42,6 +63,23 @@
             .success(function(response) {
                 donut.setData(response.categoryData);
                 bar.setData(response.monthData);
+            })
+            .error(function(x, t, m) {
+                notifyError();
+            });
+        }
+
+        function getTransactionData(row) {
+            console.log(row);
+            $.ajax({
+                url: $("#queryForm").attr("action"),
+                data: $("#queryForm").serialize() + "&fetch=true&month=" + row.month,
+                dataType: "json",
+                type: "GET",
+                timeout: 10000
+            })
+            .success(function(response) {
+                $("#table").dataTable().api().ajax.reload();
             })
             .error(function(x, t, m) {
                 notifyError();

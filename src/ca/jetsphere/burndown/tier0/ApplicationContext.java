@@ -1,5 +1,6 @@
 package ca.jetsphere.burndown.tier0;
 
+import ca.jetsphere.burndown.tier0.backbone.account.AccountDao;
 import ca.jetsphere.burndown.tier0.backbone.category.CategoryDao;
 import ca.jetsphere.burndown.tier0.backbone.transaction.TransactionDao;
 import ca.jetsphere.core.tier0.AbstractDao;
@@ -21,8 +22,9 @@ public class ApplicationContext
 
     public ApplicationContext()
     {
-    context.put ("category"   , new CategoryDao   () );
-    context.put ("transaction", new TransactionDao() );
+    context.put ( "account"     , new AccountDao    () );
+    context.put ( "category"    , new CategoryDao   () );
+    context.put ( "transaction" , new TransactionDao() );
     }
 
     /**

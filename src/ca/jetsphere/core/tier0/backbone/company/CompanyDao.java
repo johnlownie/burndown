@@ -34,8 +34,8 @@ public class CompanyDao extends AbstractDao
     Company company = ( Company ) bolt;
 
     String s = "insert into jet_base_company "
-            + "( company_uuid, company_name, company_street, company_city, company_province, company_postal_code, company_phone, company_fax, company_url, company_email, company_default, company_last_update, company_created )"
-            + "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            + "( company_uuid, company_name, company_short, company_street, company_city, company_province, company_postal_code, company_phone, company_fax, company_url, company_email, company_default, company_last_update, company_created )"
+            + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     ps.setStatement ( s, new String [] { "company_id" } );
 
@@ -43,17 +43,18 @@ public class CompanyDao extends AbstractDao
 
     ps.setString    (  1, company.getUuid       () );
     ps.setString    (  2, company.getName       () );
-    ps.setString    (  3, company.getStreet     () );
-    ps.setString    (  4, company.getCity       () );
-    ps.setString    (  5, company.getProvince   () );
-    ps.setString    (  6, company.getPostalCode () );
-    ps.setString    (  7, company.getPhone      () );
-    ps.setString    (  8, company.getFax        () );
-    ps.setString    (  9, company.getUrl        () );
-    ps.setString    ( 10, company.getEmail      () );
-    ps.setBoolean   ( 11, company.getDefault    () );
-    ps.setTimestamp ( 12, company.getLastUpdate () );
-    ps.setTimestamp ( 13, company.getCreated    () );
+    ps.setString    (  3, company.getShort      () );
+    ps.setString    (  4, company.getStreet     () );
+    ps.setString    (  5, company.getCity       () );
+    ps.setString    (  6, company.getProvince   () );
+    ps.setString    (  7, company.getPostalCode () );
+    ps.setString    (  8, company.getPhone      () );
+    ps.setString    (  9, company.getFax        () );
+    ps.setString    ( 10, company.getUrl        () );
+    ps.setString    ( 11, company.getEmail      () );
+    ps.setBoolean   ( 12, company.getDefault    () );
+    ps.setTimestamp ( 13, company.getLastUpdate () );
+    ps.setTimestamp ( 14, company.getCreated    () );
     }
 
     /**
@@ -65,7 +66,7 @@ public class CompanyDao extends AbstractDao
     Company company = ( Company ) bolt;
 
     String s = "update jet_base_company "
-            + "set company_uuid = ?, company_name = ?, company_street = ?, company_city = ?, company_province= ?, company_postal_code = ?, company_phone = ?, company_fax = ?, company_url = ?, company_email = ?, company_default = ?, company_last_update = ? "
+            + "set company_uuid = ?, company_name = ?, company_short = ?, company_street = ?, company_city = ?, company_province= ?, company_postal_code = ?, company_phone = ?, company_fax = ?, company_url = ?, company_email = ?, company_default = ?, company_last_update = ? "
             + "where company_id = ?";
 
     ps.setStatement ( s );
@@ -74,17 +75,18 @@ public class CompanyDao extends AbstractDao
 
     ps.setString    (  1, company.getUuid       () );
     ps.setString    (  2, company.getName       () );
-    ps.setString    (  3, company.getStreet     () );
-    ps.setString    (  4, company.getCity       () );
-    ps.setString    (  5, company.getProvince   () );
-    ps.setString    (  6, company.getPostalCode () );
-    ps.setString    (  7, company.getPhone      () );
-    ps.setString    (  8, company.getFax        () );
-    ps.setString    (  9, company.getUrl        () );
-    ps.setString    ( 10, company.getEmail      () );
-    ps.setBoolean   ( 11, company.getDefault    () );
-    ps.setTimestamp ( 12, company.getLastUpdate () );
-    ps.setInt       ( 13, company.getId         () );
+    ps.setString    (  3, company.getShort      () );
+    ps.setString    (  4, company.getStreet     () );
+    ps.setString    (  5, company.getCity       () );
+    ps.setString    (  6, company.getProvince   () );
+    ps.setString    (  7, company.getPostalCode () );
+    ps.setString    (  8, company.getPhone      () );
+    ps.setString    (  9, company.getFax        () );
+    ps.setString    ( 10, company.getUrl        () );
+    ps.setString    ( 11, company.getEmail      () );
+    ps.setBoolean   ( 12, company.getDefault    () );
+    ps.setTimestamp ( 13, company.getLastUpdate () );
+    ps.setInt       ( 14, company.getId         () );
     }
 
 }

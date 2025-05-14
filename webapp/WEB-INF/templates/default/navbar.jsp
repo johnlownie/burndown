@@ -18,7 +18,7 @@
 
 <img src="styles/templates/default/images/logo.png" alt="" class="brand-icon">
 
-<div class="brand-title"><i class="psi-home"></i><span class="brand-text"><%= company.getName() %></span></div>
+<div class="brand-title"><i class="psi-home"></i><span class="brand-text"><%= company.getShort() %></span></div>
 
 </a>
 
