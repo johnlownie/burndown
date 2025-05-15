@@ -143,6 +143,7 @@ public class DashboardYard
     sb.append ( " and p.category_name = " + DockYard.quote ( category ) );
     sb.append ( " and p.category_included and c.category_included" );
     sb.append ( " and transaction_period_id = " + period_id );
+    sb.append ( " order by transaction_name, transaction_date" );
     
     transactions.query ( jdbc, sb.toString() );
     }
@@ -168,6 +169,7 @@ public class DashboardYard
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) );
     sb.append ( " and transaction_date <= " + DockYard.quote ( end_date ) );
     sb.append ( " and category_included" );
+    sb.append ( " order by transaction_name, transaction_date" );
     
     transactions.query ( jdbc, sb.toString() );
     }

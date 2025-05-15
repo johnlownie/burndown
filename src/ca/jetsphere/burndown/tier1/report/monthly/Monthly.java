@@ -41,19 +41,20 @@ public class Monthly
     {
     StringBuilder sb = new StringBuilder();
 
-    sb.append ( "select concat(p.category_depth, ':', p.category_name) as 'Category'" );
+    sb.append ( "select concat(p.category_id, ':', p.category_depth, ':', p.category_name) as 'Category'" );
 
     sb.append ( getMonthsQuery ( monthDates ) );
     
     sb.append ( " from jet_burndown_category p" );
-    sb.append ( " inner join jet_burndown_category c on (c.category_id = p.category_id or c.category_parent_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
+    sb.append ( " inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')" );
     sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id" );
-    sb.append ( " where transaction_period_id = " + period_id );
+//    sb.append ( " where p.category_depth > 0" );
+    sb.append ( " where p.category_included and c.category_included" );
+    sb.append ( " and transaction_period_id = " + period_id );
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
     sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
-    sb.append ( " and p.category_included and c.category_included" );
-    sb.append ( " group by p.category_name" );
-    sb.append ( " order by concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/')" );
+    sb.append ( " group by concat(p.category_id, ':', p.category_depth, ':', p.category_name)" );
+    sb.append ( " order by concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/'), c.category_ordinal" );
 
     return sb.toString();
     }

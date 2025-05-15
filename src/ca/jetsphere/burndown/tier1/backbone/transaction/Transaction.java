@@ -50,7 +50,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] captions_dashboard()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.account.id" }; }
+    { return new String [] { "transaction.name", "transaction.date", "transaction.amount", "transaction.category", "transaction.type", "transaction.account.id" }; }
 
     /**
      *
@@ -93,7 +93,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] fields_dashboard()
 
-    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_account_id" }; }
+    { return new String [] { "transaction_name", "transaction_date", "transaction_amount", "transaction_category_id", "transaction_type", "transaction_account_id" }; }
 
     /**
      *

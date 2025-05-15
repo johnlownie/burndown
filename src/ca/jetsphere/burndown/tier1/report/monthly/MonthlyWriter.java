@@ -56,9 +56,9 @@ public class MonthlyWriter extends TableWriter
     {
     String category = ( String ) getRowColumn ( row, column );
     
-    int depth = DockYard.toInt ( DockYard.getToken ( category, 1 ) );
+    int depth = DockYard.toInt ( DockYard.getToken ( category, 2 ) );
     
-    String name = DockYard.getToken ( category, 2 );
+    String name = DockYard.getToken ( category, 3 );
     
     for ( int i = 0; i < depth; i++ )
         

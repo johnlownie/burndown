@@ -8,4 +8,9 @@
         }
 
     }
+    
+    #by-category svg path:hover,
+    #by-month svg rect:hover {
+        cursor: pointer;
+    }
 </style>
