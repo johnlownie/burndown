@@ -34,7 +34,7 @@ abstract public class Category extends Tree
     setCompanyId  (  -1   );
     setParentId   (  -1   );
     setParentUuid (  ""   );
-    setDepth      (  -1   );
+    setDepth      (   0   );
     setLineage    (  ""   );
     setOrdinal    (  -1   );
     setName       (  ""   );

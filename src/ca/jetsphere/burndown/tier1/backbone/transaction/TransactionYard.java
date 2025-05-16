@@ -5,6 +5,7 @@ import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.jdbc.QueryYard;
 import java.util.Iterator;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.upload.FormFile;
 
 /**
@@ -65,6 +66,18 @@ public class TransactionYard
 
     } catch ( Exception e ) { Common.trace ( e ); }
 
+    }
+    
+    /**
+     * 
+     */
+    static public void setLatest ( JDBC jdbc, HttpServletRequest request, int period_id )
+    {
+    TransactionSession transactions = TransactionSession.getInstance ( request );
+    
+    String query = "select * from jet_burndown_transaction where transaction_period_id = " + period_id + " order by transaction_date desc limit 20";
+
+    transactions.query ( jdbc, query );
     }
     
     /**

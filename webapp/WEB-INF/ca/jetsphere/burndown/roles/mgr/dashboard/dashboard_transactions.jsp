@@ -7,7 +7,7 @@
 
 <div class="panel">
 
-<div class="panel-heading"><h3 class="panel-title"><bean:message key="transactions"/></h3></div>
+<div class="panel-heading"><h3 id="transactions-title" class="panel-title"><bean:message key="transactions"/></h3></div>
 
 <div class="panel-body">
 

@@ -57,4 +57,14 @@ public class CategoryYard
     
     return QueryYard.getIntStringMap ( jdbc, query, 1, 2 );
     }
+    
+    /**
+     * 
+     */
+    static public boolean hasChildren ( JDBC jdbc, int category_id )
+    {
+    String query = "select count(1) from jet_burndown_category where category_parent_id = " + category_id;
+    
+    return QueryYard.query ( jdbc, query ) > 0;
+    }
 }

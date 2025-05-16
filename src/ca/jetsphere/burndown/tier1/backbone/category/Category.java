@@ -32,7 +32,7 @@ public class Category extends ca.jetsphere.burndown.tier0.backbone.category.Cate
      */
     public Category ( JDBC jdbc )
 
-    { super(); query ( jdbc, "select * from jet_burndown_category"); }
+    { super(); query ( jdbc, "select * from jet_burndown_category" ); }
 
     /**
      *

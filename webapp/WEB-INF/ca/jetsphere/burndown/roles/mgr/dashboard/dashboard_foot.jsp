@@ -19,7 +19,8 @@
           ],
           donutType: 'pie'
         }).on('click', function(i, row){
-            getTransactionData("export", row.label);
+            console.log(row);
+            getTransactionData("&category=" + row.label);
         });
         
         var bar = Morris.Bar({
@@ -30,7 +31,7 @@
             labels: ['Amount'],
             stacked: true
         }).on('click', function(i, row){
-            getTransactionData("fetch", row.month);
+            getTransactionData("&month=" + row.month);
         });
 
         var table = $("#table").dataTable({
@@ -52,39 +53,37 @@
             rowReorder: true
         });
 
-        function getData() {
+        function getTransactionData(action) {
             $.ajax({
                 url: $("#queryForm").attr("action"),
-                data: $("#queryForm").serialize() + "&report=true",
+                data: $("#queryForm").serialize() + "&fetch=true" + action,
                 dataType: "json",
                 type: "GET",
                 timeout: 10000
             })
             .success(function(response) {
+                $('#by-category-title').text(response.categoryTitle);
+                $('#by-month-title').text(response.monthTitle);
+                $('#transactions-title').text(response.transactionsTitle);
                 donut.setData(response.categoryData);
                 bar.setData(response.monthData);
-            })
-            .error(function(x, t, m) {
-                notifyError();
-            });
-        }
-
-        function getTransactionData(action, row_data) {
-            $.ajax({
-                url: $("#queryForm").attr("action"),
-                data: $("#queryForm").serialize() + "&" + action + "=true&topic=" + row_data,
-                dataType: "json",
-                type: "GET",
-                timeout: 10000
-            })
-            .success(function(response) {
                 $("#table").dataTable().api().ajax.reload();
+                if (response.showReset == true) {
+                    $('#reset').show();
+                } else {
+                    $('#reset').hide();
+                }
             })
             .error(function(x, t, m) {
                 notifyError();
             });
         }
         
-        getData();
+        $('#reset').click(function(e) {
+            e.preventDefault();
+            getTransactionData("");
+        });
+        
+        getTransactionData("");
     });
 </script>

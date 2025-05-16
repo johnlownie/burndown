@@ -1,11 +1,14 @@
 package ca.jetsphere.burndown.tier2.roles.mgr.dashboard;
 
+import ca.jetsphere.burndown.tier1.backbone.category.Category;
 import ca.jetsphere.burndown.tier1.backbone.transaction.Transaction;
 import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionSession;
 import ca.jetsphere.burndown.tier1.roles.mgr.dashboard.DashboardYard;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
+import ca.jetsphere.core.common.Caption;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
+import ca.jetsphere.core.common.Pair;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.tier2.common.AbstractDoAction;
 import ca.jetsphere.core.tier2.common.ActionStore;
@@ -23,45 +26,41 @@ public class DashboardDoAction extends AbstractDoAction
     /**
      *
      */
-    public ActionForward export ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-
-        String topic = DockYard.getParameter ( store.getRequest(), "topic" );
-        
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-        
-        DashboardYard.setTransactionsByCategory ( jdbc, store.getRequest(), qaf.getPeriodId(), topic );
-
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put ( "success", errors.isEmpty() );
-
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
-    }
-
-    /**
-     *
-     */
     public ActionForward fetch ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
     try {
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
 
-        String topic = DockYard.getParameter ( store.getRequest(), "topic" );
+        String category_name = DockYard.getParameter ( store.getRequest(), "category" );
+        
+        String month = DockYard.getParameter ( store.getRequest(), "month" );
+        
+        Category category = DashboardYard.getCategory ( jdbc, category_name );
+        
+        Pair monthDates = DashboardYard.getMonthDates ( month ); String start_date = ( String ) monthDates.getKey(); String end_date = ( String ) monthDates.getValue();
+        
+        String categoryData = DashboardYard.getByCategory ( jdbc, qaf.getPeriodId(), category, start_date, end_date );
+        
+        String monthData = DashboardYard.getByMonth ( jdbc, qaf.getPeriodId(), category, start_date, end_date );
+
+        String transactionsTitle = DashboardYard.setTransactions ( jdbc, store.getRequest(), qaf.getPeriodId(), category.getName(), start_date, end_date );
         
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
         
-        DashboardYard.setTransactionsByMonth ( jdbc, store.getRequest(), qaf.getPeriodId(), topic );
-
         PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put ( "categoryTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.category") + ( category.isValid() ? ": " + category.getName() : "" ) );
+
+        jsonObject.put ( "categoryData", categoryData);
+        
+        jsonObject.put ( "monthTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.month") + ( !DockYard.isWhiteSpace ( month ) ? ": " + month : "" ) );
+
+        jsonObject.put ( "monthData", monthData);
+        
+        jsonObject.put ( "transactionsTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.transactions") + ( !DockYard.isWhiteSpace ( transactionsTitle ) ? ": " + transactionsTitle : "" ) );
+        
+        jsonObject.put ( "showReset", category.isValid() || !DockYard.isWhiteSpace ( month ) );
 
         jsonObject.put ( "success", errors.isEmpty() );
 
@@ -105,40 +104,6 @@ public class DashboardDoAction extends AbstractDoAction
      *
      */
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() );
-    
-    transactions.clear();
-    
-    return getForward ( store );
-    }
 
-    /**
-     *
-     */
-
-    public ActionForward report ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-        
-        String categoryData = DashboardYard.getByCategory ( jdbc, qaf.getPeriodId() );
-        
-        String monthData = DashboardYard.getByMonth ( jdbc, qaf.getPeriodId() );
-//        String monthData = "[{ month: 'Brazil', nb: 5, e: 1 }, { month: 'Italy', nb: 4, e: 2 }, { month: 'Germany', nb: 4, e: 4 }, { month: 'Uruguay', nb: 2, e: 9 }, { month: 'Argentina', nb: 2, e: 10 }]";
-//        String monthData = "[{ month: 'JAN', amount: -3247}, { month: 'FEB', amount: -6563}, { month: 'MAR', amount: -8267}, { month: 'APR', amount: -12419}, { month: 'MAY', amount: -2575}]";
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put ( "categoryData", categoryData); jsonObject.put ( "monthData", monthData);
-
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
-    }
+    { return getForward ( store ); }
 }
