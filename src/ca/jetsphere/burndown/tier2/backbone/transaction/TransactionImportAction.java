@@ -14,7 +14,7 @@ import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.tier1.backbone.period.Period;
-import ca.jetsphere.core.tier1.backbone.period.PeriodSession;
+import ca.jetsphere.core.tier1.backbone.period.PeriodYard;
 
 import org.apache.struts.action.ActionForward;
 
@@ -37,7 +37,7 @@ public class TransactionImportAction extends AbstractDoAction
 
     public ActionForward improt ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() ); Period period = PeriodSession.getSelected ( store.getRequest() );
+    TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() );
     
     Iterator it = transactions.iterator();
     
@@ -46,6 +46,10 @@ public class TransactionImportAction extends AbstractDoAction
     Transaction transaction = ( Transaction ) it.next();
     
     if ( TransactionYard.exists ( jdbc, transaction ) ) continue;
+    
+    Period period = PeriodYard.getByDate ( jdbc, transaction.getDateAsString() );
+    
+    if ( !period.isValid() ) continue;
     
     if ( !CalendarYard.isBetween ( transaction.getDateAsString(), period.getStartDateAsString(), period.getEndDateAsString() ) ) continue;
     

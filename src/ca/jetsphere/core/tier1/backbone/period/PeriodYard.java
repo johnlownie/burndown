@@ -64,6 +64,21 @@ public class PeriodYard
      * 
      */
     
+    static public Period getByDate ( JDBC jdbc, String date )
+    {
+    Period period = new Period();
+    
+    String query = "select * from jet_base_period where period_start_date <= " + DockYard.quote ( date ) + " and period_end_date >= " + DockYard.quote ( date );
+    
+    period.query ( jdbc, query );
+    
+    return period;
+    }
+    
+    /**
+     * 
+     */
+    
     static public PeriodSession getOpen ( JDBC jdbc, HttpServletRequest request, int application_id )
     {
     PeriodSession periods = PeriodSession.getInstance ( request );
