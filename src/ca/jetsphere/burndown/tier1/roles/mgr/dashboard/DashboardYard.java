@@ -10,6 +10,7 @@ import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.common.Pair;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.jdbc.QueryYard;
+import ca.jetsphere.core.tier1.backbone.period.Period;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
@@ -145,11 +146,15 @@ public class DashboardYard
     /**
      * 
      */
-    static public Pair getMonthDates ( String month )
+    static public Pair getMonthDates ( JDBC jdbc, int period_id, String month )
     {
     if ( DockYard.isWhiteSpace ( month ) ) return new Pair ( "", "" );
     
-    String now = CalendarYard.now(); 
+    Period period = new Period ( jdbc, period_id );
+    
+    if ( !period.isValid() ) return new Pair ( "", "" );
+    
+    String now = period.getStartDateAsString();
     
     String start_date = now.substring ( 0, 5 ) + CalendarYard.getMonthAsString ( month ) + "-01";
     

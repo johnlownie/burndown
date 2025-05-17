@@ -83,6 +83,13 @@
             e.preventDefault();
             getTransactionData("");
         });
+
+        $("#queryForm").on("change", function(event) {
+            event.preventDefault();
+            getTransactionData("");
+            $("#table").dataTable().api().ajax.reload();
+            return false;
+        });
         
         getTransactionData("");
     });

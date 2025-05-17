@@ -38,7 +38,7 @@ public class DashboardDoAction extends AbstractDoAction
         
         Category category = DashboardYard.getCategory ( jdbc, category_name );
         
-        Pair monthDates = DashboardYard.getMonthDates ( month ); String start_date = ( String ) monthDates.getKey(); String end_date = ( String ) monthDates.getValue();
+        Pair monthDates = DashboardYard.getMonthDates ( jdbc, qaf.getPeriodId(), month ); String start_date = ( String ) monthDates.getKey(); String end_date = ( String ) monthDates.getValue();
         
         String categoryData = DashboardYard.getByCategory ( jdbc, qaf.getPeriodId(), category, start_date, end_date );
         
