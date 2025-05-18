@@ -79,26 +79,9 @@ public class DashboardYard
      */
     static public String getByMonth ( JDBC jdbc, int period_id, Category category, String start_date, String end_date )
     {
-    StringBuilder sb = new StringBuilder(); boolean firstCall = true;
-    
-    sb.append ( "[" );
-    
     String query = getByMonthQuery ( period_id, category );
     
-    Map<Integer, String> categories = QueryYard.getIntStringMap ( jdbc, query, 2, 1 );
-    
-    for ( Map.Entry<Integer, String> entry : categories.entrySet() )
-    {
-    sb.append ( firstCall ? "" : ", " );
-    
-    sb.append ( "{ month: " + DockYard.quote ( entry.getValue() ) + ", amount: " + Math.abs ( Math.floor ( entry.getKey() / 100 ) ) + "}" );
-    
-    firstCall = false;
-    }
-    
-    sb.append ( "]" );
-    
-    return sb.toString();
+    return QueryYard.query ( jdbc, query, 1 );
     }
     
     /**
@@ -108,20 +91,26 @@ public class DashboardYard
     {
     StringBuilder sb = new StringBuilder();
     
-    sb.append ( "select upper(substring(date_format(date, '%M'), 1, 3)) as 'Month'" );
-    sb.append ( ", sum(transaction_amount) as 'Amount'" );
-    sb.append ( " from jet_base_date" );
-    sb.append ( " inner join jet_burndown_transaction on transaction_date = date" );
-    sb.append ( " inner join jet_burndown_category c on c.category_id = transaction_category_id" );
-    sb.append ( " inner join jet_burndown_category p on (p.category_id = c.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
-    sb.append ( " where transaction_period_id = " + period_id );
+    sb.append ( "select concat('[', group_concat(t.MyObject), ']')" );
+    sb.append ( " from (" );
+    sb.append ( "  select json_object(" );
+    sb.append ( "    'month', upper(substring(date_format(date, '%M'), 1, 3)), " );
+    sb.append ( "    'discretionary', floor(abs(sum(if(c.category_discretionary, transaction_amount, 0))) / 100), " );
+    sb.append ( "    'disposable', floor(abs(sum(if(!c.category_discretionary, transaction_amount, 0))) / 100)" );
+    sb.append ( "  ) as 'MyObject' " );
+    sb.append ( "  from jet_base_date" );
+    sb.append ( "  inner join jet_burndown_transaction on transaction_date = date" );
+    sb.append ( "  inner join jet_burndown_category c on c.category_id = transaction_category_id" );
+    sb.append ( "  inner join jet_burndown_category p on (p.category_id = c.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
+    sb.append ( "  where transaction_period_id = " + period_id );
 
-    if ( category.isValid() ) { sb.append ( " and p.category_parent_id = " + category.getId() ); }
+    if ( category.isValid() ) { sb.append ( "  and p.category_parent_id = " + category.getId() ); }
 
-    sb.append ( " and p.category_depth = " + ( category.getDepth() + 1 ) );
-    sb.append ( " and p.category_included and c.category_included" );
-    sb.append ( " group by upper(substring(date_format(date, '%M'), 1, 3))" );
-    sb.append ( " order by date" );
+    sb.append ( "  and p.category_depth = " + ( category.getDepth() + 1 ) );
+    sb.append ( "  and p.category_included and c.category_included" );
+    sb.append ( "  group by upper(substring(date_format(date, '%M'), 1, 3))" );
+    sb.append ( "  order by date" );
+    sb.append ( " ) as t" );
     
     return sb.toString();
     }

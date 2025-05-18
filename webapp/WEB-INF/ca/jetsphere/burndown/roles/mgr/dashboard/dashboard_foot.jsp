@@ -27,8 +27,8 @@
             element: 'by-month',
             data: [{nb: 0}],
             xkey: 'month',
-            ykeys: ['amount'],
-            labels: ['Amount'],
+            ykeys: ['discretionary', 'disposable'],
+            labels: ['Discretionary', 'Disposable'],
             stacked: true
         }).on('click', function(i, row){
             getTransactionData("&month=" + row.month);

@@ -18,7 +18,17 @@
 
 <div class="col-md-6"><div class="checkbox">
 
-<label class="form-checkbox form-normal form-primary form-text"><html:checkbox property="included" styleId="active"/> <bean:message key="category.included"/></label><input type="hidden" name="included" value="false"/>
+<label class="form-checkbox form-normal form-primary form-text"><html:checkbox property="included" styleId="active"/><input type="hidden" name="included" value="false"/>
+
+</div></div>
+
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="category.discretionary"/></label>
+
+<div class="col-md-6"><div class="checkbox">
+
+<label class="form-checkbox form-normal form-primary form-text"><html:checkbox property="discretionary" styleId="active"/><input type="hidden" name="discretionary" value="false"/>
 
 </div></div>
 
