@@ -4,7 +4,7 @@ import ca.jetsphere.core.common.ISessionObject;
 import ca.jetsphere.core.common.SessionCache;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.tier0.backbone.role.RoleMap;
-import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
+import ca.jetsphere.core.tier1.backbone.company.CompanySession;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
@@ -25,9 +25,9 @@ public class RoleSession extends RoleMap implements ISessionObject
      *
      */
 
-    public RoleSession ( JDBC jdbc, int application_id ) throws Exception
+    public RoleSession ( JDBC jdbc, int company_id ) throws Exception
 
-    { super ( jdbc, application_id ); }
+    { super ( jdbc, company_id ); }
 
     /**
      *
@@ -87,15 +87,15 @@ public class RoleSession extends RoleMap implements ISessionObject
 
     static public RoleSession query ( JDBC jdbc, HttpServletRequest request, boolean blank )
 
-    { RoleSession session = getInstance ( request ); session.find ( jdbc, ApplicationSession.getSelected ( request ) ); session.options ( request, blank ); return session; }
+    { RoleSession session = getInstance ( request ); session.find ( jdbc, CompanySession.getSelected ( request ) ); session.options ( request, blank ); return session; }
 
     /**
      *
      */
 
-    static public RoleSession query ( JDBC jdbc, HttpServletRequest request, int application_id, boolean blank )
+    static public RoleSession query ( JDBC jdbc, HttpServletRequest request, int company_id, boolean blank )
 
-    { RoleSession session = getInstance ( request ); session.find ( jdbc, application_id ); session.options ( request, blank ); return session; }
+    { RoleSession session = getInstance ( request ); session.find ( jdbc, company_id ); session.options ( request, blank ); return session; }
 
 //    { RoleSession session = RoleSession.query ( jdbc, request, blank ); RoleYard.inclusiveFilter ( session, type ); session.options ( request, blank ); return session; }
 

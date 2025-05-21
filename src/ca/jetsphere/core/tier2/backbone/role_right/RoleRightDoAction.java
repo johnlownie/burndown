@@ -3,8 +3,8 @@ package ca.jetsphere.core.tier2.backbone.role_right;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
-import ca.jetsphere.core.tier1.backbone.application.Application;
-import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
+import ca.jetsphere.core.tier1.backbone.company.Company;
+import ca.jetsphere.core.tier1.backbone.company.CompanySession;
 import ca.jetsphere.core.tier1.backbone.role.RoleSession;
 import ca.jetsphere.core.tier1.backbone.role_right.RoleRight;
 import ca.jetsphere.core.tier1.backbone.role_right.RoleRightSession;
@@ -152,13 +152,13 @@ public class RoleRightDoAction extends AbstractDoAction
 
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
+    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
 
     qaf.getOpenSet().clear();
 
-    if ( application != null && application.isValid() ) qaf.setApplicationId ( application.getId() );
+    if ( company != null && company.isValid() ) qaf.setCompanyId ( company.getId() );
 
-    RoleSession.query ( jdbc, store.getRequest(), qaf.getApplicationId(), false );
+    RoleSession.query ( jdbc, store.getRequest(), qaf.getCompanyId(), false );
 
     return getForward ( store );
     }

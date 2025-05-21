@@ -1,7 +1,6 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
-<%@ page import="ca.jetsphere.core.tier1.backbone.application.ApplicationSession" %>
 <%@ page import="ca.jetsphere.core.tier1.backbone.company.CompanySession" %>
 <%@ page import="ca.jetsphere.core.tier1.backbone.role.RoleSession" %>
 <%@ page import="ca.jetsphere.core.tier1.backbone.role_right.RoleRight" %>
@@ -9,7 +8,6 @@
 <%@ page import="ca.jetsphere.core.tier1.backbone.role_right.writer.RoleRightWriter" %>
 
 <% CompanySession     companies    = CompanySession    .getInstance ( request ); request.setAttribute ( "companies"   , companies   .iterator ( true ) ); %>
-<% ApplicationSession applications = ApplicationSession.getInstance ( request ); request.setAttribute ( "applications", applications.iterator ( true ) ); %>
 <% RoleSession        roles        = RoleSession       .getInstance ( request ); request.setAttribute ( "roles"       , roles       .iterator ( true ) ); %>
 
 <div id="page-content"><div class="panel" data-title="<bean:message key="add.edit.bolt" arg0="Role Right"/>">
@@ -23,8 +21,6 @@
 <html:form action="/role_right_query" method="post" styleId="queryForm">
 
 <div class="row">
-
-<div class="col-sm-6"><div class="form-group"><label class="control-label"><bean:message key="application"/></label><html:select property="applicationId" styleClass="form-control" onchange="submit();"><html:option value="-1"><bean:message key="all.applications"/></html:option><html:options collection="applications" property="id" labelProperty="name" /></html:select></div></div>
 
 <div class="col-sm-6"><div class="form-group"><label class="control-label"><bean:message key="role"/></label><html:select property="roleId" styleId="roleId" styleClass="form-control"><html:option value=""><bean:message key="please.select"/></html:option><html:options collection="roles" property="id" labelProperty="name" /></html:select></div></div>
 

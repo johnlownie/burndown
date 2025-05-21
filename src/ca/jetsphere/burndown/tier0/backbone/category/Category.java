@@ -46,7 +46,7 @@ public class Category extends ca.jetsphere.burndown.tier0.backbone.category.fore
      */
     public void paste ( Tree tree )
 
-    { Category parent = ( Category ) tree; setCompanyId ( parent.getCompanyId() ); pasteBelow ( parent ); }
+    { Category parent = ( Category ) tree; setApplicationId ( parent.getApplicationId() ); pasteBelow ( parent ); }
 
     /**
      *

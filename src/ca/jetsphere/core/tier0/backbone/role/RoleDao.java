@@ -31,24 +31,24 @@ public class RoleDao extends AbstractDao
     Role role = ( Role ) bolt;
 
     String s = "insert into jet_base_role "
-            + "( role_uuid, role_application_id, role_type, role_alias, role_name, role_notes, role_read_only, role_closure, role_ordinal, role_last_update, role_created )"
+            + "( role_uuid, role_company_id, role_type, role_alias, role_name, role_notes, role_read_only, role_closure, role_ordinal, role_last_update, role_created )"
             + "values (?,?,?,?,?,?,?,?,?,?,?)";
 
     ps.setStatement ( s, new String [] { "role_id" } );
 
     role.setUuid ( UUID.get() ); role.setCreated ( new Timestamp ( System.currentTimeMillis() ) ); role.setLastUpdate ( role.getCreated() );
 
-    ps.setString    (  1, role.getUuid          () );
-    ps.setInt       (  2, role.getApplicationId () );
-    ps.setInt       (  3, role.getType          () );
-    ps.setString    (  4, role.getAlias         () );
-    ps.setString    (  5, role.getName          () );
-    ps.setString    (  6, role.getNotes         () );
-    ps.setBoolean   (  7, role.getReadOnly      () );
-    ps.setInt       (  8, role.getClosure       () );
-    ps.setInt       (  9, role.getOrdinal       () );
-    ps.setTimestamp ( 10, role.getLastUpdate    () );
-    ps.setTimestamp ( 11, role.getCreated       () );
+    ps.setString    (  1, role.getUuid       () );
+    ps.setInt       (  2, role.getCompanyId  () );
+    ps.setInt       (  3, role.getType       () );
+    ps.setString    (  4, role.getAlias      () );
+    ps.setString    (  5, role.getName       () );
+    ps.setString    (  6, role.getNotes      () );
+    ps.setBoolean   (  7, role.getReadOnly   () );
+    ps.setInt       (  8, role.getClosure    () );
+    ps.setInt       (  9, role.getOrdinal    () );
+    ps.setTimestamp ( 10, role.getLastUpdate () );
+    ps.setTimestamp ( 11, role.getCreated    () );
     }
 
     /**
@@ -60,24 +60,24 @@ public class RoleDao extends AbstractDao
     Role role = ( Role ) bolt;
 
     String s = "update jet_base_role "
-            + "set role_uuid = ?, role_application_id = ?, role_type = ?, role_alias = ?, role_name = ?, role_notes = ?, role_read_only = ?, role_closure = ?, role_ordinal = ?, role_last_update = ? "
+            + "set role_uuid = ?, role_company_id = ?, role_type = ?, role_alias = ?, role_name = ?, role_notes = ?, role_read_only = ?, role_closure = ?, role_ordinal = ?, role_last_update = ? "
             + "where role_id = ?";
 
     ps.setStatement ( s );
 
     role.setLastUpdate ( new Timestamp ( System.currentTimeMillis() ) );
 
-    ps.setString    (  1, role.getUuid          () );
-    ps.setInt       (  2, role.getApplicationId () );
-    ps.setInt       (  3, role.getType          () );
-    ps.setString    (  4, role.getAlias         () );
-    ps.setString    (  5, role.getName          () );
-    ps.setString    (  6, role.getNotes         () );
-    ps.setBoolean   (  7, role.getReadOnly      () );
-    ps.setInt       (  8, role.getClosure       () );
-    ps.setInt       (  9, role.getOrdinal       () );
-    ps.setTimestamp ( 10, role.getLastUpdate    () );
-    ps.setInt       ( 11, role.getId            () );
+    ps.setString    (  1, role.getUuid       () );
+    ps.setInt       (  2, role.getCompanyId  () );
+    ps.setInt       (  3, role.getType       () );
+    ps.setString    (  4, role.getAlias      () );
+    ps.setString    (  5, role.getName       () );
+    ps.setString    (  6, role.getNotes      () );
+    ps.setBoolean   (  7, role.getReadOnly   () );
+    ps.setInt       (  8, role.getClosure    () );
+    ps.setInt       (  9, role.getOrdinal    () );
+    ps.setTimestamp ( 10, role.getLastUpdate () );
+    ps.setInt       ( 11, role.getId         () );
     }
 
 }

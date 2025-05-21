@@ -25,7 +25,7 @@ abstract public class CategoryMap extends TreeSession
      *
      */
 
-    public void find ( JDBC jdbc, int company_id ) { query ( jdbc, getQuery ( company_id ) ); treeify(); }
+    public void find ( JDBC jdbc, int application_id ) { query ( jdbc, getQuery ( application_id ) ); treeify(); }
 
     /**
      *
@@ -39,6 +39,6 @@ abstract public class CategoryMap extends TreeSession
 
     protected String getQuery ( int id )
 
-    { return "select * from jet_burndown_category where category_company_id = " + id; }
+    { return "select * from jet_burndown_category where category_application_id = " + id; }
 
 }

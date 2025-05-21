@@ -25,11 +25,11 @@ abstract public class RoleMap extends BoltMap
      *
      */
 
-    public void find ( JDBC jdbc, int application_id )
+    public void find ( JDBC jdbc, int company_id )
     {
     String query = "select jet_base_role.* from jet_base_role";
 
-    if ( application_id > 0 ) query += " where role_application_id = " + application_id;
+    if ( company_id > 0 ) query += " where role_company_id = " + company_id;
 
     query ( jdbc, query );
     }

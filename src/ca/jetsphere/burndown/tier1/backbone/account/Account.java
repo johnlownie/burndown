@@ -1,12 +1,8 @@
 package ca.jetsphere.burndown.tier1.backbone.account;
 
-import ca.jetsphere.core.common.Caption;
 import ca.jetsphere.core.jdbc.JDBC;
-import ca.jetsphere.core.tier1.backbone.company.Company;
-import ca.jetsphere.core.tier1.tree.Tree;
 
 import java.sql.ResultSet;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  *

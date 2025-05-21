@@ -34,11 +34,11 @@ public class ApplicationEditAction extends AbstractEditAction
 
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    Application application = ApplicationSession.getSelected ( store.getRequest() );
+    Application application = ApplicationSession.getSelected ( store.getRequest() ); Company company = CompanySession.getSelected ( store.getRequest() );
 
-    PeriodSession.query ( jdbc, store.getRequest(), -1, application.getId(), true );
+    PeriodSession.query ( jdbc, store.getRequest(), company.getId(), application.getId(), true );
 
-    RoleSession.query ( jdbc, store.getRequest(), application.getId(), true );
+    RoleSession.query ( jdbc, store.getRequest(), company.getId(), true );
 
     return getForward ( store );
     }

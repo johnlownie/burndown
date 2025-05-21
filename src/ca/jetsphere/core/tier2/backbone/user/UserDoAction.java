@@ -3,6 +3,7 @@ package ca.jetsphere.core.tier2.backbone.user;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
 import ca.jetsphere.core.tier1.backbone.company.Company;
 import ca.jetsphere.core.tier1.backbone.company.CompanySession;
 import ca.jetsphere.core.tier1.backbone.role.RoleYard;
@@ -64,9 +65,11 @@ public class UserDoAction extends AbstractDoAction
 
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
 
     RoleYard.getCompanyRoles ( jdbc, store.getRequest(), true );
+    
+    ApplicationSession.query ( jdbc, store.getRequest(), company.getId(), true );
 
     return getForward ( store );
     }

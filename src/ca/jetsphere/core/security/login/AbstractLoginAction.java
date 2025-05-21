@@ -68,7 +68,7 @@ abstract public class AbstractLoginAction extends AbstractAction
 
     protected void setApplication ( JDBC jdbc, HttpServletRequest request, User user ) throws Exception
 
-    { ApplicationYard.setApplications ( jdbc, request, user ); ApplicationYard.setDefaultApplication ( jdbc, request ); }
+    { ApplicationYard.setApplications ( jdbc, request, user ); ApplicationYard.setDefaultApplication ( jdbc, request, user ); }
 
     /**
      *

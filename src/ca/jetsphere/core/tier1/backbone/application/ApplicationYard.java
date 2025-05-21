@@ -1,6 +1,7 @@
 package ca.jetsphere.core.tier1.backbone.application;
 
 import ca.jetsphere.core.jdbc.JDBC;
+import ca.jetsphere.core.jdbc.QueryYard;
 import ca.jetsphere.core.tier1.backbone.company.Company;
 import ca.jetsphere.core.tier1.backbone.company.CompanyYard;
 import ca.jetsphere.core.tier1.backbone.user.User;
@@ -55,6 +56,17 @@ public class ApplicationYard
 
     return application;
     }
+    
+    /**
+     * 
+     */
+    
+    static public String getName ( int application_id )
+    {
+    String query = "select application_name from jet_base_application where application_id = " + application_id;
+    
+    return QueryYard.query ( query, 1 );
+    }
 
     /**
      *
@@ -63,21 +75,28 @@ public class ApplicationYard
     static public void setApplications ( JDBC jdbc, HttpServletRequest request, User user )
     {
     ApplicationSession applications = ApplicationSession.getInstance ( request );
+    
+    StringBuffer sb = new StringBuffer();
 
-    String query = "select distinct jet_base_application.* from jet_base_user" +
-        " inner join jet_base_role on find_in_set (role_id, user_role_ids)" +
-        " inner join jet_base_application on application_id = role_application_id" +
-        " where user_id = " + user.getId();
+    sb.append ( "select distinct jet_base_application.* from jet_base_user" );
+    sb.append ( " inner join jet_base_role on find_in_set (role_id, user_role_ids)" );
+    sb.append ( " inner join jet_base_application on application_company_id = role_company_id" );
+    sb.append ( " where user_id = " + user.getId() );
 
-    applications.query ( jdbc, query );
+    applications.query ( jdbc, sb.toString() );
     }
 
     /**
      *
      */
 
-    static public void setDefaultApplication ( JDBC jdbc, HttpServletRequest request ) throws Exception
-
-    { ApplicationSession.setSelected ( request, getDefaultApplication ( jdbc, request ) ); }
+    static public void setDefaultApplication ( JDBC jdbc, HttpServletRequest request, User user ) throws Exception
+    {
+    Application application = new Application ( jdbc, user.getApplicationId() );
+    
+    if ( !application.isValid() ) application = getDefaultApplication ( jdbc, request );
+    
+    ApplicationSession.setSelected ( request, application ); 
+    }
 
 }

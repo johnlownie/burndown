@@ -3,8 +3,8 @@ package ca.jetsphere.burndown.tier2.backbone.account;
 import ca.jetsphere.burndown.tier1.backbone.account.Account;
 import ca.jetsphere.core.bolt.Bolt;
 import ca.jetsphere.core.jdbc.JDBC;
-import ca.jetsphere.core.tier1.backbone.company.Company;
-import ca.jetsphere.core.tier1.backbone.company.CompanySession;
+import ca.jetsphere.core.tier1.backbone.application.Application;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
 import ca.jetsphere.core.tier2.common.AbstractEditAction;
 import ca.jetsphere.core.tier2.common.Errors;
 
@@ -25,8 +25,8 @@ public class AccountEditAction extends AbstractEditAction
      */
     public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
     {
-    Account account = ( Account ) bolt; Company company = CompanySession.getSelected ( request );
+    Account account = ( Account ) bolt; Application application = ApplicationSession.getSelected ( request );
 
-    account.setCompanyId ( company.getId() );
+    account.setApplicationId ( application.getId() );
     }
 }

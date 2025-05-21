@@ -28,7 +28,7 @@ public class CategoryDao extends AbstractDao
     Category category = ( Category ) bolt;
 
     String s = "insert into jet_burndown_category" +
-            " ( category_uuid, category_company_id, category_parent_id, category_parent_uuid, category_depth, category_lineage, category_ordinal, category_name, category_included, category_discretionary, category_last_update, category_created )" +
+            " ( category_uuid, category_application_id, category_parent_id, category_parent_uuid, category_depth, category_lineage, category_ordinal, category_name, category_included, category_discretionary, category_last_update, category_created )" +
             " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
     ps.setStatement ( s, new String [] { "category_id" } );
@@ -36,7 +36,7 @@ public class CategoryDao extends AbstractDao
     category.setUuid ( UUID.get () ); category.setCreated ( new Timestamp ( System.currentTimeMillis() ) ); category.setLastUpdate ( category.getCreated() );
 
     ps.setString    (  1, category.getUuid          () );
-    ps.setInt       (  2, category.getCompanyId     () );
+    ps.setInt       (  2, category.getApplicationId () );
     ps.setInt       (  3, category.getParentId      () );
     ps.setString    (  4, category.getParentUuid    () );
     ps.setInt       (  5, category.getDepth         () );
@@ -56,14 +56,14 @@ public class CategoryDao extends AbstractDao
     {
     Category category = ( Category ) bolt;
 
-    String s = "update jet_burndown_category set category_uuid = ?, category_company_id = ?, category_parent_id = ?, category_parent_uuid = ?, category_depth = ?, category_lineage = ?, category_ordinal = ?, category_name = ?, category_included = ?, category_discretionary = ?, category_last_update = ? where category_id = ?";
+    String s = "update jet_burndown_category set category_uuid = ?, category_application_id = ?, category_parent_id = ?, category_parent_uuid = ?, category_depth = ?, category_lineage = ?, category_ordinal = ?, category_name = ?, category_included = ?, category_discretionary = ?, category_last_update = ? where category_id = ?";
 
     ps.setStatement ( s );
 
     category.setLastUpdate ( new Timestamp ( System.currentTimeMillis() ) );
 
     ps.setString    (  1, category.getUuid          () );
-    ps.setInt       (  2, category.getCompanyId     () );
+    ps.setInt       (  2, category.getApplicationId () );
     ps.setInt       (  3, category.getParentId      () );
     ps.setString    (  4, category.getParentUuid    () );
     ps.setInt       (  5, category.getDepth         () );

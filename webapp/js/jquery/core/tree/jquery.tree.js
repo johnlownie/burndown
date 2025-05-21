@@ -1,6 +1,7 @@
 $(document).ready(function () {
     $("#queryForm").on("change", function(event) {
         event.preventDefault();
+        console.log("Here");
         $.ajax({
                 url: $("#queryForm").attr("action"),
                 type: "GET",
@@ -18,7 +19,7 @@ $(document).ready(function () {
             .error(function(x, t, m) {
                 notifyError("#page-content");
             });
-//            $("#table").treetable();
+            $("#table").treetable();
         return false;
     });
 
@@ -61,7 +62,7 @@ $(document).on("click", ".editBtn", function(event) {
     event.preventDefault();
     onAddEdit({
         title: $(".panel").attr("data-title"),
-        dataString: "insert=true&type=1&csrf=" + $(this).attr("data-id"),
+        dataString: "insert=true&before=true&csrf=" + $(this).attr("data-id"),
         size: $(".panel").attr("modal-size") == "" ? "modal60" : $(".panel").attr("modal-size")
     });
 })
@@ -69,7 +70,7 @@ $(document).on("click", ".editBtn", function(event) {
     event.preventDefault();
     onAddEdit({
         title: $(".panel").attr("data-title"),
-        dataString: "insert=true&type=2&csrf=" + $(this).attr("data-id"),
+        dataString: "insert=true&before=false&csrf=" + $(this).attr("data-id"),
         size: $(".panel").attr("modal-size") == "" ? "modal60" : $(".panel").attr("modal-size")
     });
 })
@@ -77,7 +78,7 @@ $(document).on("click", ".editBtn", function(event) {
     event.preventDefault();
     onAddEdit({
         title: $(".panel").attr("data-title"),
-        dataString: "insert=true&type=3&csrf=" + $(this).attr("data-id"),
+        dataString: "insert=true&child=true&csrf=" + $(this).attr("data-id"),
         size: $(".panel").attr("modal-size") == "" ? "modal60" : $(".panel").attr("modal-size")
     });
 })

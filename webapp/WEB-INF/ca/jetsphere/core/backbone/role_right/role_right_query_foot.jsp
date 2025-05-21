@@ -8,7 +8,7 @@
                 url: $("#queryForm").attr("action") + "?json=true",
                 type: "GET",
                 data: function(d){
-                    d.applicationId = $("#queryForm select[name='applicationId']" ).val();
+                    d.companyId = $("#queryForm select[name='companyId']" ).val();
                     d.roleId        = $("#queryForm select[name='roleId']" ).val();
                 }
             },

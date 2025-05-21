@@ -11,6 +11,7 @@
             columns: [
                 { "data": "category_name" },
                 { "data": "category_included" },
+                { "data": "category_discretionary" },
                 { "data": "category_uuid" }
             ],
             createdRow: function( row, data, dataIndex ) {
@@ -24,5 +25,6 @@
             searching: false,
             iDisplayLength: 500
         });
+            $("#table").treetable();
     });
 </script>

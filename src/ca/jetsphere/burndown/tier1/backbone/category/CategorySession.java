@@ -22,7 +22,7 @@ public class CategorySession extends CategoryMap implements ISessionObject
     /**
      *
      */
-    public CategorySession ( JDBC jdbc, int company_id ) { super ( jdbc, company_id ); }
+    public CategorySession ( JDBC jdbc, int application_id ) { super ( jdbc, application_id ); }
 
     /**
      *
@@ -68,7 +68,7 @@ public class CategorySession extends CategoryMap implements ISessionObject
     {
     Category p = ( Category ) parent; Category c = ( Category ) child;
 
-    c.setCompanyId ( p.getCompanyId() ); c.setParentId ( p.getId() ); c.setParentUuid ( p.getUuid() ); c.setOrdinal ( p.getChildCount() );
+    c.setApplicationId ( p.getApplicationId() ); c.setParentId ( p.getId() ); c.setParentUuid ( p.getUuid() ); c.setOrdinal ( p.getChildCount() );
 
     p.addChild ( c );
     }
@@ -76,9 +76,9 @@ public class CategorySession extends CategoryMap implements ISessionObject
     /**
      *
      */
-    static public CategorySession query ( JDBC jdbc, HttpServletRequest request, int company_id, boolean blank )
+    static public CategorySession query ( JDBC jdbc, HttpServletRequest request, int application_id, boolean blank )
 
-    { CategorySession session = getInstance ( request ); session.find ( jdbc, company_id ); session.options ( request, blank ); return session; }
+    { CategorySession session = getInstance ( request ); session.find ( jdbc, application_id ); session.options ( request, blank ); return session; }
 
     /**
      *

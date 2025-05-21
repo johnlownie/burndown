@@ -43,6 +43,12 @@
           <forward name="success" path="/account_query.do" redirect="true" />
       </action>
 
+      <action name="[bb_query]" path="/category_copy" scope="request" type="ca.jetsphere.burndown.tier2.backbone.category.CategoryCopyAction" validate="false">
+          <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_copy.jsp" />
+          <forward name="insert" path="/category_copy.do" redirect="true" />
+          <forward name="success" path="/category_copy.do" redirect="true" />
+      </action>
+
       <action name="[category]" path="/category_edit" scope="session" type="ca.jetsphere.burndown.tier2.backbone.category.CategoryEditAction" validate="false">
           <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/backbone/category/category_edit.jsp" />
           <forward name="success" path="/category_query.do" redirect="true" />

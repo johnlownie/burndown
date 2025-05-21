@@ -9,20 +9,6 @@
 
     }
     
-    .category .panel-heading {
-        display: flex;
-        justify-content: space-between;
-    }
-   
-    .category .panel-heading .button-wrapper {
-        display: flex;
-        padding: 5px 0;
-    }
-   
-    .category .panel-heading .button-wrapper .btn {
-        margin: auto 10px;
-    }
-    
     #by-category svg path:hover,
     #by-month svg rect:hover {
         cursor: pointer;

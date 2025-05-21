@@ -28,19 +28,19 @@ public class AccountDao extends AbstractDao
     Account account = ( Account ) bolt;
 
     String s = "insert into jet_burndown_account" +
-            " ( account_uuid, account_company_id, account_name, account_number, account_last_update, account_created )" +
+            " ( account_uuid, account_application_id, account_name, account_number, account_last_update, account_created )" +
             " values ( ?, ?, ?, ?, ?, ? )";
 
     ps.setStatement ( s, new String [] { "account_id" } );
 
     account.setUuid ( UUID.get () ); account.setCreated ( new Timestamp ( System.currentTimeMillis() ) ); account.setLastUpdate ( account.getCreated() );
 
-    ps.setString    (  1, account.getUuid       () );
-    ps.setInt       (  2, account.getCompanyId  () );
-    ps.setString    (  3, account.getName       () );
-    ps.setString    (  4, account.getNumber     () );
-    ps.setTimestamp (  5, account.getLastUpdate () );
-    ps.setTimestamp (  6, account.getCreated    () );
+    ps.setString    (  1, account.getUuid          () );
+    ps.setInt       (  2, account.getApplicationId () );
+    ps.setString    (  3, account.getName          () );
+    ps.setString    (  4, account.getNumber        () );
+    ps.setTimestamp (  5, account.getLastUpdate    () );
+    ps.setTimestamp (  6, account.getCreated       () );
     }
 
     /**
@@ -50,17 +50,17 @@ public class AccountDao extends AbstractDao
     {
     Account account = ( Account ) bolt;
 
-    String s = "update jet_burndown_account set account_uuid = ?, account_company_id = ?, account_name = ?, account_number = ?, account_last_update = ? where account_id = ?";
+    String s = "update jet_burndown_account set account_uuid = ?, account_application_id = ?, account_name = ?, account_number = ?, account_last_update = ? where account_id = ?";
 
     ps.setStatement ( s );
 
     account.setLastUpdate ( new Timestamp ( System.currentTimeMillis() ) );
 
-    ps.setString    (  1, account.getUuid       () );
-    ps.setInt       (  2, account.getCompanyId  () );
-    ps.setString    (  3, account.getName       () );
-    ps.setString    (  4, account.getNumber     () );
-    ps.setTimestamp (  5, account.getLastUpdate () );
-    ps.setInt       (  6, account.getId         () );
+    ps.setString    (  1, account.getUuid          () );
+    ps.setInt       (  2, account.getApplicationId () );
+    ps.setString    (  3, account.getName          () );
+    ps.setString    (  4, account.getNumber        () );
+    ps.setTimestamp (  5, account.getLastUpdate    () );
+    ps.setInt       (  6, account.getId            () );
     }
 }

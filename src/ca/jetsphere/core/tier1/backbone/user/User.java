@@ -3,6 +3,7 @@ package ca.jetsphere.core.tier1.backbone.user;
 import ca.jetsphere.core.common.Caption;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationYard;
 import ca.jetsphere.core.tier1.backbone.company_member.CompanyMember;
 import ca.jetsphere.core.tier1.backbone.company_member.CompanyMemberYard;
 import ca.jetsphere.core.tier1.backbone.role.RoleYard;
@@ -53,7 +54,7 @@ public class User extends ca.jetsphere.core.tier0.backbone.user.User
      *
      */
 
-    static public String [] captions() { return new String [] { "username", "status", "role", "last.login", "last.update", "actions" }; }
+    static public String [] captions() { return new String [] { "username", "status", "role", "application", "last.login", "actions" }; }
 
     /**
      *
@@ -74,7 +75,7 @@ public class User extends ca.jetsphere.core.tier0.backbone.user.User
 
     static public String [] fields()
 
-    { return new String [] { "user_username", "user_status", "user_roles", "user_last_login", "user_last_update", "user_uuid" }; }
+    { return new String [] { "user_username", "user_status", "user_roles", "user_application_id", "user_last_login", "user_uuid" }; }
 
     /**
      *
@@ -90,9 +91,11 @@ public class User extends ca.jetsphere.core.tier0.backbone.user.User
 
     public Object get ( String s )
     {
-    if ( "user_status" .equals ( s ) ) return Caption.get ( getLocale(), Status.get ( getStatus () ) );
+    if ( "user_status"        .equals ( s ) ) return Caption.get ( getLocale(), Status.get ( getStatus () ) );
 
-    if ( "user_roles"  .equals ( s ) ) return RoleYard.getRoleNames ( getRoleIds() );
+    if ( "user_roles"         .equals ( s ) ) return RoleYard.getRoleNames ( getRoleIds() );
+
+    if ( "user_application_id".equals ( s ) ) return ApplicationYard.getName ( getApplicationId() );
 
     return super.get ( s );
     }

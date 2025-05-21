@@ -62,7 +62,7 @@
                 timeout: 10000
             })
             .success(function(response) {
-                $('#by-category-title').text(response.categoryTitle);
+                $('#by-category-title span').text(response.categoryTitle);
                 $('#by-month-title').text(response.monthTitle);
                 $('#transactions-title').text(response.transactionsTitle);
                 donut.setData(response.categoryData);

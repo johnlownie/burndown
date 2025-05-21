@@ -2,7 +2,7 @@ package ca.jetsphere.burndown.tier1.backbone.category;
 
 import ca.jetsphere.core.common.Caption;
 import ca.jetsphere.core.jdbc.JDBC;
-import ca.jetsphere.core.tier1.backbone.company.Company;
+import ca.jetsphere.core.tier1.backbone.application.Application;
 import ca.jetsphere.core.tier1.tree.Tree;
 
 import java.sql.ResultSet;
@@ -42,9 +42,9 @@ public class Category extends ca.jetsphere.burndown.tier0.backbone.category.Cate
     /**
      *
      */
-    public Category ( Company company )
+    public Category ( Application application )
 
-    { this(); setCompanyId ( company.getId() ); setParentId ( 0 ); setParentUuid ( company.getUuid() ); setName ( company.getName() ); }
+    { this(); setApplicationId ( application.getId() ); setParentId ( 0 ); setParentUuid ( application.getUuid() ); setName ( application.getName() ); }
 
     /**
      *
@@ -132,9 +132,9 @@ public class Category extends ca.jetsphere.burndown.tier0.backbone.category.Cate
     /**
      *
      */
-    static public void setRoot ( JDBC jdbc, Company company ) throws Exception
+    static public void setRoot ( JDBC jdbc, Application application ) throws Exception
 
-    { Category category = new Category ( company ); category.insert ( jdbc ); }
+    { Category category = new Category ( application ); category.insert ( jdbc ); }
 
     /**
      *

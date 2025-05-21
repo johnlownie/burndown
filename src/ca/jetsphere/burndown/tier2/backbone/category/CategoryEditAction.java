@@ -84,8 +84,6 @@ public class CategoryEditAction extends AbstractEditAction
     {
     try {
         
-        Common.trace ( " In Insert" );
-
         CategorySession categories = CategorySession.getInstance ( store.getRequest() ); categories.clearSelected ( store.getRequest() );
 
         String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
@@ -104,7 +102,7 @@ public class CategoryEditAction extends AbstractEditAction
         
     } catch ( Exception e ) { Common.trace ( e ); }
 
-    finally { Common.trace ( " returning query" ); return query ( jdbc, store, errors ); }
+    finally { return query ( jdbc, store, errors ); }
     }
 
     /**
@@ -152,10 +150,10 @@ public class CategoryEditAction extends AbstractEditAction
 
     if ( parent == null || ! parent.isValid() ) return;
 
-    category.setCompanyId ( parent.getCompanyId() ); category.setParentUuid ( parent.getUuid() );
+    category.setApplicationId ( parent.getApplicationId() ); category.setParentUuid ( parent.getUuid() );
 
     category.setDepth ( parent.getDepth() + 1 ); category.setLineage ( parent.getLineage() + DockYard.zeroPad ( parent.getOrdinal(), 2 ) + "/" );
 
-    if ( category.getOrdinal() < 0 ) category.setOrdinal ( CategoryYard.getCount ( jdbc, parent.getCompanyId(), parent.getId() ) );
+    if ( category.getOrdinal() < 0 ) category.setOrdinal ( CategoryYard.getCount ( jdbc, parent.getApplicationId(), parent.getId() ) );
     }
 }
