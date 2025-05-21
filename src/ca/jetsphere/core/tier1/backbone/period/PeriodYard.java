@@ -64,11 +64,11 @@ public class PeriodYard
      * 
      */
     
-    static public Period getByDate ( JDBC jdbc, String date )
+    static public Period getByDate ( JDBC jdbc, int application_id, String date )
     {
     Period period = new Period();
     
-    String query = "select * from jet_base_period where period_start_date <= " + DockYard.quote ( date ) + " and period_end_date >= " + DockYard.quote ( date );
+    String query = "select * from jet_base_period where period_application_id = " + application_id + " and period_start_date <= " + DockYard.quote ( date ) + " and period_end_date >= " + DockYard.quote ( date );
     
     period.query ( jdbc, query );
     
