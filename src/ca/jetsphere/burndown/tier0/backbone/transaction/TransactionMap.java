@@ -35,7 +35,7 @@ abstract public class TransactionMap extends BoltMap
     /**
      *
      */
-    public void find ( JDBC jdbc, int period_id, int type_id, int category_id )
+    public void find ( JDBC jdbc, int period_id, int account_id, int category_id, int type_id )
     {
     StringBuilder sb = new StringBuilder();
     
@@ -53,6 +53,8 @@ abstract public class TransactionMap extends BoltMap
     sb.append ( " inner join jet_burndown_transaction on transaction_category_id = category_id" );
     
     sb.append ( " where transaction_period_id = " + period_id );
+
+    if ( account_id > 0 ) sb.append ( " and transaction_account_id = " + account_id );
 
     if ( type_id > 0 ) sb.append ( " and transaction_type = " + type_id );
     

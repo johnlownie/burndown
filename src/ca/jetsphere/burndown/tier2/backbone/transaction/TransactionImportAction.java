@@ -1,5 +1,7 @@
 package ca.jetsphere.burndown.tier2.backbone.transaction;
 
+import ca.jetsphere.burndown.tier1.backbone.account.Account;
+import ca.jetsphere.burndown.tier1.backbone.account.AccountYard;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.tier2.common.AbstractDoAction;
@@ -55,11 +57,13 @@ public class TransactionImportAction extends AbstractDoAction
     
     if ( !period.isValid() ) continue;
     
+    Account account = AccountYard.getOrCreate ( jdbc, transaction.getAccount(), transaction.getAccountType(), transaction.getBankId() );
+    
     if ( !CalendarYard.isBetween ( transaction.getDateAsString(), period.getStartDateAsString(), period.getEndDateAsString() ) ) continue;
     
     if ( DockYard.isWhiteSpace ( transaction.getName() ) ) { transaction.setName ( transaction.getMemo() ); transaction.setMemo ( "" ); }
     
-    transaction.setId ( -1 ); transaction.setPeriodId ( period.getId() ); transaction.save ( jdbc );
+    transaction.setId ( -1 ); transaction.setPeriodId ( period.getId() ); transaction.setAccountId ( account.getId() ); transaction.save ( jdbc );
     }
 
     return store.getForward ( "success" );

@@ -43,10 +43,15 @@ public class Account extends ca.jetsphere.burndown.tier0.backbone.account.Accoun
     /**
      *
      */
-    static public String [] captions() { return new String [] { "account.name", "account.number", "last.update", "actions" }; }
+    static public String [] captions() { return new String [] { "account.name", "account.type", "account.number", "account.bank.id", "last.update", "actions" }; }
 
     /**
      *
      */
-    static public String [] fields() { return new String [] { "account_name", "account_number", "account_last_update", "account_uuid" }; }
+    static public String [] fields() { return new String [] { "account_name", "account_type", "account_number", "account_bank_id", "account_last_update", "account_uuid" }; }
+    
+    /**
+     * 
+     */
+   public String getNameNumber() { return getName() + " - " + getNumber(); }
 }

@@ -63,9 +63,9 @@ public class AccountSession extends AccountMap implements ISessionObject
     /**
      *
      */
-    static public AccountSession query ( JDBC jdbc, HttpServletRequest request, int company_id, boolean blank )
+    static public AccountSession query ( JDBC jdbc, HttpServletRequest request, int application_id, boolean blank )
 
-    { AccountSession session = getInstance ( request ); session.find ( jdbc, company_id ); session.options ( request, blank ); return session; }
+    { AccountSession session = getInstance ( request ); session.find ( jdbc, application_id ); session.options ( request, blank ); return session; }
 
     /**
      *

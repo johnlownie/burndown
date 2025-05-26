@@ -13,9 +13,21 @@
 
 </div><div class="form-group">
 
+<label class="col-md-4 control-label"><bean:message key="account.type"/></label>
+
+<div class="col-md-6"><html:text property="type" styleId="type" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
 <label class="col-md-4 control-label"><bean:message key="account.number"/></label>
 
 <div class="col-md-6"><html:text property="number" styleId="number" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="account.bank.id"/></label>
+
+<div class="col-md-6"><html:text property="bankId" styleId="bankId" styleClass="form-control"/></div>
 
 </div>
 

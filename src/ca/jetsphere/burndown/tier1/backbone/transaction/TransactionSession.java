@@ -70,9 +70,9 @@ public class TransactionSession extends TransactionMap implements ISessionObject
     /**
      *
      */
-    static public TransactionSession query ( JDBC jdbc, HttpServletRequest request, int period_id, int type_id, int category_id, boolean blank )
+    static public TransactionSession query ( JDBC jdbc, HttpServletRequest request, int period_id, int account_id, int category_id, int type_id, boolean blank )
 
-    { TransactionSession session = getInstance ( request ); session.find ( jdbc, period_id, type_id, category_id ); session.options ( request, blank ); return session; }
+    { TransactionSession session = getInstance ( request ); session.find ( jdbc, period_id, account_id, category_id, type_id ); session.options ( request, blank ); return session; }
 
     /**
      *

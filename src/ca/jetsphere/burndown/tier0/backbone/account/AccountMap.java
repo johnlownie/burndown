@@ -23,11 +23,11 @@ abstract public class AccountMap extends BoltMap
     /**
      *
      */
-    public void find ( JDBC jdbc, int company_id )
+    public void find ( JDBC jdbc, int application_id )
     {
     StringBuilder sb = new StringBuilder();
     
-    sb.append ( "select jet_burndown_account.* from jet_burndown_account where account_company_id = " + company_id );
+    sb.append ( "select jet_burndown_account.* from jet_burndown_account where account_application_id = " + application_id );
 
     query ( jdbc, sb.toString() );
     }

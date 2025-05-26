@@ -75,7 +75,7 @@ public class OfxParser
                 lastBankAccount().setAccountType ( text );
             } else if ( lastOpenTag().equals ( "TRNTYPE" ) ) {
                 lastTransaction().setBankId ( lastBankAccount().getBankId() );
-                lastTransaction().setAccountId ( lastBankAccount().getAccountId() );
+                lastTransaction().setAccount ( lastBankAccount().getAccountId() );
                 lastTransaction().setAccountType ( lastBankAccount().getAccountType() );
                 
                 switch ( text ) {

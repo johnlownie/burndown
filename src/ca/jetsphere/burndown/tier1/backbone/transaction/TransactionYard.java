@@ -22,9 +22,15 @@ public class TransactionYard
     {
     StringBuilder sb = new StringBuilder();
     
-    sb.append ( "select count(1) from jet_burndown_transaction where transaction_name = " + DockYard.quote ( transaction.getName() ) );
+    sb.append ( "select count(1)" );
+
+    sb.append ( " from jet_burndown_transaction" );
     
-    sb.append ( " and transaction_account_id = " + DockYard.quote ( transaction.getAccountId () ) );
+    sb.append ( " inner join jet_burndown_account on account_id = transaction_account_id" );
+
+    sb.append ( " where transaction_name = " + DockYard.quote ( transaction.getName() ) );
+    
+    if ( transaction.getAccount().length() > 4 ) sb.append ( " and account_number like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 4 ) ) );
     
     sb.append ( " and transaction_type = " + transaction.getType () );
     

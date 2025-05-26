@@ -1,5 +1,6 @@
 package ca.jetsphere.burndown.tier1.backbone.transaction;
 
+import ca.jetsphere.burndown.tier1.backbone.account.AccountYard;
 import ca.jetsphere.burndown.tier1.backbone.category.CategoryYard;
 import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.common.DockYard;
@@ -13,6 +14,10 @@ import java.sql.ResultSet;
 
 public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transaction.Transaction
 {
+    String bank_id      ;
+    String account      ;
+    String account_type ;
+
     /**
      *
      */
@@ -110,6 +115,8 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
     {
     if ( "transaction_amount"      .equals ( s ) ) return DockYard.toMoney ( getAmount() );
     
+    if ( "transaction_account_id"  .equals ( s ) ) return AccountYard.getNumber ( getAccountId() );
+    
     if ( "transaction_category_id" .equals ( s ) ) return CategoryYard.getTreeName( getCategoryId() );
 
     if ( "transaction_type"        .equals ( s ) ) return getTypeAsString ( getType() );
@@ -157,6 +164,14 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
     /**
      * 
      */
+
+    public String getAccount      () { return account   ; }
+    public String getAccountType  () { return account_type ; }
+    public String getBankId       () { return bank_id      ; }
     public String getDateAsString () { return CalendarYard.getDateTimeFormat ( getDate(), "yyyy-MM-dd" ); }
-    public void   setDateAsString ( String date ) { setDate ( new java.sql.Date ( CalendarYard.getDate ( date, "yyyy-MM-dd" ).getTime() ) ); }
+ 
+    public void setAccount      ( String account      ) { this.account      = account      ; }
+    public void setAccountType  ( String account_type ) { this.account_type = account_type ; }
+    public void setBankId       ( String bank_id      ) { this.bank_id      = bank_id      ; }
+    public void setDateAsString ( String date         ) { setDate ( new java.sql.Date ( CalendarYard.getDate ( date, "yyyy-MM-dd" ).getTime() ) ); }
 }
