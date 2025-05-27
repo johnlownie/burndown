@@ -27,7 +27,11 @@ public class AccountYard
     {
     Account account = new Account();
     
-    String query = "select * from jet_burndown_account where account_number = " + DockYard.quote ( number ) + " and account_type = " + DockYard.quote ( type ) + " and account_bank_id = " + DockYard.quote ( bank_id );
+    String query = "select * from jet_burndown_account where account_number = " + DockYard.quote ( number ); 
+            
+    if (!DockYard.isWhiteSpace ( type    ) ) query += " and account_type = " + DockYard.quote ( type );
+    
+    if (!DockYard.isWhiteSpace ( bank_id ) ) query += " and account_bank_id = " + DockYard.quote ( bank_id );
     
     account.query ( jdbc, query );
     

@@ -95,7 +95,7 @@ public class TransactionYard
     {
     TransactionSession transactions = TransactionSession.getInstance ( request );
     
-    String query = "select * from jet_burndown_transaction where transaction_period_id = " + period_id + " order by transaction_date desc limit 20";
+    String query = "select * from jet_burndown_transaction where transaction_period_id = " + period_id + " and transaction_type = 1 order by transaction_date desc limit 20";
 
     transactions.query ( jdbc, query );
     }

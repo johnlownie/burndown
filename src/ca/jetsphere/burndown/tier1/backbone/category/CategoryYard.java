@@ -3,7 +3,6 @@ package ca.jetsphere.burndown.tier1.backbone.category;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.jdbc.QueryYard;
-import ca.jetsphere.core.tier1.tree.TreeYard;
 import java.util.Comparator;
 import java.util.Map;
 
@@ -37,16 +36,16 @@ public class CategoryYard
     /**
      *
      */
-    static public String getTreeName ( int category_id )
+    static public String getTreeNameDiscretionary ( JDBC jdbc, int category_id )
     {
     StringBuilder sb = new StringBuilder();
     
-    sb.append ( "select if(p.category_depth < 1, c.category_name, concat(p.category_name, ': ', c.category_name))" );
+    sb.append ( "select concat(if(p.category_depth < 1, c.category_name, concat(p.category_name, ': ', c.category_name)),'|', c.category_discretionary)" );
     sb.append ( " from jet_burndown_category c" );
     sb.append ( " inner join jet_burndown_category p on p.category_id = c.category_parent_id" );
     sb.append ( " where c.category_id = " + category_id );
     
-    return QueryYard.query ( sb.toString(), 1 );
+    return QueryYard.query ( jdbc, sb.toString(), 1 );
     }
     
     /**

@@ -1,6 +1,7 @@
 package ca.jetsphere.burndown.tier1.backbone.transaction;
 
 import ca.jetsphere.core.common.CalendarYard;
+import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.jdbc.JDBC;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -207,6 +208,8 @@ public class OfxParser
     int similar = TransactionYard.getCategoryIdBySimilarTransaction ( jdbc, transaction.getName() );
     
     transaction.setId ( id ); transaction.setCategoryId ( similar );
+    
+    if ( similar > 0 ) { try { transaction.foreign ( jdbc ); } catch ( Exception e) { Common.trace ( this, e ); } }
     
     transactions.add ( transaction ); }
     }

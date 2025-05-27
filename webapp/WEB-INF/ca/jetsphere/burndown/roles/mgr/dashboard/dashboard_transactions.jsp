@@ -7,7 +7,21 @@
 
 <div class="panel">
 
-<div class="panel-heading"><h3 id="transactions-title" class="panel-title"><bean:message key="transactions"/></h3></div>
+<div class="panel-heading">
+    
+<h3 id="transactions-title" class="panel-title">
+    
+<span><bean:message key="mgr.dashboard.by.transactions.debit"/></span>
+
+<div class="button-wrapper pull-right">
+<button id="all" class="btn btn-primary"><bean:message key="all"/></button>
+<button id="necessity" class="btn btn-primary"><bean:message key="necessity"/></button>
+<button id="discretionary" class="btn btn-primary"><bean:message key="discretionary"/></button>
+</div>
+
+</h3>
+
+</div>
 
 <div class="panel-body">
 

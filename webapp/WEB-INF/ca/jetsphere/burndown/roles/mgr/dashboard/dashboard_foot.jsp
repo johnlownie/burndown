@@ -19,7 +19,6 @@
           ],
           donutType: 'pie'
         }).on('click', function(i, row){
-            console.log(row);
             getTransactionData("&category=" + row.label);
         });
         
@@ -27,8 +26,8 @@
             element: 'by-month',
             data: [{nb: 0}],
             xkey: 'month',
-            ykeys: ['discretionary', 'disposable'],
-            labels: ['Discretionary', 'Disposable'],
+            ykeys: ['necessities', 'discretionary'],
+            labels: ['Necessities', 'Discretionary'],
             stacked: true
         }).on('click', function(i, row){
             getTransactionData("&month=" + row.month);
@@ -50,7 +49,17 @@
             info: true,
             searching: true,
             iDisplayLength: 10,
-            rowReorder: true
+            rowReorder: true,
+            rowCallback: function (row, data) {
+                if (data[5] === 'true') {
+                    $(row).addClass('discretionary');
+                } else {
+                    $(row).addClass('necessity');
+                }
+            },
+            drawCallback: function() {
+                try { this.api().column(5).visible( false ); } catch (error){}
+            }
         });
 
         function getTransactionData(action) {
@@ -64,7 +73,7 @@
             .success(function(response) {
                 $('#by-category-title span').text(response.categoryTitle);
                 $('#by-month-title').text(response.monthTitle);
-                $('#transactions-title').text(response.transactionsTitle);
+                $('#transactions-title span').text(response.transactionsTitle);
                 donut.setData(response.categoryData);
                 bar.setData(response.monthData);
                 $("#table").dataTable().api().ajax.reload();
@@ -82,6 +91,24 @@
         $('#reset').click(function(e) {
             e.preventDefault();
             getTransactionData("");
+        });
+        
+        $('#all').click(function(e) {
+            e.preventDefault();
+            $('#table').find('tr.necessity').show();
+            $('#table').find('tr.discretionary').show();
+        });
+        
+        $('#necessity').click(function(e) {
+            e.preventDefault();
+            $('#table').find('tr.necessity').show();
+            $('#table').find('tr:not(.necessity)').hide();
+        });
+        
+        $('#discretionary').click(function(e) {
+            e.preventDefault();
+            $('#table').find('tr.discretionary').show();
+            $('#table').find('tr:not(.discretionary)').hide();
         });
 
         $("#queryForm").on("change", function(event) {

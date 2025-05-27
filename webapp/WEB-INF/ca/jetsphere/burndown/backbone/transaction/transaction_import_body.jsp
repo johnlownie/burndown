@@ -26,13 +26,11 @@
 
 <% TransactionSession transactions = TransactionSession.getInstance ( request ); new TableWriter ( transactions, Transaction.captions_import_headers(), Transaction.fields_import_headers() ).print ( out, request, true ); %>
 
+</div>
+
 <jsp:include page="/WEB-INF/ca/jetsphere/core/common/import.jsp" flush="true" />
 
 </html:form>
-
-</div>
-
-<div class="panel-footer text-right"></div>
 
 </div>
 

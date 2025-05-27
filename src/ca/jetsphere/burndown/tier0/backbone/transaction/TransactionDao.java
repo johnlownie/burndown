@@ -29,7 +29,7 @@ public class TransactionDao extends AbstractDao
 
     String s = "insert into jet_burndown_transaction" +
             " ( transaction_uuid, transaction_period_id, transaction_account_id, transaction_category_id, transaction_name, transaction_type, transaction_amount, transaction_memo, transaction_fitid, transaction_date, transaction_last_update, transaction_created )" +
-            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
     ps.setStatement ( s, new String [] { "transaction_id" } );
 

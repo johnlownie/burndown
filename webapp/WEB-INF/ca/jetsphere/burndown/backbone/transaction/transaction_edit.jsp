@@ -38,7 +38,7 @@
 
 <label class="col-md-4 control-label"><bean:message key="category"/></label>
 
-<div class="col-md-6"><html:select property="categoryId" styleId="categoryId" styleClass="form-control"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div>
+<div class="col-md-6"><html:select property="categoryId" styleId="categoryId" styleClass="form-control chosenselect"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div>
 
 </div>
 

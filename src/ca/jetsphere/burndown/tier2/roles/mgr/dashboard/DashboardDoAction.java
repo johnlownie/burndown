@@ -10,6 +10,8 @@ import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.common.Pair;
 import ca.jetsphere.core.jdbc.JDBC;
+import ca.jetsphere.core.tier1.backbone.application.Application;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
 import ca.jetsphere.core.tier2.common.AbstractDoAction;
 import ca.jetsphere.core.tier2.common.ActionStore;
 import ca.jetsphere.core.tier2.common.Errors;
@@ -30,7 +32,7 @@ public class DashboardDoAction extends AbstractDoAction
     {
     try {
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
 
         String category_name = DockYard.getParameter ( store.getRequest(), "category" );
         
@@ -42,7 +44,7 @@ public class DashboardDoAction extends AbstractDoAction
         
         String categoryData = DashboardYard.getByCategory ( jdbc, qaf.getPeriodId(), category, start_date, end_date );
         
-        String monthData = DashboardYard.getByMonth ( jdbc, qaf.getPeriodId(), category, start_date, end_date );
+        String monthData = DashboardYard.getByMonth ( jdbc, application.getId(), qaf.getPeriodId(), category, start_date, end_date );
 
         String transactionsTitle = DashboardYard.setTransactions ( jdbc, store.getRequest(), qaf.getPeriodId(), category.getName(), start_date, end_date );
         
@@ -50,15 +52,15 @@ public class DashboardDoAction extends AbstractDoAction
         
         PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put ( "categoryTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.category") + ( category.isValid() ? ": " + category.getName() : "" ) );
+        jsonObject.put ( "categoryTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.category") + ( !DockYard.isWhiteSpace ( month ) ? ": " + month : category.isValid() ? ": " + category.getName() : "" ) );
 
         jsonObject.put ( "categoryData", categoryData);
         
-        jsonObject.put ( "monthTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.month") + ( !DockYard.isWhiteSpace ( month ) ? ": " + month : "" ) );
+        jsonObject.put ( "monthTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.month") + ( category.isValid() ? ": " + category.getName() : "" ) );
 
         jsonObject.put ( "monthData", monthData);
         
-        jsonObject.put ( "transactionsTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.transactions") + ( !DockYard.isWhiteSpace ( transactionsTitle ) ? ": " + transactionsTitle : "" ) );
+        jsonObject.put ( "transactionsTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.transactions.debit") + ( !DockYard.isWhiteSpace ( transactionsTitle ) ? ": " + transactionsTitle : "" ) );
         
         jsonObject.put ( "showReset", category.isValid() || !DockYard.isWhiteSpace ( month ) );
 

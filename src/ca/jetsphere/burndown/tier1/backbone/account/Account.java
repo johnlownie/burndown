@@ -53,5 +53,5 @@ public class Account extends ca.jetsphere.burndown.tier0.backbone.account.Accoun
     /**
      * 
      */
-   public String getNameNumber() { return getName() + " - " + getNumber(); }
+   public String getNameNumber() { return getName() + " - *" + getNumber().substring ( getNumber().length() - 4 ); }
 }
