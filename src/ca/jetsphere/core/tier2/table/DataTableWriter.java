@@ -1,7 +1,6 @@
 package ca.jetsphere.core.tier2.table;
 
 import ca.jetsphere.core.bolt.BoltMap;
-import ca.jetsphere.core.common.Caption;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import net.sf.json.JSONArray;
@@ -27,7 +26,6 @@ public class DataTableWriter
     int        datatable_draw         ;
     int        datatable_start        ;
     int        datatable_length       ;
-
 
     /**
      *

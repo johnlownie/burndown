@@ -3,9 +3,10 @@
 
 <%@ page import="ca.jetsphere.core.tier1.backbone.period.PeriodSession" %>
 <%@ page import="ca.jetsphere.core.tier1.backbone.period.PeriodYard" %>
-<%@ page import="ca.jetsphere.core.tier2.table.TableWriter" %>
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.transaction.Transaction" %>
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.transaction.TransactionSession" %>
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.transaction.writer.TransactionImportWriter" %>
+<%@ page import="ca.jetsphere.core.tier2.table.TableWriter" %>
 
 <% PeriodSession  periods  = PeriodSession .getInstance ( request ); request.setAttribute ( "periods" , periods .iterator ( PeriodYard.BY_ORDINAL ) ); %>
 
@@ -23,7 +24,7 @@
 
 <html:form action="/transaction_import" method="post" styleId="tableForm" enctype="multipart/form-data">
 
-<% TransactionSession transactions = TransactionSession.getInstance ( request ); new TableWriter ( transactions, Transaction.captions_import(), Transaction.fields_import() ).print ( out, request, true ); %>
+<% TransactionSession transactions = TransactionSession.getInstance ( request ); new TableWriter ( transactions, Transaction.captions_import_headers(), Transaction.fields_import_headers() ).print ( out, request, true ); %>
 
 <jsp:include page="/WEB-INF/ca/jetsphere/core/common/import.jsp" flush="true" />
 

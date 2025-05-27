@@ -15,7 +15,7 @@ public class AccountYard
      */
     static public String getNumber ( int account_id )
     {
-    String query = "select account_number from jet_burndown_account where account_id = " + account_id;
+    String query = "select concat(account_name, ' - *', substring(account_number, -4, 4)) from jet_burndown_account where account_id = " + account_id;
     
     return QueryYard.query ( query, 1 );
     }

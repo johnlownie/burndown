@@ -18,7 +18,21 @@ public class TransactionYard
     /**
      * 
      */
+    static public boolean exists ( Transaction transaction )
+
+    { return DockYard.toInteger ( QueryYard.query ( getExistsQuery ( transaction ), 1 ) ) > 0; }
+  
+    /**
+     * 
+     */
     static public boolean exists ( JDBC jdbc, Transaction transaction )
+
+    { return QueryYard.query ( jdbc, getExistsQuery ( transaction ) ) > 0; }
+  
+    /**
+     * 
+     */
+    static public String getExistsQuery ( Transaction transaction )
     {
     StringBuilder sb = new StringBuilder();
     
@@ -40,7 +54,7 @@ public class TransactionYard
     
     sb.append ( " and transaction_date = " + DockYard.quote ( transaction.getDate ().toString() ) );
     
-    return QueryYard.query ( jdbc, sb.toString() ) > 0;
+    return sb.toString();
     }
     
     /**

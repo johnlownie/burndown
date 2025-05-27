@@ -47,7 +47,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] captions()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.account.id", "actions" }; }
+    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.account", "actions" }; }
 
 
     /**
@@ -61,6 +61,13 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      *
      */
     static public String [] captions_import()
+
+    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.fit.id", "transaction.bank.id", "transaction.account.id", "transaction.account.type", "possible.duplicate" }; }
+
+    /**
+     *
+     */
+    static public String [] captions_import_headers()
 
     { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.fit.id", "transaction.bank.id", "transaction.account.id", "transaction.account.type" }; }
 
@@ -105,7 +112,14 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] fields_import()
 
-    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_fitid", "transaction_bank_id", "transaction_account_id", "transaction_account_type" }; }
+    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_fitid", "bank_id", "account", "account_type", "possible_duplicate" }; }
+
+    /**
+     *
+     */
+    static public String [] fields_import_headers()
+
+    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_fitid", "bank_id", "account", "account_type" }; }
 
     /**
      *
@@ -120,6 +134,8 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
     if ( "transaction_category_id" .equals ( s ) ) return CategoryYard.getTreeName( getCategoryId() );
 
     if ( "transaction_type"        .equals ( s ) ) return getTypeAsString ( getType() );
+    
+    if ( "possible_duplicate"      .equals ( s ) ) return TransactionYard.exists ( this );
 
     return super.get ( s );
     }
