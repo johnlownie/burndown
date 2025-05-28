@@ -28,7 +28,7 @@ public class CategoryDao extends AbstractDao
     Category category = ( Category ) bolt;
 
     String s = "insert into jet_burndown_category" +
-            " ( category_uuid, category_application_id, category_parent_id, category_parent_uuid, category_depth, category_lineage, category_ordinal, category_name, category_included, category_discretionary, category_last_update, category_created )" +
+            " ( category_uuid, category_application_id, category_parent_id, category_parent_uuid, category_depth, category_lineage, category_ordinal, category_name, category_included, category_fixed, category_last_update, category_created )" +
             " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
     ps.setStatement ( s, new String [] { "category_id" } );
@@ -44,7 +44,7 @@ public class CategoryDao extends AbstractDao
     ps.setInt       (  7, category.getOrdinal       () );
     ps.setString    (  8, category.getName          () );
     ps.setBoolean   (  9, category.getIncluded      () );
-    ps.setBoolean   ( 10, category.getDiscretionary () );
+    ps.setBoolean   ( 10, category.getFixed         () );
     ps.setTimestamp ( 11, category.getLastUpdate    () );
     ps.setTimestamp ( 12, category.getCreated       () );
     }
@@ -56,7 +56,7 @@ public class CategoryDao extends AbstractDao
     {
     Category category = ( Category ) bolt;
 
-    String s = "update jet_burndown_category set category_uuid = ?, category_application_id = ?, category_parent_id = ?, category_parent_uuid = ?, category_depth = ?, category_lineage = ?, category_ordinal = ?, category_name = ?, category_included = ?, category_discretionary = ?, category_last_update = ? where category_id = ?";
+    String s = "update jet_burndown_category set category_uuid = ?, category_application_id = ?, category_parent_id = ?, category_parent_uuid = ?, category_depth = ?, category_lineage = ?, category_ordinal = ?, category_name = ?, category_included = ?, category_fixed = ?, category_last_update = ? where category_id = ?";
 
     ps.setStatement ( s );
 
@@ -71,7 +71,7 @@ public class CategoryDao extends AbstractDao
     ps.setInt       (  7, category.getOrdinal       () );
     ps.setString    (  8, category.getName          () );
     ps.setBoolean   (  9, category.getIncluded      () );
-    ps.setBoolean   ( 10, category.getDiscretionary () );
+    ps.setBoolean   ( 10, category.getFixed         () );
     ps.setTimestamp ( 11, category.getLastUpdate    () );
     ps.setInt       ( 12, category.getId            () );
     }

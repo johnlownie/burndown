@@ -36,11 +36,11 @@ public class CategoryYard
     /**
      *
      */
-    static public String getTreeNameDiscretionary ( JDBC jdbc, int category_id )
+    static public String getTreeNameFixed ( JDBC jdbc, int category_id )
     {
     StringBuilder sb = new StringBuilder();
     
-    sb.append ( "select concat(if(p.category_depth < 1, c.category_name, concat(p.category_name, ': ', c.category_name)),'|', c.category_discretionary)" );
+    sb.append ( "select concat(if(p.category_depth < 1, c.category_name, concat(p.category_name, ': ', c.category_name)),'|', c.category_fixed)" );
     sb.append ( " from jet_burndown_category c" );
     sb.append ( " inner join jet_burndown_category p on p.category_id = c.category_parent_id" );
     sb.append ( " where c.category_id = " + category_id );

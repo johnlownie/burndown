@@ -24,11 +24,11 @@
 
 </div><div class="form-group">
 
-<label class="col-md-4 control-label"><bean:message key="category.discretionary"/></label>
+<label class="col-md-4 control-label"><bean:message key="category.fixed"/></label>
 
 <div class="col-md-6"><div class="checkbox">
 
-<label class="form-checkbox form-normal form-primary form-text"><html:checkbox property="discretionary" styleId="active"/><input type="hidden" name="discretionary" value="false"/>
+<label class="form-checkbox form-normal form-primary form-text"><html:checkbox property="fixed" styleId="active"/><input type="hidden" name="fixed" value="false"/>
 
 </div></div>
 

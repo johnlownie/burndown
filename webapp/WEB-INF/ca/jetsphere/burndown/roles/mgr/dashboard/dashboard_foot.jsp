@@ -26,8 +26,8 @@
             element: 'by-month',
             data: [{nb: 0}],
             xkey: 'month',
-            ykeys: ['necessities', 'discretionary'],
-            labels: ['Necessities', 'Discretionary'],
+            ykeys: ['fixed', 'discretionary'],
+            labels: ['Fixed', 'Discretionary'],
             stacked: true
         }).on('click', function(i, row){
             getTransactionData("&month=" + row.month);
@@ -39,8 +39,9 @@
                 url: $("#queryForm").attr("action") + "?json=true",
                 type: "GET",
                 data: function(d){
-                    d.companyId     = $("#queryForm select[name='companyId']" ).val();
-                    d.periodId      = $("#queryForm select[name='periodId']" ).val();
+                    d.companyId = $("#queryForm select[name='companyId']" ).val();
+                    d.periodId  = $("#queryForm select[name='periodId']" ).val();
+                    d.typeId    = $("#typeId" ).val();
                 }
             },
             responsive: true,
@@ -49,17 +50,7 @@
             info: true,
             searching: true,
             iDisplayLength: 10,
-            rowReorder: true,
-            rowCallback: function (row, data) {
-                if (data[5] === 'true') {
-                    $(row).addClass('discretionary');
-                } else {
-                    $(row).addClass('necessity');
-                }
-            },
-            drawCallback: function() {
-                try { this.api().column(5).visible( false ); } catch (error){}
-            }
+            rowReorder: true
         });
 
         function getTransactionData(action) {
@@ -93,22 +84,19 @@
             getTransactionData("");
         });
         
-        $('#all').click(function(e) {
-            e.preventDefault();
-            $('#table').find('tr.necessity').show();
-            $('#table').find('tr.discretionary').show();
+        $('#btnAll').click(function(e) {
+            $('#typeId').val('');
+            $("#table").dataTable().api().ajax.reload();
         });
         
-        $('#necessity').click(function(e) {
-            e.preventDefault();
-            $('#table').find('tr.necessity').show();
-            $('#table').find('tr:not(.necessity)').hide();
-        });
+        $('#btnFixed').click(function(e) {
+            $('#typeId').val('1');
+             $("#table").dataTable().api().ajax.reload();
+       });
         
-        $('#discretionary').click(function(e) {
-            e.preventDefault();
-            $('#table').find('tr.discretionary').show();
-            $('#table').find('tr:not(.discretionary)').hide();
+        $('#btnDiscretionary').click(function(e) {
+            $('#typeId').val('2');
+            $("#table").dataTable().api().ajax.reload();
         });
 
         $("#queryForm").on("change", function(event) {

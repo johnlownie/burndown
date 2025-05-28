@@ -14,11 +14,11 @@ import java.sql.ResultSet;
 
 public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transaction.Transaction
 {
-    String  bank_id       ;
-    String  account       ;
-    String  account_type  ;
-    String  category_name ;
-    boolean discretionary ;
+    private String  bank_id       ;
+    private String  account       ;
+    private String  account_type  ;
+    private String  category_name ;
+    private boolean fixed ;
     /**
      *
      */
@@ -56,7 +56,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] captions_dashboard()
 
-    { return new String [] { "transaction.name", "transaction.date", "transaction.amount", "transaction.category", "transaction.account", "transaction.discretionary" }; }
+    { return new String [] { "transaction.name", "transaction.date", "transaction.amount", "transaction.category", "transaction.account" }; }
 
     /**
      *
@@ -106,7 +106,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] fields_dashboard()
 
-    { return new String [] { "transaction_name", "transaction_date", "transaction_amount", "transaction_category_id", "transaction_account_id", "transaction_discretionary" }; }
+    { return new String [] { "transaction_name", "transaction_date", "transaction_amount", "transaction_category_id", "transaction_account_id" }; }
 
     /**
      *
@@ -127,9 +127,9 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     public void foreign ( JDBC jdbc ) throws Exception 
     {
-    String s = CategoryYard.getTreeNameDiscretionary ( jdbc, getCategoryId() );
+    String s = CategoryYard.getTreeNameFixed ( jdbc, getCategoryId() );
     
-    setCategoryName ( DockYard.getToken ( s, 1, "|" ) ); setDiscretionary ( DockYard.toBoolean ( DockYard.getToken ( s, 2, "|" ) ) );
+    setCategoryName ( DockYard.getToken ( s, 1, "|" ) ); setFixed ( DockYard.toBoolean ( DockYard.getToken ( s, 2, "|" ) ) );
     }
     
     /**
@@ -138,17 +138,17 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
 
     public Object get ( String s )
     {
-    if ( "transaction_amount"        .equals ( s ) ) return DockYard.toMoney ( getAmount() );
+    if ( "transaction_amount"      .equals ( s ) ) return DockYard.toMoney ( getAmount() );
     
-    if ( "transaction_account_id"    .equals ( s ) ) return AccountYard.getNumber ( getAccountId() );
+    if ( "transaction_account_id"  .equals ( s ) ) return AccountYard.getNumber ( getAccountId() );
     
-    if ( "transaction_category_id"   .equals ( s ) ) return getCategoryName();
+    if ( "transaction_category_id" .equals ( s ) ) return getCategoryName();
 
-    if ( "transaction_discretionary" .equals ( s ) ) return isDiscretionary();
+    if ( "transaction_fixed"       .equals ( s ) ) return isFixed();
 
-    if ( "transaction_type"          .equals ( s ) ) return getTypeAsString ( getType() );
+    if ( "transaction_type"        .equals ( s ) ) return getTypeAsString ( getType() );
     
-    if ( "possible_duplicate"        .equals ( s ) ) return TransactionYard.exists ( this );
+    if ( "possible_duplicate"      .equals ( s ) ) return TransactionYard.exists ( this );
 
     return super.get ( s );
     }
@@ -199,12 +199,12 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
     public String  getBankId       () { return bank_id       ; }
     public String  getCategoryName () { return category_name ; }
     public String  getDateAsString () { return CalendarYard.getDateTimeFormat ( getDate(), "yyyy-MM-dd" ); }
-    public boolean isDiscretionary () { return discretionary ; }
+    public boolean isFixed         () { return fixed ; }
  
     public void setAccount       ( String  account       ) { this.account       = account       ; }
     public void setAccountType   ( String  account_type  ) { this.account_type  = account_type  ; }
     public void setBankId        ( String  bank_id       ) { this.bank_id       = bank_id       ; }
     public void setCategoryName  ( String  category_name ) { this.category_name = category_name ; }
     public void setDateAsString  ( String  date          ) { setDate ( new java.sql.Date ( CalendarYard.getDate ( date, "yyyy-MM-dd" ).getTime() ) ); }
-    public void setDiscretionary ( boolean discretionary ) { this.discretionary = discretionary ; }
+    public void setFixed         ( boolean fixed         ) { this.fixed         = fixed         ; }
 }

@@ -6,6 +6,7 @@
 <%@ page import="ca.jetsphere.core.tier2.table.TableWriter" %>
 
 <div class="panel">
+<input type="hidden" name="typeId" id="typeId" value=""/>
 
 <div class="panel-heading">
     
@@ -13,10 +14,15 @@
     
 <span><bean:message key="mgr.dashboard.by.transactions.debit"/></span>
 
-<div class="button-wrapper pull-right">
-<button id="all" class="btn btn-primary"><bean:message key="all"/></button>
-<button id="necessity" class="btn btn-primary"><bean:message key="necessity"/></button>
-<button id="discretionary" class="btn btn-primary"><bean:message key="discretionary"/></button>
+<div class="btn-group pull-right" role="group">
+    <input id="btnAll" class="btn-check" type="radio" name="btnradio" autocomplete="off" checked="">
+    <label class="btn btn-outline-primary" for ="btnAll">All</label>
+    
+    <input id="btnFixed" class="btn-check" type="radio" name="btnradio" autocomplete="off">
+    <label class="btn btn-outline-primary" for ="btnFixed">Fixed</label>
+    
+    <input id="btnDiscretionary" class="btn-check" type="radio" name="btnradio" autocomplete="off">
+    <label class="btn btn-outline-primary" for ="btnDiscretionary">Discretionary</label>
 </div>
 
 </h3>

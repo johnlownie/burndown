@@ -95,8 +95,8 @@ public class DashboardYard
     sb.append ( " from (" );
     sb.append ( "  select json_object(" );
     sb.append ( "    'month', upper(substring(date_format(date, '%M'), 1, 3)), " );
-    sb.append ( "    'necessities', floor(abs(sum(if(!c.category_discretionary, transaction_amount, 0))) / 100), " );
-    sb.append ( "    'discretionary', floor(abs(sum(if(c.category_discretionary, transaction_amount, 0))) / 100)" );
+    sb.append ( "    'fixed', floor(abs(sum(if(c.category_fixed, transaction_amount, 0))) / 100)," );
+    sb.append ( "    'discretionary', floor(abs(sum(if(!c.category_fixed, transaction_amount, 0))) / 100)" );
     sb.append ( "  ) as 'MyObject' " );
     sb.append ( "  from jet_base_date" );
     sb.append ( "  inner join jet_burndown_transaction on transaction_date = date" );

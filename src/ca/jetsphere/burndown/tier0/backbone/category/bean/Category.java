@@ -21,7 +21,7 @@ abstract public class Category extends Tree
     int       category_ordinal        ;
     String    category_name           ;
     boolean   category_included       ;
-    boolean   category_discretionary  ;
+    boolean   category_fixed          ;
     Timestamp category_last_update    ;
     Timestamp category_created        ;
 
@@ -40,7 +40,7 @@ abstract public class Category extends Tree
     setOrdinal       (  -1   );
     setName          (  ""   );
     setIncluded      ( false );
-    setDiscretionary ( false );
+    setFixed         ( false );
     setLastUpdate    ( null  );
     setCreated       ( null  );
     }
@@ -60,7 +60,7 @@ abstract public class Category extends Tree
     setOrdinal       ( ( ( Category ) category ).getOrdinal       () );
     setName          ( ( ( Category ) category ).getName          () );
     setIncluded      ( ( ( Category ) category ).getIncluded      () );
-    setDiscretionary ( ( ( Category ) category ).getDiscretionary () );
+    setFixed         ( ( ( Category ) category ).getFixed         () );
     setLastUpdate    ( ( ( Category ) category ).getLastUpdate    () );
     setCreated       ( ( ( Category ) category ).getCreated       () );
     }
@@ -80,7 +80,7 @@ abstract public class Category extends Tree
     setOrdinal       ( rs.getInt       ( "category_ordinal"        ) );
     setName          ( rs.getString    ( "category_name"           ) );
     setIncluded      ( rs.getBoolean   ( "category_included"       ) );
-    setDiscretionary ( rs.getBoolean   ( "category_discretionary"  ) );
+    setFixed         ( rs.getBoolean   ( "category_fixed"          ) );
     setLastUpdate    ( rs.getTimestamp ( "category_last_update"    ) );
     setCreated       ( rs.getTimestamp ( "category_created"        ) );
     }
@@ -103,7 +103,7 @@ abstract public class Category extends Tree
     public int       getOrdinal       () { return category_ordinal        ; }
     public String    getName          () { return category_name           ; }
     public Boolean   getIncluded      () { return category_included       ; }
-    public Boolean   getDiscretionary () { return category_discretionary  ; }
+    public Boolean   getFixed         () { return category_fixed          ; }
     public Timestamp getLastUpdate    () { return category_last_update    ; }
     public Timestamp getCreated       () { return category_created        ; }
 
@@ -120,7 +120,7 @@ abstract public class Category extends Tree
     public void setOrdinal       ( int       category_ordinal        ) { this.category_ordinal        = category_ordinal        ; }
     public void setName          ( String    category_name           ) { this.category_name           = category_name           ; }
     public void setIncluded      ( Boolean   category_included       ) { this.category_included       = category_included       ; }
-    public void setDiscretionary ( Boolean   category_discretionary  ) { this.category_discretionary  = category_discretionary  ; }
+    public void setFixed         ( Boolean   category_fixed          ) { this.category_fixed          = category_fixed          ; }
     public void setLastUpdate    ( Timestamp category_last_update    ) { this.category_last_update    = category_last_update    ; }
     public void setCreated       ( Timestamp category_created        ) { this.category_created        = category_created        ; }
 }

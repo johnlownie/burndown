@@ -3,6 +3,7 @@ package ca.jetsphere.burndown.tier2.roles.mgr.dashboard;
 import ca.jetsphere.burndown.tier1.backbone.category.Category;
 import ca.jetsphere.burndown.tier1.backbone.transaction.Transaction;
 import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionSession;
+import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionYard;
 import ca.jetsphere.burndown.tier1.roles.mgr.dashboard.DashboardYard;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.common.Caption;
@@ -88,12 +89,14 @@ public class DashboardDoAction extends AbstractDoAction
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
 
         TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() );
-
+        
+        TransactionSession filtered = qaf.getTypeId() > 0 ? TransactionYard.filter ( transactions, qaf.getTypeId() ) : transactions;
+        
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
 
         PrintWriter out = store.getResponse().getWriter();
 
-        DataTableWriter dataTableWriter = new DataTableWriter ( transactions, Transaction.captions_dashboard(), Transaction.fields_dashboard() );
+        DataTableWriter dataTableWriter = new DataTableWriter ( filtered, Transaction.captions_dashboard(), Transaction.fields_dashboard() );
 
         dataTableWriter.print ( out, store.getRequest() );
 

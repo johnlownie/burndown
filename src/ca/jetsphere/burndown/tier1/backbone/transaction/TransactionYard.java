@@ -28,6 +28,27 @@ public class TransactionYard
     static public boolean exists ( JDBC jdbc, Transaction transaction )
 
     { return QueryYard.query ( jdbc, getExistsQuery ( transaction ) ) > 0; }
+    
+    /**
+     * 
+     */
+    static public TransactionSession filter ( TransactionSession transactions, int type_id )
+    {
+    TransactionSession filtered = new TransactionSession();
+    
+    Iterator it = transactions.iterator();
+    
+    while ( it.hasNext() )
+    {
+    Transaction transaction = ( Transaction ) it.next();
+    
+    if      ( type_id == 1 &&  transaction.isFixed() ) { filtered.add ( transaction ); }
+
+    else if ( type_id == 2 && !transaction.isFixed() ) { filtered.add ( transaction ); }
+    }
+    
+    return filtered;
+    }
   
     /**
      * 
