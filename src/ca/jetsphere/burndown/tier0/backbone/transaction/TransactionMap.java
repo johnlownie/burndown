@@ -35,11 +35,11 @@ abstract public class TransactionMap extends BoltMap
     /**
      *
      */
-    public void find ( JDBC jdbc, int period_id, int account_id, int category_id, int type_id )
+    public void find ( JDBC jdbc, int period_id, int account_id, int category_id, int type_id, boolean toggle )
     {
     StringBuilder sb = new StringBuilder();
     
-    sb.append ( "select jet_burndown_transaction.* from jet_burndown_category" );
+    sb.append ( "select t1.* from jet_burndown_category" );
     
     if ( category_id > 0 )
     {
@@ -50,9 +50,13 @@ abstract public class TransactionMap extends BoltMap
     sb.append ( " ) as table1 on (category_id = " + category_id + " or category_lineage like table1.ParentLineage)" );
     }
 
-    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = category_id" );
+    sb.append ( " inner join jet_burndown_transaction t1 on transaction_category_id = category_id" );
     
-    sb.append ( " where transaction_period_id = " + period_id );
+    if ( toggle ) { sb.append ( " inner join jet_burndown_transaction t2 on t2.transaction_id != t1.transaction_id and t2.transaction_date = t1.transaction_date and t2.transaction_amount = t1.transaction_amount and t2.transaction_name = t1.transaction_name" ); }
+     
+    sb.append ( " where t1.transaction_period_id = " + period_id );
+
+    if ( toggle ) { sb.append ( " and t2.transaction_period_id = " + period_id ); }
 
     if ( account_id > 0 ) sb.append ( " and transaction_account_id = " + account_id );
 

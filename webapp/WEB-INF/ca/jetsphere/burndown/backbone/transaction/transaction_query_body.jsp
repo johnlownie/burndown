@@ -16,7 +16,17 @@
 
 <div id="page-content"><div class="panel" data-title="<bean:message key="add.edit.bolt" arg0="Transaction"/>">
 
-<div class="panel-heading"><h3 class="panel-title"><bean:message key="show.transactions"/></h3></div>
+<div class="panel-heading">
+    
+<h3 class="panel-title">
+    
+<span><bean:message key="show.transactions"/></span>
+
+<div class="button-wrapper pull-right"><button id="duplicates" class="btn btn-primary"><bean:message key="check.for.duplicates"/></button></div>
+
+</h3>
+
+</div>
 
 <html:messages id="error" message="true"><div class="text-danger text-center pad-ver"><bean:write name="error"/></div></html:messages>
 
@@ -25,6 +35,7 @@
 <div class="row">
 
 <html:form action="/transaction_query" method="post" styleId="queryForm">
+<html:hidden property="toggle" styleId="toggle" value="0"/>
 
 <div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="period"/></label><html:select property="periodId" styleId="periodId" styleClass="form-control"><html:options collection="periods" property="id" labelProperty="name" /></html:select></div></div>
 

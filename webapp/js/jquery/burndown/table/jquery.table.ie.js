@@ -15,6 +15,7 @@ $(document).ready(function () {
                 d.typeId        = $("#queryForm select[name='typeId']" ).val();
                 d.roleId        = $("#queryForm select[name='roleId']" ).val();
                 d.treeSetId     = $("#queryForm select[name='treeSetId']" ).val();
+                d.toggle        = $("#queryForm input[name='toggle']" ).val();
             }
         },
         responsive: true,

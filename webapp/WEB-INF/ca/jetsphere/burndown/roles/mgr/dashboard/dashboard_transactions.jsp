@@ -15,14 +15,16 @@
 <span><bean:message key="mgr.dashboard.by.transactions.debit"/></span>
 
 <div class="btn-group pull-right" role="group">
-    <input id="btnAll" class="btn-check" type="radio" name="btnradio" autocomplete="off" checked="">
-    <label class="btn btn-outline-primary" for ="btnAll">All</label>
     
-    <input id="btnFixed" class="btn-check" type="radio" name="btnradio" autocomplete="off">
-    <label class="btn btn-outline-primary" for ="btnFixed">Fixed</label>
+<input id="btnAll" class="btn-check" type="radio" name="btnradio" autocomplete="off" checked="">
+<label class="btn btn-outline-primary" for ="btnAll">All</label>
     
-    <input id="btnDiscretionary" class="btn-check" type="radio" name="btnradio" autocomplete="off">
-    <label class="btn btn-outline-primary" for ="btnDiscretionary">Discretionary</label>
+<input id="btnFixed" class="btn-check" type="radio" name="btnradio" autocomplete="off">
+<label class="btn btn-outline-primary" for ="btnFixed">Fixed</label>
+    
+<input id="btnDiscretionary" class="btn-check" type="radio" name="btnradio" autocomplete="off">
+<label class="btn btn-outline-primary" for ="btnDiscretionary">Discretionary</label>
+    
 </div>
 
 </h3>

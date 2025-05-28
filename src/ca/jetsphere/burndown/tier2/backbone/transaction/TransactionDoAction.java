@@ -39,7 +39,7 @@ public class TransactionDoAction extends AbstractDoAction
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
 
-        TransactionSession transactions = TransactionSession.query ( jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), false );
+        TransactionSession transactions = TransactionSession.query ( jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getToggle(), false );
 
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
 
