@@ -56,12 +56,12 @@ public class Category extends ca.jetsphere.burndown.tier0.backbone.category.Cate
     /**
      *
      */
-    static public String [] captions() { return new String [] { "id", "parent", "category.name", "category.included", "category.discretionary", "actions" }; }
+    static public String [] captions() { return new String [] { "id", "parent", "category.name", "category.included", "category.fixed", "actions" }; }
 
     /**
      *
      */
-    static public String [] fields() { return new String [] { "category_id", "category_parent_id", "category_name", "category_included", "category_discretionary", "category_uuid" }; }
+    static public String [] fields() { return new String [] { "category_id", "category_parent_id", "category_name", "category_included", "category_fixed", "category_uuid" }; }
 
     /**
      *
