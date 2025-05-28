@@ -11,7 +11,7 @@
             columns: [
                 { "data": "category_name" },
                 { "data": "category_included" },
-                { "data": "category_discretionary" },
+                { "data": "category_fixed" },
                 { "data": "category_uuid" }
             ],
             createdRow: function( row, data, dataIndex ) {
