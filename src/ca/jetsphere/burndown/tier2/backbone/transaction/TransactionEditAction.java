@@ -1,11 +1,14 @@
 package ca.jetsphere.burndown.tier2.backbone.transaction;
 
+import ca.jetsphere.burndown.tier1.backbone.account.AccountSession;
 import ca.jetsphere.burndown.tier1.backbone.category.CategorySession;
 import ca.jetsphere.burndown.tier1.backbone.transaction.Transaction;
 import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionYard;
 import ca.jetsphere.core.bolt.Bolt;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.jdbc.JDBC;
+import ca.jetsphere.core.tier1.backbone.application.Application;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
 import ca.jetsphere.core.tier1.backbone.company.Company;
 import ca.jetsphere.core.tier1.backbone.company.CompanySession;
 import ca.jetsphere.core.tier1.backbone.period.PeriodSession;
@@ -61,9 +64,11 @@ public class TransactionEditAction extends AbstractEditAction
      */
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    Company company = CompanySession.getSelected ( store.getRequest() );
+    Application application = ApplicationSession.getSelected ( store.getRequest() );
 
-    CategorySession.query ( jdbc, store.getRequest(), company.getId(), true );
+    AccountSession.query ( jdbc, store.getRequest(), application.getId(), true );
+    
+    CategorySession.query ( jdbc, store.getRequest(), application.getId(), true );
 
     return store.getForward ( "failure" );
     }

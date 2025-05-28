@@ -1,9 +1,11 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.account.AccountSession" %>
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategorySession" %>
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategoryYard" %>
 
+<% AccountSession accounts = AccountSession.getInstance ( request ); request.setAttribute ( "accounts", accounts.iterator( true ) ); %>
 <% CategorySession categories = CategorySession.getInstance ( request ); request.setAttribute ( "categories", categories.iterator ( CategoryYard.BY_ORDINAL ) ); %>
 
 <html:form action="/transaction_edit" method="post" styleId="editForm" styleClass="form-horizontal">
@@ -24,6 +26,18 @@
 
 </div><div class="form-group">
 
+<label class="col-md-4 control-label"><bean:message key="account"/></label>
+
+<div class="col-md-6"><html:select property="accountId" styleId="accountId" styleClass="form-control chosenselect"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="accounts" property="id" labelProperty="name" /></html:select></div>
+
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="category"/></label>
+
+<div class="col-md-6"><html:select property="categoryId" styleId="categoryId" styleClass="form-control chosenselect"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div>
+
+</div><div class="form-group">
+
 <label class="col-md-4 control-label"><bean:message key="type"/></label>
 
 <div class="col-sm-6"><html:select property="type" styleId="type" styleClass="form-control"><html:option value="-1"><bean:message key="please.select"/></html:option><html:option value="1"><bean:message key="transaction.type.debit"/></html:option><html:option value="2"><bean:message key="transaction.type.credit"/></html:option></html:select></div>
@@ -33,12 +47,6 @@
 <label class="col-md-4 control-label"><bean:message key="transaction.amount"/></label>
 
 <div class="col-md-6"><html:text property="amount" styleId="amount" styleClass="form-control"/></div>
-
-</div><div class="form-group">
-
-<label class="col-md-4 control-label"><bean:message key="category"/></label>
-
-<div class="col-md-6"><html:select property="categoryId" styleId="categoryId" styleClass="form-control chosenselect"><html:option value="-1"><bean:message key="please.select"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div>
 
 </div>
 

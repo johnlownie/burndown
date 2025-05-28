@@ -20,6 +20,7 @@ abstract public class Account extends Bolt implements IBean
     String    account_type           ;
     String    account_number         ;
     String    account_bank_id        ;
+    String    account_url            ;
     Timestamp account_last_update    ;
     Timestamp account_created        ;
 
@@ -35,6 +36,7 @@ abstract public class Account extends Bolt implements IBean
     setType          (  ""  );
     setNumber        (  ""  );
     setBankId        (  ""  );
+    setUrl           (  ""  );
     setLastUpdate    ( null );
     setCreated       ( null );
     }
@@ -51,6 +53,7 @@ abstract public class Account extends Bolt implements IBean
     setType          (( ( Account ) account ).getType          () );
     setNumber        (( ( Account ) account ).getNumber        () );
     setBankId        (( ( Account ) account ).getBankId        () );
+    setUrl           (( ( Account ) account ).getUrl           () );
     setLastUpdate    (( ( Account ) account ).getLastUpdate    () );
     setCreated       (( ( Account ) account ).getCreated       () );
     }
@@ -67,6 +70,7 @@ abstract public class Account extends Bolt implements IBean
     setType          ( rs.getString    ( "account_type"           ) );
     setNumber        ( rs.getString    ( "account_number"         ) );
     setBankId        ( rs.getString    ( "account_bank_id"        ) );
+    setUrl           ( rs.getString    ( "account_url"            ) );
     setLastUpdate    ( rs.getTimestamp ( "account_last_update"    ) );
     setCreated       ( rs.getTimestamp ( "account_created"        ) );
     }
@@ -86,6 +90,7 @@ abstract public class Account extends Bolt implements IBean
     public String    getType          () { return account_type           ; }
     public String    getNumber        () { return account_number         ; }
     public String    getBankId        () { return account_bank_id        ; }
+    public String    getUrl           () { return account_url            ; }
     public Timestamp getLastUpdate    () { return account_last_update    ; }
     public Timestamp getCreated       () { return account_created        ; }
 
@@ -99,6 +104,7 @@ abstract public class Account extends Bolt implements IBean
     public void setType          ( String    account_type           ) { this.account_type           = account_type           ; }
     public void setNumber        ( String    account_number         ) { this.account_number         = account_number         ; }
     public void setBankId        ( String    account_bank_id        ) { this.account_bank_id        = account_bank_id        ; }
+    public void setUrl           ( String    account_url            ) { this.account_url            = account_url            ; }
     public void setLastUpdate    ( Timestamp account_last_update    ) { this.account_last_update    = account_last_update    ; }
     public void setCreated       ( Timestamp account_created        ) { this.account_created        = account_created        ; }
 }

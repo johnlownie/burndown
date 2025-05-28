@@ -48,7 +48,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] captions()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.account", "actions" }; }
+    { return new String [] { "transaction.date", "transaction.name", "transaction.account", "transaction.category", "transaction.type", "transaction.amount", "actions" }; }
 
 
     /**
@@ -56,21 +56,21 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] captions_dashboard()
 
-    { return new String [] { "transaction.name", "transaction.date", "transaction.amount", "transaction.category", "transaction.account" }; }
+    { return new String [] { "transaction.name", "transaction.account", "transaction.category", "transaction.date", "transaction.amount" }; }
 
     /**
      *
      */
     static public String [] captions_import()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.fit.id", "transaction.bank.id", "transaction.account.id", "transaction.account.type", "possible.duplicate" }; }
+    { return new String [] { "transaction.date", "transaction.name", "transaction.account.id", "transaction.category", "transaction.type", "transaction.amount", "transaction.fit.id", "transaction.bank.id", "transaction.account.type", "possible.duplicate" }; }
 
     /**
      *
      */
     static public String [] captions_import_headers()
 
-    { return new String [] { "transaction.date", "transaction.type", "transaction.amount", "transaction.name", "transaction.category", "transaction.fit.id", "transaction.bank.id", "transaction.account.id", "transaction.account.type" }; }
+    { return new String [] { "transaction.date", "transaction.name", "transaction.account.id", "transaction.category", "transaction.type", "transaction.amount", "transaction.fit.id", "transaction.bank.id", "transaction.account.type" }; }
 
     @Override
     public boolean equals( Object o )
@@ -99,21 +99,21 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
      */
     static public String [] fields()
 
-    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_account_id", "transaction_uuid" }; }
+    { return new String [] { "transaction_date", "transaction_name", "transaction_account_id", "transaction_category_id", "transaction_type", "transaction_amount", "transaction_uuid" }; }
 
     /**
      *
      */
     static public String [] fields_dashboard()
 
-    { return new String [] { "transaction_name", "transaction_date", "transaction_amount", "transaction_category_id", "transaction_account_id" }; }
+    { return new String [] { "transaction_name", "transaction_account_id", "transaction_category_id", "transaction_date", "transaction_amount" }; }
 
     /**
      *
      */
     static public String [] fields_import()
 
-    { return new String [] { "transaction_date", "transaction_type", "transaction_amount", "transaction_name", "transaction_category_id", "transaction_fitid", "bank_id", "account", "account_type", "possible_duplicate" }; }
+    { return new String [] { "transaction_date", "transaction_name", "account", "transaction_category_id", "transaction_type", "transaction_amount", "transaction_fitid", "bank_id", "account_type", "possible_duplicate" }; }
 
     /**
      *
