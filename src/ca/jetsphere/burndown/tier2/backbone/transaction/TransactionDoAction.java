@@ -11,7 +11,9 @@ import ca.jetsphere.core.tier2.table.DataTableWriter;
 
 import ca.jetsphere.burndown.tier1.backbone.transaction.Transaction;
 import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionSession;
+import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionYard;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
+import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.tier1.backbone.application.Application;
 import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
 import ca.jetsphere.core.tier1.backbone.period.PeriodSession;
@@ -39,7 +41,7 @@ public class TransactionDoAction extends AbstractDoAction
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm();
 
-        TransactionSession transactions = TransactionSession.query ( jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getToggle(), false );
+        TransactionSession transactions = TransactionYard.set ( jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getToggle(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
 
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
 
@@ -64,6 +66,10 @@ public class TransactionDoAction extends AbstractDoAction
     int period_id = qaf.getPeriodId () <= 0 ? PeriodSession.getSelected ( store.getRequest () ).getId() : qaf.getPeriodId ();
 
     qaf.setPeriodId ( period_id );
+
+    String today = CalendarYard.now ( "yyyy-MM-dd" );
+
+    qaf.setStartDateAsString ( CalendarYard.getFirstDayOfYear ( today ) ); qaf.setEndDateAsString ( CalendarYard.getLastDayOfYear ( today ) );
 
     AccountSession.query ( jdbc, store.getRequest(), application.getId(), true );
     

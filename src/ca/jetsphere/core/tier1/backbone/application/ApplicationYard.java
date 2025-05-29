@@ -67,6 +67,16 @@ public class ApplicationYard
     
     return QueryYard.query ( query, 1 );
     }
+    
+    /**
+     * 
+     */
+    static public boolean isPeriodOkay ( JDBC jdbc, int application_id, int period_id )
+    {
+    String query = "select count(1) from jet_period_id where period_id = " + period_id + " and period_application_id = " + application_id;
+    
+    return QueryYard.query ( jdbc, query ) > 0;
+    }
 
     /**
      *

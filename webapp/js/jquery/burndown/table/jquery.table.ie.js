@@ -7,15 +7,17 @@ $(document).ready(function () {
             url: $("#queryForm").attr("action") + "?json=true",
             type: "GET",
             data: function(d){
-                d.companyId     = $("#queryForm select[name='companyId']" ).val();
-                d.applicationId = $("#queryForm select[name='applicationId']" ).val();
-                d.periodId      = $("#queryForm select[name='periodId']" ).val();
-                d.accountId     = $("#queryForm select[name='accountId']" ).val();
-                d.categoryId    = $("#queryForm select[name='categoryId']" ).val();
-                d.typeId        = $("#queryForm select[name='typeId']" ).val();
-                d.roleId        = $("#queryForm select[name='roleId']" ).val();
-                d.treeSetId     = $("#queryForm select[name='treeSetId']" ).val();
-                d.toggle        = $("#queryForm input[name='toggle']" ).val();
+                d.companyId         = $("#queryForm select[name='companyId']" ).val();
+                d.applicationId     = $("#queryForm select[name='applicationId']" ).val();
+                d.periodId          = $("#queryForm select[name='periodId']" ).val();
+                d.accountId         = $("#queryForm select[name='accountId']" ).val();
+                d.categoryId        = $("#queryForm select[name='categoryId']" ).val();
+                d.typeId            = $("#queryForm select[name='typeId']" ).val();
+                d.roleId            = $("#queryForm select[name='roleId']" ).val();
+                d.treeSetId         = $("#queryForm select[name='treeSetId']" ).val();
+                d.toggle            = $("#queryForm input[name='toggle']" ).val();
+                d.startDateAsString = $("#queryForm input:text[name='startDateAsString']").val();
+                d.endDateAsString   = $("#queryForm input:text[name='endDateAsString']").val();
             }
         },
         responsive: true,

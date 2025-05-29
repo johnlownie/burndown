@@ -9,7 +9,6 @@ import java.util.Date;
  */
 public class QueryActionForm extends ca.jetsphere.core.tier2.common.QueryActionForm
 {
-    int     query_form_period_id   ;
     int     query_form_status_id   ;
     int     query_form_type_id     ;
     int     query_form_account_id  ;
@@ -25,7 +24,6 @@ public class QueryActionForm extends ca.jetsphere.core.tier2.common.QueryActionF
      */
     public void clear()
     {
-    setPeriodId   (  -1   );
     setStatusId   (   1   );
     setTypeId     (  -1   );
     setAccountId  (  -1   );
@@ -47,7 +45,6 @@ public class QueryActionForm extends ca.jetsphere.core.tier2.common.QueryActionF
     /**
      *
      */
-    public int     getPeriodId   () { return query_form_period_id   ; }
     public int     getStatusId   () { return query_form_status_id   ; }
     public int     getTypeId     () { return query_form_type_id     ; }
     public int     getAccountId  () { return query_form_account_id  ; }
@@ -73,7 +70,6 @@ public class QueryActionForm extends ca.jetsphere.core.tier2.common.QueryActionF
     /**
      *
      */
-    public void setPeriodId   ( int     query_form_period_id   ) { this.query_form_period_id   = query_form_period_id   ; }
     public void setStatusId   ( int     query_form_status_id   ) { this.query_form_status_id   = query_form_status_id   ; }
     public void setTypeId     ( int     query_form_type_id     ) { this.query_form_type_id     = query_form_type_id     ; }
     public void setAccountId  ( int     query_form_account_id  ) { this.query_form_account_id  = query_form_account_id  ; }

@@ -37,7 +37,7 @@ public class Monthly
     /**
      * 
      */
-    private String getQuery ( Pair[] monthDates, int period_id, int transaction_type, String start_date, String end_date )
+    private String getQuery ( Pair[] monthDates, int application_id, int period_id, int transaction_type, String start_date, String end_date )
     {
     StringBuilder sb = new StringBuilder();
 
@@ -49,7 +49,8 @@ public class Monthly
     sb.append ( " inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')" );
     sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id" );
 //    sb.append ( " where p.category_depth > 0" );
-    sb.append ( " where p.category_included and c.category_included" );
+    sb.append ( " where p.category_application_id = " + application_id + " and c.category_application_id  = " + application_id );
+    sb.append ( " and p.category_included and c.category_included" );
     sb.append ( " and transaction_period_id = " + period_id );
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
     sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
@@ -68,7 +69,7 @@ public class Monthly
 
     Pair[] monthDates = CalendarYard.getMonthDates ( qaf.getStartDateAsString(), monthNames.size() );
 
-    String query = getQuery ( monthDates, qaf.getPeriodId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
+    String query = getQuery ( monthDates, qaf.getApplicationId(), qaf.getPeriodId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
        
     return new ResultSetBoltMap ( jdbc, query );
     }

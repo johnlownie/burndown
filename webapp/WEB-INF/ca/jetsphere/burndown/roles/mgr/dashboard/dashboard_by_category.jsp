@@ -9,7 +9,7 @@
     
 <span><bean:message key="mgr.dashboard.by.category"/></span>
 
-<div class="button-wrapper pull-right"><button id="reset" class="btn btn-primary"><bean:message key="reset"/></button></div>
+<div class="button-wrapper pull-right"><button id="resetCat" class="btn btn-primary"><bean:message key="reset"/></button></div>
 
 </h3>
 

@@ -70,13 +70,6 @@ public class TransactionSession extends TransactionMap implements ISessionObject
     /**
      *
      */
-    static public TransactionSession query ( JDBC jdbc, HttpServletRequest request, int period_id, int account_id, int category_id, int type_id, boolean toggle, boolean blank )
-
-    { TransactionSession session = getInstance ( request ); session.find ( jdbc, period_id, account_id, category_id, type_id, toggle ); session.options ( request, blank ); return session; }
-
-    /**
-     *
-     */
     static public void setRequested ( HttpServletRequest request ) { getInstance ( request ).setQualifiedSelected ( request, getRequestedId ( request ) ); }
 
     /**

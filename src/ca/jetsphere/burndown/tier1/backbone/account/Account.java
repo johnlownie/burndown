@@ -1,5 +1,6 @@
 package ca.jetsphere.burndown.tier1.backbone.account;
 
+import ca.jetsphere.core.common.Caption;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
 
@@ -56,7 +57,7 @@ public class Account extends ca.jetsphere.burndown.tier0.backbone.account.Accoun
      */
     public Object get ( String s )
     {
-    if ( "account_url" .equals ( s ) ) return DockYard.getHref ( "Open in new tab", getUrl(), true );
+    if ( "account_url" .equals ( s ) ) return DockYard.getHref ( Caption.get ( "sign.in" ), getUrl(), true );
 
     return super.get ( s );
     }

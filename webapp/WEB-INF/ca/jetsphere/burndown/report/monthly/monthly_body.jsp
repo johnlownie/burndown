@@ -23,7 +23,7 @@
 
 <div class="panel-body">
 
-<div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="period"/></label><html:select property="periodId" styleId="periodId" styleClass="form-control" onchange="submit();"><html:options collection="periods" property="id" labelProperty="name" /></html:select></div></div>
+<div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="period"/></label><html:select property="periodId" styleId="periodId" styleClass="form-control"><html:options collection="periods" property="id" labelProperty="name" /></html:select></div></div>
 
 <div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="type"/></label><html:select property="typeId" styleId="typeId" styleClass="form-control"><html:option value="-1"><bean:message key="transaction.type.all"/></html:option><html:option value="1"><bean:message key="transaction.type.debit"/></html:option><html:option value="2"><bean:message key="transaction.type.credit"/></html:option></html:select></div></div>
 

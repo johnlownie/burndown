@@ -7,8 +7,9 @@ import ca.jetsphere.core.bolt.rs.ResultSetBoltMap;
 import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
-import ca.jetsphere.core.tier1.backbone.company.Company;
-import ca.jetsphere.core.tier1.backbone.company.CompanySession;
+import ca.jetsphere.core.tier1.backbone.application.Application;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationYard;
 import ca.jetsphere.core.tier1.backbone.period.PeriodSession;
 import ca.jetsphere.core.tier2.common.AbstractAction;
 import ca.jetsphere.core.tier2.common.ActionStore;
@@ -43,10 +44,14 @@ public class MonthlyReportAction extends AbstractAction
      */
     public ActionForward report ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected( store.getRequest() );
     
-    qaf.setCompanyId ( company.getId() );
-
+    qaf.setApplicationId ( application.getId() );
+    
+    boolean isOkay = ApplicationYard.isPeriodOkay ( jdbc, qaf.getApplicationId(), qaf.getPeriodId() );
+    
+    if (!isOkay ) { qaf.setPeriodId ( application.getPeriodId() ); }
+    
     ResultSetBoltMap rsbm = new Monthly().getReport ( jdbc, qaf );
 
     DockYard.setAttribute ( store.getRequest(), ResultSetBolt.key(), rsbm, false );

@@ -63,7 +63,7 @@ public class DashboardDoAction extends AbstractDoAction
         
         jsonObject.put ( "transactionsTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.transactions.debit") + ( !DockYard.isWhiteSpace ( transactionsTitle ) ? ": " + transactionsTitle : "" ) );
         
-        jsonObject.put ( "showReset", category.isValid() || !DockYard.isWhiteSpace ( month ) );
+        jsonObject.put ( "showCatReset", category.isValid() || !DockYard.isWhiteSpace ( month ) );
 
         jsonObject.put ( "success", errors.isEmpty() );
 

@@ -68,10 +68,15 @@
                 donut.setData(response.categoryData);
                 bar.setData(response.monthData);
                 $("#table").dataTable().api().ajax.reload();
-                if (response.showReset == true) {
-                    $('#reset').show();
+                if (response.showCatReset == true) {
+                    $('#resetCat').show();
                 } else {
-                    $('#reset').hide();
+                    $('#resetCat').hide();
+                }
+                if (response.showMthReset == true) {
+                    $('#resetMth').show();
+                } else {
+                    $('#resetMth').hide();
                 }
             })
             .error(function(x, t, m) {
@@ -79,7 +84,7 @@
             });
         }
         
-        $('#reset').click(function(e) {
+        $('#resetCat').click(function(e) {
             e.preventDefault();
             getTransactionData("");
         });

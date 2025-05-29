@@ -91,7 +91,44 @@ public class TransactionYard
     
     return similar.isValid() ? similar.getCategoryId() : DEFAULT_CATEGORY;
     }
- 
+
+    /**
+     *
+     */
+    static public String getQuery ( int period_id, int account_id, int category_id, int type_id, boolean toggle, String start_date, String end_date )
+    {
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append ( "select t1.* from jet_burndown_category" );
+    
+    if ( category_id > 0 )
+    {
+    sb.append ( " inner join (" );
+    
+    sb.append ( " select concat(category_lineage, lpad(category_ordinal, 2, 0), '/') as 'ParentLineage' from jet_burndown_category where category_id = " + category_id );
+    
+    sb.append ( " ) as table1 on (category_id = " + category_id + " or category_lineage like table1.ParentLineage)" );
+    }
+
+    sb.append ( " inner join jet_burndown_transaction t1 on transaction_category_id = category_id" );
+    
+    if ( toggle ) { sb.append ( " inner join jet_burndown_transaction t2 on t2.transaction_id != t1.transaction_id and t2.transaction_date = t1.transaction_date and t2.transaction_amount = t1.transaction_amount and t2.transaction_name = t1.transaction_name" ); }
+     
+    sb.append ( " where t1.transaction_period_id = " + period_id );
+
+    if ( toggle ) { sb.append ( " and t2.transaction_period_id = " + period_id ); }
+
+    if ( account_id > 0 ) sb.append ( " and t1.transaction_account_id = " + account_id );
+
+    if ( type_id > 0 ) sb.append ( " and t1.transaction_type = " + type_id );
+
+    if ( !DockYard.isWhiteSpace ( start_date ) ) sb.append ( " and t1.transaction_date >= " + DockYard.quote ( start_date ) );
+
+    if ( !DockYard.isWhiteSpace ( end_date   ) ) sb.append ( " and t1.transaction_date <= " + DockYard.quote ( end_date ) );
+    
+    return sb.toString();
+    }
+  
     /**
      *
      */
@@ -107,6 +144,22 @@ public class TransactionYard
 
     } catch ( Exception e ) { Common.trace ( e ); }
 
+    }
+
+    /**
+     *
+     */
+    static public TransactionSession set ( JDBC jdbc, HttpServletRequest request, int period_id, int account_id, int category_id, int type_id, boolean toggle, String start_date, String end_date )
+    {
+    TransactionSession transactions = TransactionSession.getInstance ( request );
+    
+    String query = getQuery ( period_id, account_id, category_id, type_id, toggle, start_date, end_date );
+    
+    transactions.clear();
+    
+    transactions.query ( jdbc, query );
+    
+    return transactions;
     }
     
     /**
