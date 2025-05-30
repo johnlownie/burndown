@@ -51,8 +51,8 @@ public class Lineage
     sb.append ( " where p.category_depth >= 0" );
     sb.append ( " and p.category_lineage is not null" );
     sb.append ( " and c.category_depth is null" );
-    sb.append ( " and p.category_application_id = 2" );
-    sb.append ( " and c.category_application_id = 2" );
+    sb.append ( " and p.category_application_id = " + application_id );
+    sb.append ( " and c.category_application_id = " + application_id );
 
     return sb.toString();
     }
