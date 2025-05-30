@@ -49,6 +49,20 @@ public class TransactionYard
     
     return filtered;
     }
+    
+    /**
+     * 
+     */
+    static public int getCategoryIdBySimilarTransaction ( JDBC jdbc, String name )
+    {
+    StringBuilder sb = new StringBuilder(); Transaction similar = new Transaction();
+    
+    sb.append ( "select * from jet_burndown_transaction where transaction_name like " + DockYard.quote ( name.substring ( 0, name.length() > 14 ? 14 : name.length() ) + "%" ) + " limit 1" );
+    
+    similar.query ( jdbc, sb.toString() );
+    
+    return similar.isValid() ? similar.getCategoryId() : DEFAULT_CATEGORY;
+    }
   
     /**
      * 
@@ -81,16 +95,9 @@ public class TransactionYard
     /**
      * 
      */
-    static public int getCategoryIdBySimilarTransaction ( JDBC jdbc, String name )
-    {
-    StringBuilder sb = new StringBuilder(); Transaction similar = new Transaction();
-    
-    sb.append ( "select * from jet_burndown_transaction where transaction_name like " + DockYard.quote ( name.substring ( 0, name.length() > 14 ? 14 : name.length() ) + "%" ) + " limit 1" );
-    
-    similar.query ( jdbc, sb.toString() );
-    
-    return similar.isValid() ? similar.getCategoryId() : DEFAULT_CATEGORY;
-    }
+    static public String getLatestQuery ( int period_id )
+
+    { return "select * from jet_burndown_transaction where transaction_period_id = " + period_id + " and transaction_type = 1 order by transaction_date desc limit 20";}
 
     /**
      *
@@ -160,18 +167,6 @@ public class TransactionYard
     transactions.query ( jdbc, query );
     
     return transactions;
-    }
-    
-    /**
-     * 
-     */
-    static public void setLatest ( JDBC jdbc, HttpServletRequest request, int period_id )
-    {
-    TransactionSession transactions = TransactionSession.getInstance ( request );
-    
-    String query = "select * from jet_burndown_transaction where transaction_period_id = " + period_id + " and transaction_type = 1 order by transaction_date desc limit 20";
-
-    transactions.query ( jdbc, query );
     }
     
     /**

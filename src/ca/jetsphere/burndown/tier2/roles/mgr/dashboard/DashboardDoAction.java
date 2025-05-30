@@ -18,6 +18,7 @@ import ca.jetsphere.core.tier2.common.ActionStore;
 import ca.jetsphere.core.tier2.common.Errors;
 import ca.jetsphere.core.tier2.table.DataTableWriter;
 import java.io.PrintWriter;
+import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONObject;
 import org.apache.struts.action.ActionForward;
 
@@ -26,6 +27,16 @@ import org.apache.struts.action.ActionForward;
  */
 public class DashboardDoAction extends AbstractDoAction
 {
+    private String category_name;
+    private String month_name;
+    
+    /**
+     * 
+     */
+    private void clear()
+
+    { setCategoryName ( "" ); setMonthName ( "" ); }
+
     /**
      *
      */
@@ -35,35 +46,41 @@ public class DashboardDoAction extends AbstractDoAction
 
         QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
 
-        String category_name = DockYard.getParameter ( store.getRequest(), "category" );
+        setNames ( store.getRequest() );
         
-        String month = DockYard.getParameter ( store.getRequest(), "month" );
+        Category category = DashboardYard.getCategory ( jdbc, getCategoryName() );
         
-        Category category = DashboardYard.getCategory ( jdbc, category_name );
+        Pair monthDates = DashboardYard.getMonthDates ( jdbc, qaf.getPeriodId(), getMonthName() );
         
-        Pair monthDates = DashboardYard.getMonthDates ( jdbc, qaf.getPeriodId(), month ); String start_date = ( String ) monthDates.getKey(); String end_date = ( String ) monthDates.getValue();
+        String start_date = ( String ) monthDates.getKey(); String end_date = ( String ) monthDates.getValue();
         
         String categoryData = DashboardYard.getByCategory ( jdbc, qaf.getPeriodId(), category, start_date, end_date );
         
         String monthData = DashboardYard.getByMonth ( jdbc, application.getId(), qaf.getPeriodId(), category, start_date, end_date );
 
-        String transactionsTitle = DashboardYard.setTransactions ( jdbc, store.getRequest(), qaf.getPeriodId(), category.getName(), start_date, end_date );
+        String transactionsTitle = DashboardYard.setTransactions ( jdbc, store.getRequest(), application.getId(), qaf.getPeriodId(), category.getName(), start_date, end_date );
         
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
         
         PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+        
+        String categoryTitle = !DockYard.isWhiteSpace ( getMonthName() ) ? ": " + getMonthName() : category.isValid() ? ": " + category.getName() : "";
+        
+        String monthTitle = category.isValid() ? ": " + category.getName() : "";
 
-        jsonObject.put ( "categoryTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.category") + ( !DockYard.isWhiteSpace ( month ) ? ": " + month : category.isValid() ? ": " + category.getName() : "" ) );
+        jsonObject.put ( "categoryTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.category") + categoryTitle );
+        
+        jsonObject.put ( "monthTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.month") + monthTitle );
 
         jsonObject.put ( "categoryData", categoryData);
-        
-        jsonObject.put ( "monthTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.month") + ( category.isValid() ? ": " + category.getName() : "" ) );
 
         jsonObject.put ( "monthData", monthData);
         
         jsonObject.put ( "transactionsTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.transactions.debit") + ( !DockYard.isWhiteSpace ( transactionsTitle ) ? ": " + transactionsTitle : "" ) );
         
-        jsonObject.put ( "showCatReset", category.isValid() || !DockYard.isWhiteSpace ( month ) );
+        jsonObject.put ( "showCatReset", category.isValid() );
+
+        jsonObject.put ( "showMthReset", !DockYard.isWhiteSpace ( getMonthName() ) );
 
         jsonObject.put ( "success", errors.isEmpty() );
 
@@ -109,6 +126,36 @@ public class DashboardDoAction extends AbstractDoAction
      *
      */
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-
-    { return getForward ( store ); }
+    { 
+    clear();
+    
+    return getForward ( store ); 
+    }
+    
+    /**
+     * 
+     */
+    private void setNames ( HttpServletRequest request )
+    {
+    boolean reset = DockYard.toBoolean ( DockYard.getParameter ( request, "reset" ) );
+    
+    String category_name = DockYard.getParameter ( request, "category" ); 
+    
+    String month_name = DockYard.getParameter ( request, "month" );
+    
+    if ( reset ) clear();
+    
+    if ( !DockYard.isWhiteSpace ( category_name ) ) { setCategoryName ( category_name ); }
+    
+    if ( !DockYard.isWhiteSpace ( month_name    ) ) { setMonthName    ( month_name    ); }
+    }
+    
+    /**
+     * 
+     */
+    private String getCategoryName() { return this.category_name; }
+    private String getMonthName   () { return this.month_name   ; }
+    
+    private void setCategoryName ( String category_name ) { this.category_name = category_name ;}
+    private void setMonthName    ( String month_name    ) { this.month_name    = month_name    ;}
 }

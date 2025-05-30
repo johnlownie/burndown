@@ -63,17 +63,17 @@
             })
             .success(function(response) {
                 $('#by-category-title span').text(response.categoryTitle);
-                $('#by-month-title').text(response.monthTitle);
+                $('#by-month-title span').text(response.monthTitle);
                 $('#transactions-title span').text(response.transactionsTitle);
                 donut.setData(response.categoryData);
                 bar.setData(response.monthData);
                 $("#table").dataTable().api().ajax.reload();
-                if (response.showCatReset == true) {
+                if (response.showCatReset) {
                     $('#resetCat').show();
                 } else {
                     $('#resetCat').hide();
                 }
-                if (response.showMthReset == true) {
+                if (response.showMthReset) {
                     $('#resetMth').show();
                 } else {
                     $('#resetMth').hide();
@@ -84,9 +84,9 @@
             });
         }
         
-        $('#resetCat').click(function(e) {
+        $('#resetCat, #resetMth').click(function(e) {
             e.preventDefault();
-            getTransactionData("");
+            getTransactionData("&reset=true");
         });
         
         $('#btnAll').click(function(e) {

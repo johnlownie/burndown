@@ -172,43 +172,55 @@ public class DashboardYard
     /**
      * 
      */
-    static public String setTransactions ( JDBC jdbc, HttpServletRequest request, int period_id, String category_name, String start_date, String end_date )
+    static public String setTransactions ( JDBC jdbc, HttpServletRequest request, int application_id, int period_id, String category_name, String start_date, String end_date )
     {
+    TransactionSession transactions = TransactionSession.getInstance ( request ); String query;
+    
     if ( DockYard.isWhiteSpace ( category_name ) && DockYard.isWhiteSpace ( start_date ) )
     
-    { TransactionYard.setLatest ( jdbc, request, period_id ); return Caption.get ( request, "latest" ); }
+    { query = TransactionYard.getLatestQuery ( period_id ); }
     
-    else if ( !DockYard.isWhiteSpace ( category_name ) )
+    else
         
-    { setTransactionsByCategory ( jdbc, request, period_id, category_name ); return category_name; }
+    { query =  getTransactionsQuery ( application_id, period_id, category_name, start_date, end_date ); }
     
-    else if ( !DockYard.isWhiteSpace ( start_date ) )
-        
-    { setTransactionsByMonth ( jdbc, request, period_id, start_date, end_date ); return start_date + " - " + end_date; }
+    transactions.query ( jdbc, query );
+    
+    String title = "";
+    
+    if ( !DockYard.isWhiteSpace ( category_name ) ) title = category_name;
+    
+    if ( !DockYard.isWhiteSpace ( start_date ) ) title += !DockYard.isWhiteSpace ( title ) ? "/" + start_date + " to " + end_date : start_date + " to " + end_date;
+    
+    if ( DockYard.isWhiteSpace ( title ) ) title = Caption.get ( request, "latest" );
 
-    return "";
+    return title;
     }
 
     /**
      * 
      */
-    static private void setTransactionsByCategory ( JDBC jdbc, HttpServletRequest request, int period_id, String category_name )
+    static private String getTransactionsQuery ( int application_id, int period_id, String category_name, String start_date, String end_date )
     {
-    TransactionSession transactions = TransactionSession.getInstance ( request );
-    
     StringBuilder sb = new StringBuilder();
     
     sb.append ( "select jet_burndown_transaction.*" );
     sb.append ( " from jet_burndown_category p" );
     sb.append ( " inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')" );
     sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id " );
-    sb.append ( " and p.category_name = " + DockYard.quote ( category_name ) );
+    
+    if ( !DockYard.isWhiteSpace ( category_name ) ) sb.append ( " and p.category_name = " + DockYard.quote ( category_name ) );
+    
+    sb.append ( " and p.category_application_id = " + application_id + " and c.category_application_id = " + application_id );
     sb.append ( " and p.category_included and c.category_included" );
     sb.append ( " and transaction_period_id = " + period_id );
     sb.append ( " and transaction_type = 1" );
+
+    if ( !DockYard.isWhiteSpace ( start_date ) ) { sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) ); sb.append ( " and transaction_date <= " + DockYard.quote ( end_date ) ); }
+
     sb.append ( " order by transaction_name, transaction_date" );
     
-    transactions.query ( jdbc, sb.toString() );
+    return sb.toString();
     }
     
     /**
