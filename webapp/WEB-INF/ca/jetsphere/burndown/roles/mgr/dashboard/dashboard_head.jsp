@@ -1,12 +1,4 @@
 <style type="text/css">
-    @media (min-width: 768px) {
-        .searchbx {
-            display: table-cell;
-            padding-right: 20px;
-            vertical-align: middle;
-        }
-    }
-    
     #by-category svg path:hover,
     #by-month svg rect:hover {
         cursor: pointer;
@@ -31,5 +23,19 @@
         color: #fff;
         background-color: #579ddb;
         border-color: #5fa2dd;
-    }    
+    }
+    
+    @media (min-width: 768px) {
+        .searchbx {
+            display: table-cell;
+            padding-right: 20px;
+            vertical-align: middle;
+        }
+    }
+    
+    @media (max-width: 512px) {
+        .btn-group {
+            display: none;
+        }
+    }
 </style>

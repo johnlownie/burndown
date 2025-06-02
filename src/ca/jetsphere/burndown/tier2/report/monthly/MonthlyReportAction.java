@@ -1,5 +1,7 @@
 package ca.jetsphere.burndown.tier2.report.monthly;
 
+import ca.jetsphere.burndown.tier1.backbone.account.AccountSession;
+import ca.jetsphere.burndown.tier1.backbone.category.CategorySession;
 import ca.jetsphere.burndown.tier1.report.monthly.Monthly;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.bolt.rs.ResultSetBolt;
@@ -26,15 +28,19 @@ public class MonthlyReportAction extends AbstractAction
      */
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
 
     int period_id = qaf.getPeriodId () <= 0 ? PeriodSession.getSelected ( store.getRequest() ).getId() : qaf.getPeriodId();
-    
-    String today = CalendarYard.now ( "yyyy-MM-dd" );
 
     qaf.setPeriodId ( period_id ); 
     
+    String today = CalendarYard.now ( "yyyy-MM-dd" );
+    
     qaf.setStartDateAsString ( CalendarYard.getFirstDayOfYear ( today ) ); qaf.setEndDateAsString ( CalendarYard.getLastDayOfYear ( today ) );
+
+    AccountSession.query ( jdbc, store.getRequest(), application.getId(), true );
+    
+    CategorySession.query ( jdbc, store.getRequest(), application.getId(), true );
 
     return getForward ( store );
     }

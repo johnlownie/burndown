@@ -26,7 +26,8 @@ $(document).ready(function () {
         info: true,
         searching: true,
         iDisplayLength: 10,
-        rowReorder: true
+        rowReorder: true,
+        pageLength: 100
     })
     .on("click", ".editBtn", function(event) {
         event.preventDefault();

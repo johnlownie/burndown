@@ -50,7 +50,8 @@
             info: true,
             searching: true,
             iDisplayLength: 10,
-            rowReorder: true
+            rowReorder: true,
+            pageLength: 50
         });
 
         function getTransactionData(action) {

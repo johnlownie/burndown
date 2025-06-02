@@ -2,6 +2,9 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.account.AccountSession" %>
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategorySession" %>
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategoryYard" %>
 <%@ page import="ca.jetsphere.burndown.tier1.report.monthly.MonthlyWriter" %>
 <%@ page import="ca.jetsphere.core.bolt.rs.ResultSetBoltMap" %>
 <%@ page import="ca.jetsphere.core.bolt.rs.ResultSetBolt" %>
@@ -9,6 +12,8 @@
 <%@ page import="ca.jetsphere.core.tier1.backbone.period.PeriodYard" %>
 
 <% PeriodSession  periods  = PeriodSession .getInstance ( request ); request.setAttribute ( "periods" , periods .iterator ( PeriodYard.BY_ORDINAL ) ); %>
+<% AccountSession accounts = AccountSession.getInstance ( request ); request.setAttribute ( "accounts", accounts.iterator() ); %>
+<% CategorySession categories = CategorySession.getInstance ( request ); request.setAttribute ( "categories", categories.iterator ( CategoryYard.BY_ORDINAL ) ); %>
 <% ResultSetBoltMap rsbm = ( ResultSetBoltMap ) request.getAttribute ( ResultSetBolt.key() ); %>
 
 <div id="page-content">
@@ -23,13 +28,17 @@
 
 <div class="panel-body">
 
-<div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="period"/></label><html:select property="periodId" styleId="periodId" styleClass="form-control"><html:options collection="periods" property="id" labelProperty="name" /></html:select></div></div>
+<div class="col-sm-2"><div class="form-group"><label class="control-label"><bean:message key="period"/></label><html:select property="periodId" styleId="periodId" styleClass="form-control"><html:options collection="periods" property="id" labelProperty="name" /></html:select></div></div>
 
-<div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="type"/></label><html:select property="typeId" styleId="typeId" styleClass="form-control"><html:option value="-1"><bean:message key="transaction.type.all"/></html:option><html:option value="1"><bean:message key="transaction.type.debit"/></html:option><html:option value="2"><bean:message key="transaction.type.credit"/></html:option></html:select></div></div>
+<div class="col-md-2"><div class="form-group"><label class="control-label"><bean:message key="account"/></label><html:select property="accountId" styleId="accountId" styleClass="form-control"><html:option value="-1"><bean:message key="account.all"/></html:option><html:options collection="accounts" property="id" labelProperty="nameNumber" /></html:select></div></div>
 
-<div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="start.date"/></label><div class="input-group date"><html:text property="startDateAsString" styleId="startDate" styleClass="form-control" size="12" readonly="false"/><span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span></div></div></div>
+<div class="col-md-2"><div class="form-group"><label class="control-label"><bean:message key="category"/></label><html:select property="categoryId" styleId="categoryId" styleClass="form-control"><html:option value="-1"><bean:message key="category.all"/></html:option><html:options collection="categories" property="id" labelProperty="treeName" /></html:select></div></div>
 
-<div class="col-sm-3"><div class="form-group"><label class="control-label"><bean:message key="end.date"/></label><div class="input-group date"><html:text property="endDateAsString" styleId="endDate" styleClass="form-control" size="12" readonly="false"/><span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span></div></div></div>
+<div class="col-sm-2"><div class="form-group"><label class="control-label"><bean:message key="type"/></label><html:select property="typeId" styleId="typeId" styleClass="form-control"><html:option value="-1"><bean:message key="transaction.type.all"/></html:option><html:option value="1"><bean:message key="transaction.type.debit"/></html:option><html:option value="2"><bean:message key="transaction.type.credit"/></html:option></html:select></div></div>
+
+<div class="col-sm-2"><div class="form-group"><label class="control-label"><bean:message key="start.date"/></label><div class="input-group date"><html:text property="startDateAsString" styleId="startDate" styleClass="form-control" size="12" readonly="false"/><span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span></div></div></div>
+
+<div class="col-sm-2"><div class="form-group"><label class="control-label"><bean:message key="end.date"/></label><div class="input-group date"><html:text property="endDateAsString" styleId="endDate" styleClass="form-control" size="12" readonly="false"/><span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span></div></div></div>
 
 </div>
 
