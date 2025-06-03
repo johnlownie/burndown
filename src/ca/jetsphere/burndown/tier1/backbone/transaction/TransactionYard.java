@@ -85,7 +85,7 @@ public class TransactionYard
     
     sb.append ( " and transaction_amount = " + transaction.getAmount () );
     
-    sb.append ( " and transaction_fitid = " + DockYard.quote ( transaction.getFitId () ) );
+//    sb.append ( " and transaction_fitid = " + DockYard.quote ( transaction.getFitId () ) );
     
     sb.append ( " and transaction_date = " + DockYard.quote ( transaction.getDate ().toString() ) );
     

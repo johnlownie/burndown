@@ -148,7 +148,7 @@ public class Transaction extends ca.jetsphere.burndown.tier0.backbone.transactio
 
     if ( "transaction_type"        .equals ( s ) ) return getTypeAsString ( getType() );
     
-    if ( "possible_duplicate"      .equals ( s ) ) return TransactionYard.exists ( this );
+    if ( "possible_duplicate"      .equals ( s ) ) { return TransactionYard.exists ( this ); }
 
     return super.get ( s );
     }

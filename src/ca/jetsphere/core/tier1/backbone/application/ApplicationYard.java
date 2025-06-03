@@ -71,7 +71,7 @@ public class ApplicationYard
     /**
      * 
      */
-    static public boolean isPeriodOkay ( JDBC jdbc, int application_id, int period_id )
+    static public boolean hasPeriod ( JDBC jdbc, int application_id, int period_id )
     {
     String query = "select count(1) from jet_base_period where period_id = " + period_id + " and period_application_id = " + application_id;
     

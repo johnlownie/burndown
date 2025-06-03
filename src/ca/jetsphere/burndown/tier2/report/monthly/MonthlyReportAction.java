@@ -54,7 +54,7 @@ public class MonthlyReportAction extends AbstractAction
     
     qaf.setApplicationId ( application.getId() );
     
-    boolean isOkay = ApplicationYard.isPeriodOkay ( jdbc, qaf.getApplicationId(), qaf.getPeriodId() );
+    boolean isOkay = ApplicationYard.hasPeriod ( jdbc, qaf.getApplicationId(), qaf.getPeriodId() );
     
     if (!isOkay ) { qaf.setPeriodId ( application.getPeriodId() ); }
     

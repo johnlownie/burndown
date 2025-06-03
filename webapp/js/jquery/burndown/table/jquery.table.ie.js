@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    $("#table").find("th:last").addClass("all");
-
     var table = $("#table").dataTable({
         processing: false,
         ajax: {
