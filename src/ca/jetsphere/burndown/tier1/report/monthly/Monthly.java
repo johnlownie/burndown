@@ -55,7 +55,7 @@ public class Monthly
     sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
     
     sb.append ( account_id       > 0 ? " and transaction_account_id = " + account_id : "" );
-    sb.append ( category_id      > 0 ? " and p.category_id = " + category_id : "" );
+    sb.append ( category_id      > 0 ? " and (p.category_id = " + category_id + " or c.category_parent_id = " + category_id + ")" : "" );
     sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
     
     sb.append ( " group by concat(p.category_id, ':', p.category_depth, ':', p.category_name)" );
