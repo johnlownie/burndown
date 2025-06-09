@@ -88,13 +88,13 @@ public class Category extends ca.jetsphere.burndown.tier0.backbone.category.Cate
     sb.append ( "<div class=\"btn-group btn-group-sm node-buttons\">" );
     sb.append ( "<button class=\"btn btn-default btn-active-primary dropdown-toggle\" data-toggle=\"dropdown\" type=\"button\">" + Caption.get ( "action" ) + "<i class=\"dropdown-caret fa fa-caret-down\"></i></button>" );
     sb.append ( "<ul class=\"dropdown-menu dropdown-menu-right\">" );
-    sb.append ( "<li><a class=\"editBtn\" href=\"#\" data-id=\"" + uuid + "\">" + Caption.get ( "edit" ) + "</a></li>" );
-    sb.append ( "<li><a class=\"cutBtn\" href=\"#\" data-id=\"" + uuid + "\">" + Caption.get ( "cut" ) + "</a></li>" );
-    sb.append ( "<li class=\"divider\"></li>" );
+    if ( !getStatic() ) sb.append ( "<li><a class=\"editBtn\" href=\"#\" data-id=\"" + uuid + "\">" + Caption.get ( "edit" ) + "</a></li>" );
+    if ( !getStatic() ) sb.append ( "<li><a class=\"cutBtn\" href=\"#\" data-id=\"" + uuid + "\">" + Caption.get ( "cut" ) + "</a></li>" );
+    if ( !getStatic() ) sb.append ( "<li class=\"divider\"></li>" );
     sb.append ( "<li><a class=\"copyBtn\" href=\"#\" data-id=\"" + uuid + "\">" + Caption.get ( "copy" ) + "</a></li>" );
     sb.append ( "<li><a class=\"pasteBtn\" href=\"#\" data-id=\"" + uuid + "\">" + Caption.get ( "paste" ) + "</a></li>" );
 
-//    if ( getDepth() <= 0 ) { sb.append ( "</div>" ); return sb.toString(); }
+    if ( getDepth() <= 0 ) { sb.append ( "</div>" ); return sb.toString(); }
 
     sb.append ( "<li class=\"divider\"></li>" );
     sb.append ( "<li><a class=\"insertB4Btn\" href=\"#\" data-id=\"" + uuid + "\">" + Caption.get ( "insert.before" ) + "</a></li>" );

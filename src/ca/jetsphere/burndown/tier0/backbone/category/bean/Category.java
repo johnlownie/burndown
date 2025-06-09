@@ -22,6 +22,7 @@ abstract public class Category extends Tree
     String    category_name           ;
     boolean   category_included       ;
     boolean   category_fixed          ;
+    boolean   category_static         ;
     Timestamp category_last_update    ;
     Timestamp category_created        ;
 
@@ -41,6 +42,7 @@ abstract public class Category extends Tree
     setName          (  ""   );
     setIncluded      ( false );
     setFixed         ( false );
+    setStatic        ( false );
     setLastUpdate    ( null  );
     setCreated       ( null  );
     }
@@ -61,6 +63,7 @@ abstract public class Category extends Tree
     setName          ( ( ( Category ) category ).getName          () );
     setIncluded      ( ( ( Category ) category ).getIncluded      () );
     setFixed         ( ( ( Category ) category ).getFixed         () );
+    setStatic        ( ( ( Category ) category ).getStatic        () );
     setLastUpdate    ( ( ( Category ) category ).getLastUpdate    () );
     setCreated       ( ( ( Category ) category ).getCreated       () );
     }
@@ -81,6 +84,7 @@ abstract public class Category extends Tree
     setName          ( rs.getString    ( "category_name"           ) );
     setIncluded      ( rs.getBoolean   ( "category_included"       ) );
     setFixed         ( rs.getBoolean   ( "category_fixed"          ) );
+    setStatic        ( rs.getBoolean   ( "category_static"         ) );
     setLastUpdate    ( rs.getTimestamp ( "category_last_update"    ) );
     setCreated       ( rs.getTimestamp ( "category_created"        ) );
     }
@@ -104,6 +108,7 @@ abstract public class Category extends Tree
     public String    getName          () { return category_name           ; }
     public Boolean   getIncluded      () { return category_included       ; }
     public Boolean   getFixed         () { return category_fixed          ; }
+    public Boolean   getStatic        () { return category_static         ; }
     public Timestamp getLastUpdate    () { return category_last_update    ; }
     public Timestamp getCreated       () { return category_created        ; }
 
@@ -121,6 +126,7 @@ abstract public class Category extends Tree
     public void setName          ( String    category_name           ) { this.category_name           = category_name           ; }
     public void setIncluded      ( Boolean   category_included       ) { this.category_included       = category_included       ; }
     public void setFixed         ( Boolean   category_fixed          ) { this.category_fixed          = category_fixed          ; }
+    public void setStatic        ( Boolean   category_static         ) { this.category_static         = category_static         ; }
     public void setLastUpdate    ( Timestamp category_last_update    ) { this.category_last_update    = category_last_update    ; }
     public void setCreated       ( Timestamp category_created        ) { this.category_created        = category_created        ; }
 }
