@@ -1,5 +1,6 @@
 package ca.jetsphere.burndown.tier1.report.monthly;
 
+import ca.jetsphere.burndown.tier1.backbone.transaction.TransactionYard;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.bolt.rs.ResultSetBoltMap;
 import ca.jetsphere.core.common.CalendarYard;
@@ -16,7 +17,7 @@ public class Monthly
     /**
      *
      */
-    public String getMonthsQuery ( Pair[] monthDates )
+    public String getMonthsQuery ( Pair[] monthDates, int max_month )
     {
     StringBuilder sb = new StringBuilder();
 
@@ -30,6 +31,7 @@ public class Monthly
     }
 
     sb.append ( ", sum(transaction_amount) as 'Total'" );
+    sb.append ( ", sum(transaction_amount) div " + max_month + " as 'Avg/Month'" );
 
     return sb.toString();
     }
@@ -37,13 +39,13 @@ public class Monthly
     /**
      * 
      */
-    private String getQuery ( Pair[] monthDates, int application_id, int period_id, int account_id, int category_id, int transaction_type, String start_date, String end_date )
+    private String getQuery ( Pair[] monthDates, int application_id, int period_id, int account_id, int category_id, int transaction_type, String start_date, String end_date, int max_month )
     {
     StringBuilder sb = new StringBuilder();
 
     sb.append ( "select concat(p.category_id, ':', p.category_depth, ':', p.category_name) as 'Category'" );
 
-    sb.append ( getMonthsQuery ( monthDates ) );
+    sb.append ( getMonthsQuery ( monthDates, max_month ) );
     
     sb.append ( " from jet_burndown_category p" );
     sb.append ( " inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')" );
@@ -72,8 +74,10 @@ public class Monthly
     List<String> monthNames = CalendarYard.getMonthsBetween ( qaf.getStartDateAsString(), qaf.getEndDateAsString(), "yyyy-MM-dd", "MMM" );
 
     Pair[] monthDates = CalendarYard.getMonthDates ( qaf.getStartDateAsString(), monthNames.size() );
+    
+    int maxMonth = TransactionYard.maxMonth ( jdbc, qaf.getPeriodId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
 
-    String query = getQuery ( monthDates, qaf.getApplicationId(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
+    String query = getQuery ( monthDates, qaf.getApplicationId(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString(), maxMonth );
        
     return new ResultSetBoltMap ( jdbc, query );
     }

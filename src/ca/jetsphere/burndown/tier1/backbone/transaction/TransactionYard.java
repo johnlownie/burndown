@@ -14,6 +14,8 @@ import org.apache.struts.upload.FormFile;
 public class TransactionYard
 {
     static public int DEFAULT_CATEGORY = 1;
+    static public int TYPE_DEBIT = 1;
+    static public int TYPE_CREDIT = 2;
     
     /**
      * 
@@ -134,6 +136,18 @@ public class TransactionYard
     if ( !DockYard.isWhiteSpace ( end_date   ) ) sb.append ( " and t1.transaction_date <= " + DockYard.quote ( end_date ) );
     
     return sb.toString();
+    }
+    
+    /**
+     * 
+     */
+    static public int maxMonth ( JDBC jdbc, int period_id, String start_date, String end_date )
+    {
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append ( "select month(max(transaction_date)) from jet_burndown_transaction where transaction_period_id = " + period_id + " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
+    
+    return QueryYard.query ( jdbc, sb.toString() );
     }
   
     /**

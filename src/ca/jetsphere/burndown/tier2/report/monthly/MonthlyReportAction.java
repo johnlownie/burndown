@@ -2,6 +2,7 @@ package ca.jetsphere.burndown.tier2.report.monthly;
 
 import ca.jetsphere.burndown.tier1.backbone.account.AccountSession;
 import ca.jetsphere.burndown.tier1.backbone.category.CategorySession;
+import static ca.jetsphere.burndown.tier1.backbone.transaction.TransactionYard.TYPE_DEBIT;
 import ca.jetsphere.burndown.tier1.report.monthly.Monthly;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.bolt.rs.ResultSetBolt;
@@ -37,6 +38,8 @@ public class MonthlyReportAction extends AbstractAction
     String today = CalendarYard.now ( "yyyy-MM-dd" );
     
     qaf.setStartDateAsString ( CalendarYard.getFirstDayOfYear ( today ) ); qaf.setEndDateAsString ( CalendarYard.getLastDayOfYear ( today ) );
+    
+    qaf.setTypeId ( TYPE_DEBIT );
 
     AccountSession.query ( jdbc, store.getRequest(), application.getId(), true );
     

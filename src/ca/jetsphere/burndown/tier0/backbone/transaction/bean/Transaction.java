@@ -12,8 +12,6 @@ import java.sql.Timestamp;
  */
 abstract public class Transaction extends Bolt implements IBean
 {
-    enum Type { DEBIT, CREDIT }
-
     int       transaction_id           ;
     String    transaction_uuid         ;
     int       transaction_period_id    ;
