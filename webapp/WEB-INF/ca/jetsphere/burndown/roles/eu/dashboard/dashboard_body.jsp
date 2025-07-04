@@ -1,16 +1,47 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
-<div id="page-title"><h1 class="page-header text-overflow"><bean:message key="dashboard"/></h1></div>
+<%@ page import="ca.jetsphere.core.tier1.backbone.period.PeriodSession" %>
+<%@ page import="ca.jetsphere.core.tier1.backbone.period.PeriodYard" %>
+
+<% PeriodSession  periods  = PeriodSession .getInstance ( request ); request.setAttribute ( "periods" , periods .iterator ( PeriodYard.BY_ORDINAL ) ); %>
+
+<div id="page-title">
+
+<h1 class="page-header text-overflow"><bean:message key="dashboard"/></h1>
+
+<div class="searchbx">
+
+<div class="input-group custom-search-form" style="width: 100%;">
+
+<html:form action="/dashboard" method="post" styleId="queryForm" styleClass="form-horizontal">
+
+<html:select property="periodId" styleId="periodId" styleClass="form-control"><html:options collection="periods" property="id" labelProperty="name" /></html:select>
+
+</html:form>
+
+</div>
+
+</div>
+
+</div>
 
 <div id="page-content">
 
-<jsp:include page="dashboard_students.jsp" flush="true"/>
+<div class="row"><div class="col-sm-4">
 
-<jsp:include page="dashboard_order.jsp" flush="true"/>
+<jsp:include page="dashboard_by_category.jsp" flush="true"/>
 
-<jsp:include page="dashboard_order_entries.jsp" flush="true"/>
+</div><div class="col-sm-8">
+    
+<jsp:include page="dashboard_by_month.jsp" flush="true"/>
 
-<jsp:include page="dashboard_calendar.jsp" flush="true"/>
+</div></div>
+
+<div class="row"><div class="col-sm-12">
+    
+<jsp:include page="dashboard_transactions.jsp" flush="true"/>
+
+</div></div>
 
 </div>

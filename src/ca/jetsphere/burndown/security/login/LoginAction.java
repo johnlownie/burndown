@@ -29,8 +29,10 @@ public class LoginAction extends ca.jetsphere.core.security.login.LoginAction
 
     User whoAmI = UserYard.whoAmI ( store.getRequest() );
 
-    if ( !RoleYard.hasRole ( store.getRequest(), whoAmI, new String[] { "BD EU" } ) ) return super.getForward ( store);
+//    if ( !RoleYard.hasRole ( store.getRequest(), whoAmI, new String[] { "BD EU" } ) )
+        
+    return super.getForward ( store );
 
-    return store.getForward ( "period" );
+//    return store.getForward ( "period" );
     }
 }

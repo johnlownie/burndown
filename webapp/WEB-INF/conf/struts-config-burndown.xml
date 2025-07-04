@@ -93,9 +93,9 @@
 
       <!-- EU ACTIONS -->
 
-      <action name="[bb_query]" path="/my_dashboard" scope="session" type="ca.jetsphere.bd.tier2.roles.eu.dashboard.DashboardDoAction" validate="false">
+      <action name="[bb_query]" path="/dashboard" scope="session" type="ca.jetsphere.burndown.tier2.roles.eu.dashboard.DashboardDoAction" validate="false">
           <forward name="failure" path="/WEB-INF/ca/jetsphere/burndown/roles/eu/dashboard/dashboard.jsp" />
-          <forward name="success" path="/my_dashboard.do" redirect="true" />
+          <forward name="success" path="/dashboard.do" redirect="true" />
       </action>
 
   </action-mappings>
