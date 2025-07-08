@@ -5,7 +5,7 @@
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.transaction.TransactionSession" %>
 <%@ page import="ca.jetsphere.core.tier2.table.TableWriter" %>
 
-<div class="panel">
+<div id="transaction-panel" class="panel">
 <input type="hidden" name="typeId" id="typeId" value=""/>
 
 <div class="panel-heading">

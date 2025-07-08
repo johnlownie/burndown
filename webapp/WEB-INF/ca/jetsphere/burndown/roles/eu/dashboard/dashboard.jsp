@@ -12,4 +12,6 @@
 
 <tiles:put name="foot" value="/WEB-INF/ca/jetsphere/burndown/roles/eu/dashboard/dashboard_foot.jsp"/>
 
+<tiles:put name="tour" value="/WEB-INF/ca/jetsphere/burndown/roles/eu/dashboard/dashboard_tour.jsp"/>
+
 </tiles:insert>

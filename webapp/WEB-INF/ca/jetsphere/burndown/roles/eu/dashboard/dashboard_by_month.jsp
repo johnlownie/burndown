@@ -1,7 +1,7 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
-<div class="panel month">
+<div id="month-panel" class="panel month">
 
 <div class="panel-heading">
     

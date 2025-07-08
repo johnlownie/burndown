@@ -38,4 +38,16 @@
             display: none;
         }
     }
+    
+    .popover {
+        max-width: 25vw;
+    }
+    
+    .popover .btn-group {
+        margin-top: 0;
+    }
+    
+    .popover-title {
+        text-align: center;
+    }
 </style>
