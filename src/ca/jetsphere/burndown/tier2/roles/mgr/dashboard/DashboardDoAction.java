@@ -54,9 +54,11 @@ public class DashboardDoAction extends AbstractDoAction
         
         String start_date = ( String ) monthDates.getKey(); String end_date = ( String ) monthDates.getValue();
         
-        String categoryData = DashboardYard.getByCategory ( jdbc, qaf.getPeriodId(), category, start_date, end_date );
+        String categoryData = DashboardYard.getByCategory ( jdbc, qaf.getPeriodId(), application.getId(), category, start_date, end_date );
         
         String monthData = DashboardYard.getByMonth ( jdbc, application.getId(), qaf.getPeriodId(), category, start_date, end_date );
+        
+        String incomeData = DashboardYard.getByIncome ( jdbc, application.getId(), qaf.getPeriodId(), category, start_date, end_date );
 
         String transactionsTitle = DashboardYard.setTransactions ( jdbc, store.getRequest(), application.getId(), qaf.getPeriodId(), category.getName(), start_date, end_date );
         
@@ -68,15 +70,13 @@ public class DashboardDoAction extends AbstractDoAction
         
         String monthTitle = category.isValid() ? ": " + category.getName() : "";
 
-        jsonObject.put ( "categoryTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.category") + categoryTitle );
+        jsonObject.put ( "categoryTitle", Caption.get ( store.getRequest(), "dashboard.by.category") + categoryTitle );
         
-        jsonObject.put ( "monthTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.month") + monthTitle );
+        jsonObject.put ( "monthTitle", Caption.get ( store.getRequest(), "dashboard.by.month") + monthTitle );
 
-        jsonObject.put ( "categoryData", categoryData);
-
-        jsonObject.put ( "monthData", monthData);
+        jsonObject.put ( "categoryData", categoryData ); jsonObject.put ( "monthData", monthData ); jsonObject.put ( "incomeData", incomeData );
         
-        jsonObject.put ( "transactionsTitle", Caption.get ( store.getRequest(), "mgr.dashboard.by.transactions.debit") + ( !DockYard.isWhiteSpace ( transactionsTitle ) ? ": " + transactionsTitle : "" ) );
+        jsonObject.put ( "transactionsTitle", Caption.get ( store.getRequest(), "dashboard.by.transactions.debit") + ( !DockYard.isWhiteSpace ( transactionsTitle ) ? ": " + transactionsTitle : "" ) );
         
         jsonObject.put ( "showCatReset", category.isValid() );
 

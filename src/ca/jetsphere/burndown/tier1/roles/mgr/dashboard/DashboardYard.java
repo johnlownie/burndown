@@ -22,13 +22,13 @@ public class DashboardYard
     /**
      *
      */
-    static public String getByCategory ( JDBC jdbc, int period_id, Category category, String start_date, String end_date )
+    static public String getByCategory ( JDBC jdbc, int period_id, int application_id, Category category, String start_date, String end_date )
     {
     StringBuilder sb = new StringBuilder();
     
     sb.append ( "[" );
     
-    String query = getByCategoryQuery ( jdbc, period_id, category, start_date, end_date );
+    String query = getByCategoryQuery ( jdbc, period_id, application_id, category, start_date, end_date );
     
     Map<Integer, String> categories = QueryYard.getIntStringMap ( jdbc, query, 2, 1 );
     
@@ -53,7 +53,7 @@ public class DashboardYard
     /**
      *
      */
-    static private String getByCategoryQuery ( JDBC jdbc, int period_id, Category category, String start_date, String end_date )
+    static private String getByCategoryQuery ( JDBC jdbc, int period_id, int application_id, Category category, String start_date, String end_date )
     {
     StringBuilder sb = new StringBuilder();
     
@@ -64,6 +64,9 @@ public class DashboardYard
     sb.append ( " where transaction_period_id = " + period_id );
     
     if ( !DockYard.isWhiteSpace ( start_date ) ) { sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) ); }
+    
+    sb.append ( " and p.category_application_id = " + application_id );
+    
     if ( category.isValid() ) { sb.append ( " and p.category_parent_id = " + category.getId() ); }
     
     sb.append ( " and p.category_depth = " + ( category.getDepth() + 1 ) );
@@ -71,6 +74,48 @@ public class DashboardYard
     sb.append ( " group by p.category_name" );
     sb.append ( " order by concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/')" );
 
+    return sb.toString();
+    }
+    
+    /**
+     *
+     */
+    static public String getByIncome ( JDBC jdbc, int application_id, int period_id, Category category, String start_date, String end_date )
+    {
+    String query = getByIncomeQuery ( application_id, period_id, category );
+    
+    return QueryYard.query ( jdbc, query, 1 );
+    }
+    
+    /**
+     *
+     */
+    static private String getByIncomeQuery ( int application_id, int period_id, Category category )
+    {
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append ( "select concat('[', group_concat(t.MyObject), ']')" );
+    sb.append ( " from (" );
+    sb.append ( "  select json_object(" );
+    sb.append ( "    'month', upper(substring(date_format(date, '%M'), 1, 3))," );
+    sb.append ( "    'income', floor(abs(sum(if(transaction_type = 2, transaction_amount, 0))) / 100)," );
+    sb.append ( "    'spending', floor(abs(sum(if(transaction_type = 1, transaction_amount, 0))) / 100)" );
+    sb.append ( "  ) as 'MyObject' " );
+    sb.append ( "  from jet_base_date" );
+    sb.append ( "  inner join jet_burndown_transaction on transaction_date = date" );
+    sb.append ( "  inner join jet_burndown_category c on c.category_id = transaction_category_id" );
+    sb.append ( "  inner join jet_burndown_category p on (p.category_id = c.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
+    sb.append ( "  where transaction_period_id = " + period_id );
+
+    if ( category.isValid() ) { sb.append ( "  and p.category_parent_id = " + category.getId() ); }
+
+    sb.append ( "  and p.category_application_id = " + application_id );
+    sb.append ( "  and c.category_application_id = " + application_id );
+    sb.append ( "  and p.category_depth = " + ( category.getDepth() + 1 ) );
+    sb.append ( "  group by upper(substring(date_format(date, '%M'), 1, 3))" );
+    sb.append ( "  order by date" );
+    sb.append ( ") as t" );
+    
     return sb.toString();
     }
     
