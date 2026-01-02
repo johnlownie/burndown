@@ -6,8 +6,8 @@ import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
 import ca.jetsphere.core.jdbc.JDBC;
-import ca.jetsphere.core.tier1.backbone.company.Company;
-import ca.jetsphere.core.tier1.backbone.company.CompanySession;
+import ca.jetsphere.core.tier1.backbone.application.Application;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
 import ca.jetsphere.core.tier1.tree.OpenSet;
 import ca.jetsphere.core.tier1.tree.TreeYard;
 import ca.jetsphere.core.tier2.common.AbstractDoAction;
@@ -153,13 +153,13 @@ public class CategoryDoAction extends AbstractDoAction
      */
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
 
     qaf.getOpenSet().clear();
         
     DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
 
-    CategorySession categories = CategorySession.query ( jdbc, store.getRequest(), company.getId(), false );
+    CategorySession categories = CategorySession.query ( jdbc, store.getRequest(), application.getId(), false );
 
     return getForward ( store );
     }

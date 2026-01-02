@@ -5,8 +5,8 @@ import ca.jetsphere.burndown.tier1.backbone.account.AccountSession;
 import ca.jetsphere.burndown.tier2.backbone.common.QueryActionForm;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.jdbc.JDBC;
-import ca.jetsphere.core.tier1.backbone.company.Company;
-import ca.jetsphere.core.tier1.backbone.company.CompanySession;
+import ca.jetsphere.core.tier1.backbone.application.Application;
+import ca.jetsphere.core.tier1.backbone.application.ApplicationSession;
 import ca.jetsphere.core.tier2.common.AbstractDoAction;
 import ca.jetsphere.core.tier2.common.ActionStore;
 import ca.jetsphere.core.tier2.common.Errors;
@@ -33,9 +33,9 @@ public class AccountDoAction extends AbstractDoAction
     {
     try {
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
 
-        AccountSession accounts = AccountSession.query ( jdbc, store.getRequest(), company.getId(), false );
+        AccountSession accounts = AccountSession.query ( jdbc, store.getRequest(), application.getId(), false );
 
         store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
 
@@ -55,9 +55,9 @@ public class AccountDoAction extends AbstractDoAction
      */
     public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
     {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
 
-    AccountSession accounts = AccountSession.query ( jdbc, store.getRequest(), company.getId(), false );
+    AccountSession accounts = AccountSession.query ( jdbc, store.getRequest(), application.getId(), false );
 
     return getForward ( store );
     }
