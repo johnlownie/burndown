@@ -1,10 +1,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var donut = Morris.Donut({
-          element: 'by-category',
-          data: [ {value: 0} ],
-          formatter: function (x) { return x + "%"},
-          colors: [
+            element: 'by-category',
+            data: [ {value: 0} ],
+            formatter: function (x) { return x + '%';},
+            colors: [
               '#8fbcbb',
               '#88c0d0',
               '#81a1c1',
@@ -16,8 +16,8 @@
               '#c19f62',
               '#b490b0',
               '#cf886f'
-          ],
-          donutType: 'pie'
+            ],
+            donutType: 'pie'
         }).on('click', function(i, row){
             getTransactionData("&category=" + row.label);
         });
@@ -31,6 +31,15 @@
             stacked: true
         }).on('click', function(i, row){
             getTransactionData("&month=" + row.month);
+        });
+        
+        var area = Morris.Area({
+            element: 'by-income',
+            behaveLikeLine: true,
+            data: [ {value: 0} ],
+            xkey: 'month',
+            ykeys: ['income', 'spending'],
+            labels: ['Income', 'Spending']
         });
 
         var table = $("#table").dataTable({
@@ -68,6 +77,7 @@
                 $('#transactions-title span').text(response.transactionsTitle);
                 donut.setData(response.categoryData);
                 bar.setData(response.monthData);
+                area.setData(response.incomeData);
                 $("#table").dataTable().api().ajax.reload();
                 if (response.showCatReset) {
                     $('#resetCat').show();

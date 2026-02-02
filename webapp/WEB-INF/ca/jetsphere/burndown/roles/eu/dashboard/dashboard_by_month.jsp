@@ -7,7 +7,7 @@
     
 <h3 id="by-month-title" class="panel-title">
     
-<span><bean:message key="mgr.dashboard.by.month"/></span>
+<span><bean:message key="dashboard.by.month"/></span>
 
 <div class="button-wrapper pull-right"><button id="resetMth" class="btn btn-primary"><bean:message key="reset"/></button></div>
 

@@ -12,7 +12,7 @@
     
 <h3 id="transactions-title" class="panel-title">
     
-<span><bean:message key="mgr.dashboard.by.transactions.debit"/></span>
+<span><bean:message key="dashboard.by.transactions.debit"/></span>
 
 <div class="btn-group pull-right" role="group">
     
