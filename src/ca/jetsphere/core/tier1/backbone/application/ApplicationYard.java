@@ -90,7 +90,7 @@ public class ApplicationYard
 
     sb.append ( "select distinct jet_base_application.* from jet_base_user" );
     sb.append ( " inner join jet_base_role on find_in_set (role_id, user_role_ids)" );
-    sb.append ( " inner join jet_base_compnay on company_id = role_company_id" );
+    sb.append ( " inner join jet_base_company on company_id = role_company_id" );
     sb.append ( " inner join jet_base_application on application_company_id = company_id" );
     sb.append ( " where user_id = " + user.getId() );
 
