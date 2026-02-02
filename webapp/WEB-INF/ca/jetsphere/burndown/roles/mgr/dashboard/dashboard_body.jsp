@@ -42,12 +42,6 @@
 
 <div class="row"><div class="col-sm-12">
     
-<jsp:include page="dashboard_by_income.jsp" flush="true"/>
-
-</div></div>
-
-<div class="row"><div class="col-sm-12">
-    
 <jsp:include page="dashboard_transactions.jsp" flush="true"/>
 
 </div></div>
