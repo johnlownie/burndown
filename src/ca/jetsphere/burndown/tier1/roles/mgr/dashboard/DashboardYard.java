@@ -139,15 +139,31 @@ public class DashboardYard
     sb.append ( "select concat('[', group_concat(t.MyObject), ']')" );
     sb.append ( " from (" );
     sb.append ( "  select json_object(" );
-    sb.append ( "    'month', upper(substring(date_format(date, '%M'), 1, 3)), " );
+    
+    if ( period_id == 0 )
+    {
+    sb.append ( "    'month', concat(upper(substring(date_format(date, '%M'), 1, 3)), ' ', date_format(date, '%Y')), " );
+    } else {
+    sb.append ( "    'month', upper(substring(date_format(date, '%M'), 1, 3))," );
+    }
+    
     sb.append ( "    'fixed', floor(abs(sum(if(c.category_fixed, transaction_amount, 0))) / 100)," );
     sb.append ( "    'discretionary', floor(abs(sum(if(!c.category_fixed, transaction_amount, 0))) / 100)" );
     sb.append ( "  ) as 'MyObject' " );
     sb.append ( "  from jet_base_date" );
     sb.append ( "  inner join jet_burndown_transaction on transaction_date = date" );
+    sb.append ( "  inner join jet_base_period on period_id = transaction_period_id" );
     sb.append ( "  inner join jet_burndown_category c on c.category_id = transaction_category_id" );
     sb.append ( "  inner join jet_burndown_category p on (p.category_id = c.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
+    
+    if ( period_id == 0 )
+    {
+    sb.append ( "  where date > DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH), '%Y-%m-01')" );
+    sb.append ( "  and period_application_id = " + application_id );
+    } else {
     sb.append ( "  where transaction_period_id = " + period_id );
+    }
+    
     sb.append ( "  and transaction_type = 1" );
 
     if ( category.isValid() ) { sb.append ( "  and p.category_parent_id = " + category.getId() ); }
