@@ -61,7 +61,15 @@ public class DashboardYard
     sb.append ( " from jet_burndown_category p" );
     sb.append ( " inner join jet_burndown_category c on (c.category_id = p.category_id or c.category_parent_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%'))" );
     sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id" );
-    sb.append ( " where transaction_period_id = " + period_id );
+    sb.append ( " inner join jet_base_period on period_id = transaction_period_id" );
+    
+    if ( period_id == 0 )
+    {
+    sb.append ( "  where transaction_date > DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH), '%Y-%m-01')" );
+    sb.append ( "  and period_application_id = " + application_id );
+    } else {
+    sb.append ( "  where transaction_period_id = " + period_id );
+    }
     
     if ( !DockYard.isWhiteSpace ( start_date ) ) { sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) ); }
     
@@ -142,7 +150,7 @@ public class DashboardYard
     
     if ( period_id == 0 )
     {
-    sb.append ( "    'month', concat(upper(substring(date_format(date, '%M'), 1, 3)), ' ', date_format(date, '%Y')), " );
+    sb.append ( "    'month', concat(upper(substring(date_format(date, '%M'), 1, 3)), ' ', date_format(date, '%Y'))," );
     } else {
     sb.append ( "    'month', upper(substring(date_format(date, '%M'), 1, 3))," );
     }
@@ -172,7 +180,13 @@ public class DashboardYard
     sb.append ( "  and c.category_application_id = " + application_id );
     sb.append ( "  and p.category_depth = " + ( category.getDepth() + 1 ) );
     sb.append ( "  and p.category_included and c.category_included" );
+    
+    if ( period_id == 0 )
+    {
+    sb.append ( "  group by concat(upper(substring(date_format(date, '%M'), 1, 3)), ' ', date_format(date, '%Y'))" );
+    } else {
     sb.append ( "  group by upper(substring(date_format(date, '%M'), 1, 3))" );
+    }
     sb.append ( "  order by date" );
     sb.append ( " ) as t" );
     
@@ -239,7 +253,7 @@ public class DashboardYard
     
     if ( DockYard.isWhiteSpace ( category_name ) && DockYard.isWhiteSpace ( start_date ) )
     
-    { query = TransactionYard.getLatestQuery ( period_id ); }
+    { query = TransactionYard.getLatestQuery ( application_id, period_id ); }
     
     else
         

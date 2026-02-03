@@ -97,9 +97,24 @@ public class TransactionYard
     /**
      * 
      */
-    static public String getLatestQuery ( int period_id )
-
-    { return "select * from jet_burndown_transaction where transaction_period_id = " + period_id + " and transaction_type = 1 order by transaction_date desc limit 20";}
+    static public String getLatestQuery ( int application_id, int period_id )
+    {
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append ( "select jet_burndown_transaction.* from jet_burndown_transaction inner join jet_base_period on period_id = transaction_period_id" );
+    
+    if ( period_id == 0 )
+    {
+    sb.append ( " where transaction_date > DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 12 MONTH), '%Y-%m-01')" );
+    sb.append ( " and period_application_id = " + application_id );
+    } else {
+    sb.append ( " where transaction_period_id = " + period_id );
+    }
+     
+    sb.append ( " and transaction_type = 1 order by transaction_date desc limit 20" );
+   
+    return sb.toString();
+    }
 
     /**
      *

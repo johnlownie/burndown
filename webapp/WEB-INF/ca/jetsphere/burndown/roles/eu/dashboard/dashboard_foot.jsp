@@ -32,15 +32,15 @@
         }).on('click', function(i, row){
             getTransactionData("&month=" + row.month);
         });
-        
-        var area = Morris.Area({
-            element: 'by-income',
-            behaveLikeLine: true,
-            data: [ {value: 0} ],
-            xkey: 'month',
-            ykeys: ['income', 'spending'],
-            labels: ['Income', 'Spending']
-        });
+//        
+//        var area = Morris.Area({
+//            element: 'by-income',
+//            behaveLikeLine: true,
+//            data: [ {value: 0} ],
+//            xkey: 'month',
+//            ykeys: ['income', 'spending'],
+//            labels: ['Income', 'Spending']
+//        });
 
         var table = $("#table").dataTable({
             processing: false,
