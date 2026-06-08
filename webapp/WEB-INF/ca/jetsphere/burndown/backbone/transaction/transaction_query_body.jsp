@@ -2,6 +2,7 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.account.AccountSession" %>
+<%@ page import="ca.jetsphere.burndown.tier1.backbone.account.AccountYard" %>
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategorySession" %>
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.category.CategoryYard" %>
 <%@ page import="ca.jetsphere.burndown.tier1.backbone.transaction.Transaction" %>
@@ -11,7 +12,7 @@
 <%@ page import="ca.jetsphere.core.tier2.table.TableWriter" %>
 
 <% PeriodSession  periods  = PeriodSession .getInstance ( request ); request.setAttribute ( "periods" , periods .iterator ( PeriodYard.BY_ORDINAL ) ); %>
-<% AccountSession accounts = AccountSession.getInstance ( request ); request.setAttribute ( "accounts", accounts.iterator() ); %>
+<% AccountSession accounts = AccountSession.getInstance ( request ); request.setAttribute ( "accounts", accounts.iterator ( AccountYard.BY_NAME ) ); %>
 <% CategorySession categories = CategorySession.getInstance ( request ); request.setAttribute ( "categories", categories.iterator ( CategoryYard.BY_ORDINAL ) ); %>
 
 <div id="page-content"><div class="panel" data-title="<bean:message key="add.edit.bolt" arg0="Transaction"/>">

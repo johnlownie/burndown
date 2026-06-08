@@ -25,6 +25,12 @@
 
 </div><div class="form-group">
 
+<label class="col-md-4 control-label"><bean:message key="account.secondary"/></label>
+
+<div class="col-md-6"><html:text property="secondary" styleId="secondary" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
 <label class="col-md-4 control-label"><bean:message key="account.bank.id"/></label>
 
 <div class="col-md-6"><html:text property="bankId" styleId="bankId" styleClass="form-control"/></div>

@@ -45,12 +45,12 @@ public class Account extends ca.jetsphere.burndown.tier0.backbone.account.Accoun
     /**
      *
      */
-    static public String [] captions() { return new String [] { "account.name", "account.type", "account.number", "account.bank.id", "account.url", "last.update", "actions" }; }
+    static public String [] captions() { return new String [] { "account.name", "account.type", "account.number", "account.secondary", "account.bank.id", "account.url", "last.update", "actions" }; }
 
     /**
      *
      */
-    static public String [] fields() { return new String [] { "account_name", "account_type", "account_number", "account_bank_id", "account_url", "account_last_update", "account_uuid" }; }
+    static public String [] fields() { return new String [] { "account_name", "account_type", "account_number", "account_secondary", "account_bank_id", "account_url", "account_last_update", "account_uuid" }; }
 
     /**
      *
@@ -65,5 +65,5 @@ public class Account extends ca.jetsphere.burndown.tier0.backbone.account.Accoun
     /**
      * 
      */
-    public String getNameNumber() { return getName() + " - *" + getNumber().substring ( getNumber().length() - 4 ); }
+    public String getNameNumber() { return getName() + " - *" + getNumber().substring ( getNumber().length() - 4 ) + ( !DockYard.isWhiteSpace ( getSecondary() ) ?  " / *" + getSecondary().substring ( getSecondary().length() - 4 ) : "" ); }
 }

@@ -28,8 +28,8 @@ public class AccountDao extends AbstractDao
     Account account = ( Account ) bolt;
 
     String s = "insert into jet_burndown_account" +
-            " ( account_uuid, account_application_id, account_name, account_type, account_number, account_bank_id, account_url, account_last_update, account_created )" +
-            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+            " ( account_uuid, account_application_id, account_name, account_type, account_number, account_secondary, account_bank_id, account_url, account_last_update, account_created )" +
+            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
     ps.setStatement ( s, new String [] { "account_id" } );
 
@@ -40,10 +40,11 @@ public class AccountDao extends AbstractDao
     ps.setString    (  3, account.getName          () );
     ps.setString    (  4, account.getType          () );
     ps.setString    (  5, account.getNumber        () );
-    ps.setString    (  6, account.getBankId        () );
-    ps.setString    (  7, account.getUrl           () );
-    ps.setTimestamp (  8, account.getLastUpdate    () );
-    ps.setTimestamp (  9, account.getCreated       () );
+    ps.setString    (  6, account.getSecondary     () );
+    ps.setString    (  7, account.getBankId        () );
+    ps.setString    (  8, account.getUrl           () );
+    ps.setTimestamp (  9, account.getLastUpdate    () );
+    ps.setTimestamp ( 10, account.getCreated       () );
     }
 
     /**
@@ -53,7 +54,7 @@ public class AccountDao extends AbstractDao
     {
     Account account = ( Account ) bolt;
 
-    String s = "update jet_burndown_account set account_uuid = ?, account_application_id = ?, account_name = ?, account_type = ?, account_number = ?, account_bank_id = ?, account_url = ?, account_last_update = ? where account_id = ?";
+    String s = "update jet_burndown_account set account_uuid = ?, account_application_id = ?, account_name = ?, account_type = ?, account_number = ?, account_secondary = ?, account_bank_id = ?, account_url = ?, account_last_update = ? where account_id = ?";
 
     ps.setStatement ( s );
 
@@ -64,9 +65,10 @@ public class AccountDao extends AbstractDao
     ps.setString    (  3, account.getName          () );
     ps.setString    (  4, account.getType          () );
     ps.setString    (  5, account.getNumber        () );
-    ps.setString    (  6, account.getBankId        () );
-    ps.setString    (  7, account.getUrl           () );
-    ps.setTimestamp (  8, account.getLastUpdate    () );
-    ps.setInt       (  9, account.getId            () );
+    ps.setString    (  6, account.getSecondary     () );
+    ps.setString    (  7, account.getBankId        () );
+    ps.setString    (  8, account.getUrl           () );
+    ps.setTimestamp (  9, account.getLastUpdate    () );
+    ps.setInt       ( 10, account.getId            () );
     }
 }

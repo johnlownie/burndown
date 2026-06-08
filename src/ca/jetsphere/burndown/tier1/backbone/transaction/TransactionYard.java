@@ -81,7 +81,12 @@ public class TransactionYard
 
     sb.append ( " where transaction_name = " + DockYard.quote ( transaction.getName() ) );
     
-    if ( transaction.getAccount().length() > 4 ) sb.append ( " and account_number like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 4 ) ) );
+    if ( transaction.getAccount().length() > 4 )
+    {
+    sb.append ( " and (account_number like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 4 ) ) );
+    
+    sb.append ( " or account_secondary like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 4 ) ) + ")" );
+    }
     
     sb.append ( " and transaction_type = " + transaction.getType () );
     
