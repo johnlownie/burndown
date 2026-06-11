@@ -758,6 +758,8 @@ public class DockYard
 
     if ( o.getClass() == Boolean   .class ) return toInteger ( ( Boolean    ) o );
 
+    if ( o.getClass() == Double    .class ) return toInteger ( ( Double     ) o );
+
     if ( o.getClass() == Long      .class ) return toInteger ( ( Long       ) o );
 
     if ( o.getClass() == BigDecimal.class ) return toInteger ( ( BigDecimal ) o );
@@ -788,6 +790,12 @@ public class DockYard
      */
 
     static public int toInteger ( Boolean b ) { return b.booleanValue() ? 1 : 0; }
+
+    /**
+     *
+     */
+
+    static public int toInteger ( Double d ) { return d.intValue(); }
 
     /**
      *

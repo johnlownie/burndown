@@ -29,6 +29,20 @@ public class AccountYard
     /**
      * 
      */
+    
+    static public int getId ( JDBC jdbc, String account_number )
+    {
+    String query = "select * from jet_burndown_account where account_number like '%" + account_number + "%' or account_secondary like '%" + account_number + "%'";
+    
+    Account account = new Account(); account.query ( jdbc, query );
+    
+    return account.getId();
+    }
+    
+    /**
+     * 
+     */
+            
     static public String getNumber ( int account_id )
     {
     String query = "select concat(account_name, ' - *', substring(account_number, -4, 4), case when account_secondary != '' then concat(' / *', substring(account_secondary, -4, 4)) else '' end) from jet_burndown_account where account_id = " + account_id;
@@ -39,6 +53,7 @@ public class AccountYard
     /**
      * 
      */
+    
     static public Account getOrCreate ( JDBC jdbc, String number, String type, String bank_id )
     {
     Account account = new Account(); StringBuilder sb = new StringBuilder();

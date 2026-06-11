@@ -1,9 +1,15 @@
 package ca.jetsphere.burndown.tier1.backbone.transaction;
 
+import ca.jetsphere.burndown.tier1.backbone.account.AccountYard;
+import ca.jetsphere.core.common.CalendarYard;
 import ca.jetsphere.core.common.Common;
 import ca.jetsphere.core.common.DockYard;
+import ca.jetsphere.core.csv.ExcelCSVParser;
 import ca.jetsphere.core.jdbc.JDBC;
 import ca.jetsphere.core.jdbc.QueryYard;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.upload.FormFile;
@@ -57,11 +63,11 @@ public class TransactionYard
      */
     static public int getCategoryIdBySimilarTransaction ( JDBC jdbc, String name )
     {
-    StringBuilder sb = new StringBuilder(); Transaction similar = new Transaction();
+    Transaction similar = new Transaction();
     
-    sb.append ( "select * from jet_burndown_transaction where transaction_name like " + DockYard.quote ( name.substring ( 0, name.length() > 14 ? 14 : name.length() ) + "%" ) + " limit 1" );
+    String query = "select * from jet_burndown_transaction where transaction_name like " + DockYard.quote ( name.substring ( 0, name.length() > 14 ? 14 : name.length() ) + "%" ) + " limit 1";
     
-    similar.query ( jdbc, sb.toString() );
+    similar.query ( jdbc, query );
     
     return similar.isValid() ? similar.getCategoryId() : DEFAULT_CATEGORY;
     }
@@ -81,11 +87,11 @@ public class TransactionYard
 
     sb.append ( " where transaction_name = " + DockYard.quote ( transaction.getName() ) );
     
-    if ( transaction.getAccount().length() > 4 )
+    if ( transaction.getAccount().length() > 8 )
     {
-    sb.append ( " and (account_number like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 4 ) ) );
+    sb.append ( " and (account_number like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 8 ) ) );
     
-    sb.append ( " or account_secondary like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 4 ) ) + ")" );
+    sb.append ( " or account_secondary like " + DockYard.quote ( "%" + transaction.getAccount().substring ( transaction.getAccount().length() - 8 ) ) + ")" );
     }
     
     sb.append ( " and transaction_type = " + transaction.getType () );
@@ -174,6 +180,84 @@ public class TransactionYard
      *
      */
     static public void parseAttachment ( JDBC jdbc, TransactionSession transactions, FormFile formFile )
+    {
+    if ( formFile == null || formFile.getFileSize() == 0 ) return;
+    
+    switch ( formFile.getContentType() ) {
+        
+    case "text/csv" : parseAttachmentCsv ( jdbc, transactions, formFile );
+        
+    default         : parseAttachmentOfx ( jdbc, transactions, formFile );
+    }
+    }
+  
+    /**
+     *
+     */
+    static public void parseAttachmentCsv ( JDBC jdbc, TransactionSession transactions, FormFile formFile )
+    {
+    if ( formFile == null || formFile.getFileSize() == 0 ) return;
+
+    try {
+    
+        String[][] values = ExcelCSVParser.parse ( new InputStreamReader ( formFile.getInputStream(), StandardCharsets.UTF_8 ) );
+        
+        if ( values == null || values[0].length == 0 ) return;
+        
+        String[] parts = formFile.getFileName().split ( "-" ); String accountName = parts[4];
+        
+        int accountId = AccountYard.getId ( jdbc, accountName );
+        
+        for ( int i = 1; i < values[0].length; i++ ) {
+            
+            Transaction transaction = new Transaction();
+            
+            transaction.setId ( i ); transaction.setAccountId ( accountId ); transaction.setAccount ( accountName );
+            
+            for ( int j = 0; j < values[i].length; j++ ) {
+                
+                if ( j == 0 ) {
+                    
+                    Date date = CalendarYard.getDate ( values[i][j], "yyyy-MM-dd" );
+                    
+                    if ( date == null ) continue;
+                    
+                    transaction.setDateAsString ( values[i][j] );
+                }
+                
+                if ( j == 2 ) { 
+                    
+                    transaction.setName ( values[i][j] );
+                    
+                    int similar = TransactionYard.getCategoryIdBySimilarTransaction ( jdbc, transaction.getName() );
+                    
+                    transaction.setCategoryId ( similar );
+
+                    if ( similar > 0 ) { try { transaction.foreign ( jdbc ); } catch ( Exception e ) { Common.trace ( e ); } }
+                }
+                
+                if ( j == 3 ) {
+                    
+                    int amount = DockYard.toInt ( DockYard.toDouble ( values[i][j] ) * 100 );
+                    
+                    transaction.setAmount ( amount );
+                    
+                    transaction.setType ( amount > 0 ? TYPE_CREDIT : TYPE_DEBIT );
+                    
+                }
+            }
+            
+            transactions.add ( transaction );
+        }
+
+    } catch ( Exception e ) { Common.trace ( e ); }
+
+    }
+  
+    /**
+     *
+     */
+    static public void parseAttachmentOfx ( JDBC jdbc, TransactionSession transactions, FormFile formFile )
     {
     if ( formFile == null || formFile.getFileSize() == 0 ) return;
 

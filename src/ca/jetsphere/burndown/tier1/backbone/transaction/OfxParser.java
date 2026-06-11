@@ -226,6 +226,7 @@ public class OfxParser
     String ls = System.getProperty("line.separator");
     
     try {
+        
         while ( ( line=reader.readLine() ) != null ) 
         
         { stringBuilder.append ( line ); stringBuilder.append ( ls ); }
