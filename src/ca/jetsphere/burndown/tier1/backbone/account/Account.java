@@ -9,61 +9,75 @@ import java.sql.ResultSet;
 /**
  *
  */
-
-public class Account extends ca.jetsphere.burndown.tier0.backbone.account.Account
-{
-    /**
-     *
-     */
-    public Account() { super(); }
+public class Account extends ca.jetsphere.burndown.tier0.backbone.account.Account {
 
     /**
      *
      */
-
-    public Account ( Account account ) { this(); copy ( account ); }
-
-    /**
-     *
-     */
-    public Account ( JDBC jdbc )
-
-    { super(); query ( jdbc, "select * from jet_burndown_account"); }
-
-    /**
-     *
-     */
-    public Account ( JDBC jdbc, int account_id ) throws Exception { super ( jdbc, account_id ); }
-
-    /**
-     *
-     */
-    public Account ( JDBC jdbc, ResultSet rs ) throws Exception
-
-    { this(); get ( jdbc, rs ); }
-
-    /**
-     *
-     */
-    static public String [] captions() { return new String [] { "account.name", "account.type", "account.number", "account.secondary", "account.bank.id", "account.url", "last.update", "actions" }; }
-
-    /**
-     *
-     */
-    static public String [] fields() { return new String [] { "account_name", "account_type", "account_number", "account_secondary", "account_bank_id", "account_url", "account_last_update", "account_uuid" }; }
-
-    /**
-     *
-     */
-    public Object get ( String s )
-    {
-    if ( "account_url" .equals ( s ) ) return DockYard.getHref ( Caption.get ( "sign.in" ), getUrl(), true );
-
-    return super.get ( s );
+    public Account() {
+        super();
     }
-    
+
     /**
-     * 
+     *
      */
-    public String getNameNumber() { return getName() + " - *" + getNumber().substring ( getNumber().length() - 4 ) + ( !DockYard.isWhiteSpace ( getSecondary() ) ?  " / *" + getSecondary().substring ( getSecondary().length() - 4 ) : "" ); }
+    public Account(Account account) {
+        this();
+        copy(account);
+    }
+
+    /**
+     *
+     */
+    public Account(JDBC jdbc) {
+        super();
+        query(jdbc, "select * from jet_burndown_account");
+    }
+
+    /**
+     *
+     */
+    public Account(JDBC jdbc, int account_id) throws Exception {
+        super(jdbc, account_id);
+    }
+
+    /**
+     *
+     */
+    public Account(JDBC jdbc, ResultSet rs) throws Exception {
+        this();
+        get(jdbc, rs);
+    }
+
+    /**
+     *
+     */
+    static public String[] captions() {
+        return new String[]{"account.name", "account.type", "account.number", "account.secondary", "account.bank.id", "account.url", "last.update", "actions"};
+    }
+
+    /**
+     *
+     */
+    static public String[] fields() {
+        return new String[]{"account_name", "account_type", "account_number", "account_secondary", "account_bank_id", "account_url", "account_last_update", "account_uuid"};
+    }
+
+    /**
+     *
+     */
+    public Object get(String s) {
+        if ("account_url".equals(s)) {
+            return DockYard.getHref(Caption.get("sign.in"), getUrl(), true);
+        }
+
+        return super.get(s);
+    }
+
+    /**
+     *
+     */
+    public String getNameNumber() {
+        return getName() + " - *" + getNumber().substring(getNumber().length() - 4) + (!DockYard.isWhiteSpace(getSecondary()) ? " / *" + getSecondary().substring(getSecondary().length() - 4) : "");
+    }
 }

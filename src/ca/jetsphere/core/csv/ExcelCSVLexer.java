@@ -5,18 +5,21 @@ import java.io.*;
 /**
  *
  */
+class ExcelCSVLexer {
 
-
-class ExcelCSVLexer
-{
-
-    /** This character denotes the end of file */
+    /**
+     * This character denotes the end of file
+     */
     public static final int YYEOF = -1;
 
-    /** initial size of the lookahead buffer */
+    /**
+     * initial size of the lookahead buffer
+     */
     private static final int ZZ_BUFFERSIZE = 16384;
 
-    /** lexical states */
+    /**
+     * lexical states
+     */
     public static final int BEFORE = 1;
     public static final int YYINITIAL = 0;
     public static final int COMMENT = 3;
@@ -30,36 +33,35 @@ class ExcelCSVLexer
     /**
      * Translates characters to character classes
      */
-    private static final char[] ZZ_CMAP = zzUnpackCMap ( ZZ_CMAP_PACKED );
-    private static       char[] zzcmap_instance;
+    private static final char[] ZZ_CMAP = zzUnpackCMap(ZZ_CMAP_PACKED);
+    private static char[] zzcmap_instance;
 
     /**
      * Translates DFA states to action switch labels.
      */
-    private static final int[] ZZ_ACTION = zzUnpackAction ();
+    private static final int[] ZZ_ACTION = zzUnpackAction();
 
     private static final String ZZ_ACTION_PACKED_0 = "\2\0\2\1\1\2\2\3\1\4\1\5\1\6\2\7\1\10\1\11\1\1\1\12\1\1\1\13\1\14";
 
-    private static int[] zzUnpackAction ()
-    {
-        int[] result = new int[19 ];
+    private static int[] zzUnpackAction() {
+        int[] result = new int[19];
         int offset = 0;
-        offset = zzUnpackAction ( ZZ_ACTION_PACKED_0, offset, result );
+        offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
         return result;
     }
 
-    private static int zzUnpackAction ( String packed, int offset, int[] result )
-    {
-        int i = 0; /* index in packed string  */
-        int j = offset; /* index in unpacked array */
-        int l = packed.length ();
-        while ( i < l )
-        {
-            int count = packed.charAt ( i++ );
-            int value = packed.charAt ( i++ );
-            do
-                result[ j++ ] = value;
-            while ( --count > 0 );
+    private static int zzUnpackAction(String packed, int offset, int[] result) {
+        int i = 0;
+        /* index in packed string  */
+        int j = offset;
+        /* index in unpacked array */
+        int l = packed.length();
+        while (i < l) {
+            int count = packed.charAt(i++);
+            int value = packed.charAt(i++);
+            do {
+                result[j++] = value;
+            } while (--count > 0);
         }
         return j;
     }
@@ -67,30 +69,29 @@ class ExcelCSVLexer
     /**
      * Translates a state to a row index in the transition table
      */
-    private static final int[] ZZ_ROWMAP = zzUnpackRowMap ();
+    private static final int[] ZZ_ROWMAP = zzUnpackRowMap();
 
-    private static final String ZZ_ROWMAP_PACKED_0 =
-        "\0\0\0\5\0\12\0\17\0\24\0\31\0\36\0\36" +
-        "\0\43\0\50\0\55\0\36\0\36\0\62\0\67\0\36" +
-        "\0\74\0\101\0\106";
+    private static final String ZZ_ROWMAP_PACKED_0
+            = "\0\0\0\5\0\12\0\17\0\24\0\31\0\36\0\36"
+            + "\0\43\0\50\0\55\0\36\0\36\0\62\0\67\0\36"
+            + "\0\74\0\101\0\106";
 
-    private static int[] zzUnpackRowMap ()
-    {
-        int[] result = new int[19 ];
+    private static int[] zzUnpackRowMap() {
+        int[] result = new int[19];
         int offset = 0;
-        offset = zzUnpackRowMap ( ZZ_ROWMAP_PACKED_0, offset, result );
+        offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
         return result;
     }
 
-    private static int zzUnpackRowMap ( String packed, int offset, int[] result )
-    {
-        int i = 0; /* index in packed string  */
-        int j = offset; /* index in unpacked array */
-        int l = packed.length ();
-        while ( i < l )
-        {
-            int high = packed.charAt ( i++ ) << 16;
-            result[ j++ ] = high | packed.charAt ( i++ );
+    private static int zzUnpackRowMap(String packed, int offset, int[] result) {
+        int i = 0;
+        /* index in packed string  */
+        int j = offset;
+        /* index in unpacked array */
+        int l = packed.length();
+        while (i < l) {
+            int high = packed.charAt(i++) << 16;
+            result[j++] = high | packed.charAt(i++);
         }
         return j;
     }
@@ -98,37 +99,36 @@ class ExcelCSVLexer
     /**
      * The transition table of the DFA
      */
-    private static final int[] ZZ_TRANS = zzUnpackTrans ();
+    private static final int[] ZZ_TRANS = zzUnpackTrans();
 
-    private static final String ZZ_TRANS_PACKED_0 =
-        "\1\5\1\6\1\7\1\10\1\11\1\12\1\13\1\14" +
-        "\1\15\1\16\1\17\1\6\1\7\1\20\1\17\1\21" +
-        "\1\6\1\7\2\21\1\5\3\0\1\5\2\0\1\7" +
-        "\7\0\4\11\1\22\1\12\3\0\1\12\2\0\1\14" +
-        "\2\0\4\16\1\23\1\17\3\0\1\17\1\21\2\0" +
-        "\2\21\4\0\1\11\4\0\1\16";
+    private static final String ZZ_TRANS_PACKED_0
+            = "\1\5\1\6\1\7\1\10\1\11\1\12\1\13\1\14"
+            + "\1\15\1\16\1\17\1\6\1\7\1\20\1\17\1\21"
+            + "\1\6\1\7\2\21\1\5\3\0\1\5\2\0\1\7"
+            + "\7\0\4\11\1\22\1\12\3\0\1\12\2\0\1\14"
+            + "\2\0\4\16\1\23\1\17\3\0\1\17\1\21\2\0"
+            + "\2\21\4\0\1\11\4\0\1\16";
 
-    private static int[] zzUnpackTrans ()
-    {
-        int[] result = new int[75 ];
+    private static int[] zzUnpackTrans() {
+        int[] result = new int[75];
         int offset = 0;
-        offset = zzUnpackTrans ( ZZ_TRANS_PACKED_0, offset, result );
+        offset = zzUnpackTrans(ZZ_TRANS_PACKED_0, offset, result);
         return result;
     }
 
-    private static int zzUnpackTrans ( String packed, int offset, int[] result )
-    {
-        int i = 0; /* index in packed string  */
-        int j = offset; /* index in unpacked array */
-        int l = packed.length ();
-        while ( i < l )
-        {
-            int count = packed.charAt ( i++ );
-            int value = packed.charAt ( i++ );
+    private static int zzUnpackTrans(String packed, int offset, int[] result) {
+        int i = 0;
+        /* index in packed string  */
+        int j = offset;
+        /* index in unpacked array */
+        int l = packed.length();
+        while (i < l) {
+            int count = packed.charAt(i++);
+            int value = packed.charAt(i++);
             value--;
-            do
-                result[ j++ ] = value;
-            while ( --count > 0 );
+            do {
+                result[j++] = value;
+            } while (--count > 0);
         }
         return j;
     }
@@ -139,78 +139,99 @@ class ExcelCSVLexer
     private static final int ZZ_PUSHBACK_2BIG = 2;
 
     /* error messages for the codes above */
-    private static final String ZZ_ERROR_MSG[] =
-        {
-        "Unkown internal scanner error",
-        "Error: could not match input",
-        "Error: pushback value was too large"
-    };
+    private static final String ZZ_ERROR_MSG[]
+            = {
+                "Unkown internal scanner error",
+                "Error: could not match input",
+                "Error: pushback value was too large"
+            };
 
     /**
      * ZZ_ATTRIBUTE[aState] contains the attributes of state <code>aState</code>
      */
-    private static final int[] ZZ_ATTRIBUTE = zzUnpackAttribute ();
+    private static final int[] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
-    private static final String ZZ_ATTRIBUTE_PACKED_0 =
-        "\2\0\4\1\2\11\3\1\2\11\2\1\1\11\3\1";
+    private static final String ZZ_ATTRIBUTE_PACKED_0
+            = "\2\0\4\1\2\11\3\1\2\11\2\1\1\11\3\1";
 
-    private static int[] zzUnpackAttribute ()
-    {
-        int[] result = new int[19 ];
+    private static int[] zzUnpackAttribute() {
+        int[] result = new int[19];
         int offset = 0;
-        offset = zzUnpackAttribute ( ZZ_ATTRIBUTE_PACKED_0, offset, result );
+        offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
         return result;
     }
 
-    private static int zzUnpackAttribute ( String packed, int offset, int[] result )
-    {
-        int i = 0; /* index in packed string  */
-        int j = offset; /* index in unpacked array */
-        int l = packed.length ();
-        while ( i < l )
-        {
-            int count = packed.charAt ( i++ );
-            int value = packed.charAt ( i++ );
-            do
-                result[ j++ ] = value;
-            while ( --count > 0 );
+    private static int zzUnpackAttribute(String packed, int offset, int[] result) {
+        int i = 0;
+        /* index in packed string  */
+        int j = offset;
+        /* index in unpacked array */
+        int l = packed.length();
+        while (i < l) {
+            int count = packed.charAt(i++);
+            int value = packed.charAt(i++);
+            do {
+                result[j++] = value;
+            } while (--count > 0);
         }
         return j;
     }
 
-    /** the input device */
+    /**
+     * the input device
+     */
     private java.io.Reader zzReader;
 
-    /** the current state of the DFA */
+    /**
+     * the current state of the DFA
+     */
     private int zzState;
 
-    /** the current lexical state */
+    /**
+     * the current lexical state
+     */
     private int zzLexicalState = YYINITIAL;
 
-    /** this buffer contains the current text to be matched and is
-        the source of the yytext() string */
-    private char zzBuffer[] = new char[ZZ_BUFFERSIZE ];
+    /**
+     * this buffer contains the current text to be matched and is the source of
+     * the yytext() string
+     */
+    private char zzBuffer[] = new char[ZZ_BUFFERSIZE];
 
-    /** the textposition at the last accepting state */
+    /**
+     * the textposition at the last accepting state
+     */
     private int zzMarkedPos;
 
-    /** the textposition at the last state to be included in yytext */
+    /**
+     * the textposition at the last state to be included in yytext
+     */
     private int zzPushbackPos;
 
-    /** the current text position in the buffer */
+    /**
+     * the current text position in the buffer
+     */
     private int zzCurrentPos;
 
-    /** startRead marks the beginning of the yytext() string in the buffer */
+    /**
+     * startRead marks the beginning of the yytext() string in the buffer
+     */
     private int zzStartRead;
 
-    /** endRead marks the last character in the buffer, that has been read
-        from input */
+    /**
+     * endRead marks the last character in the buffer, that has been read from
+     * input
+     */
     private int zzEndRead;
 
-    /** number of newlines encountered up to the start of the matched text */
+    /**
+     * number of newlines encountered up to the start of the matched text
+     */
     private int yyline;
 
-    /** the number of characters up to the start of the matched text */
+    /**
+     * the number of characters up to the start of the matched text
+     */
     private int yychar;
 
     /**
@@ -224,126 +245,109 @@ class ExcelCSVLexer
      */
     private boolean zzAtBOL = true;
 
-    /** zzAtEOF == true <=> the scanner is at the EOF */
+    /**
+     * zzAtEOF == true <=> the scanner is at the EOF
+     */
     private boolean zzAtEOF;
 
     /* user_import code: */
     /**
-     * Prints out tokens and line numbers from a file or System.in.
-     * If no arguments are given, System.in will be used for input.
-     * If more arguments are given, the first argument will be used as
-     * the name of the file to use as input
+     * Prints out tokens and line numbers from a file or System.in. If no
+     * arguments are given, System.in will be used for input. If more arguments
+     * are given, the first argument will be used as the name of the file to use
+     * as input
      *
      * @param args program arguments, of which the first is a filename
      *
      * @since ostermillerutils 1.00.00
      */
-    public static void main ( String[] args )
-    {
+    public static void main(String[] args) {
         InputStream in;
-        try
-        {
-            if ( args.length > 0 )
-            {
-                File f = new File ( args[ 0 ] );
-                if ( f.exists () )
-                {
-                    if ( f.canRead () )
-                    {
-                        in = new FileInputStream ( f );
+        try {
+            if (args.length > 0) {
+                File f = new File(args[0]);
+                if (f.exists()) {
+                    if (f.canRead()) {
+                        in = new FileInputStream(f);
+                    } else {
+                        throw new IOException("Could not open " + args[0]);
                     }
-                    else
-                    {
-                        throw new IOException ( "Could not open " + args[ 0 ] );
-                    }
+                } else {
+                    throw new IOException("Could not find " + args[0]);
                 }
-                else
-                {
-                    throw new IOException ( "Could not find " + args[ 0 ] );
-                }
-            }
-            else
-            {
+            } else {
                 in = System.in;
             }
-            ExcelCSVLexer shredder = new ExcelCSVLexer ( in );
+            ExcelCSVLexer shredder = new ExcelCSVLexer(in);
             String t;
-            while ( ( t = shredder.getNextToken () ) != null )
-            {
-                System.out.println ( "" + shredder.getLineNumber () + " " + t );
+            while ((t = shredder.getNextToken()) != null) {
+                System.out.println("" + shredder.getLineNumber() + " " + t);
             }
-        } catch ( IOException e )
-        {
-            System.out.println ( e.getMessage () );
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     private char delimiter = ',';
     private char quote = '\"';
 
-    /** Checks that zzcmap_instance is an instance variable (not just
-     * a pointer to a static variable).  If it is a pointer to a static
-     * variable, it will be cloned.
+    /**
+     * Checks that zzcmap_instance is an instance variable (not just a pointer
+     * to a static variable). If it is a pointer to a static variable, it will
+     * be cloned.
      *
      * @since ostermillerutils 1.00.00
      */
-    private void ensureCharacterMapIsInstance ()
-    {
-        if ( ZZ_CMAP == zzcmap_instance )
-        {
-            zzcmap_instance = new char[ZZ_CMAP.length ];
-            System.arraycopy ( ZZ_CMAP, 0, zzcmap_instance, 0, ZZ_CMAP.length );
+    private void ensureCharacterMapIsInstance() {
+        if (ZZ_CMAP == zzcmap_instance) {
+            zzcmap_instance = new char[ZZ_CMAP.length];
+            System.arraycopy(ZZ_CMAP, 0, zzcmap_instance, 0, ZZ_CMAP.length);
         }
     }
 
     /**
-     * Ensures that the given character is not used for some special purpose
-     * in parsing.  This method should be called before setting some character
-     * to be a delimiter so that the parsing doesn't break.  Examples of bad
-     * characters are quotes, commas, and whitespace.
+     * Ensures that the given character is not used for some special purpose in
+     * parsing. This method should be called before setting some character to be
+     * a delimiter so that the parsing doesn't break. Examples of bad characters
+     * are quotes, commas, and whitespace.
      *
      * @since ostermillerutils 1.00.00
      */
-    private boolean charIsSafe ( char c )
-    {
+    private boolean charIsSafe(char c) {
         // There are two character classes that one could use as a delimiter.
         // The first would be the class that most characters are in.  These
         // are normally data.  The second is the class that the tab is usually in.
-        return ( zzcmap_instance[ c ] == ZZ_CMAP[ 'a' ] || zzcmap_instance[ c ] == ZZ_CMAP[ '\t' ] );
+        return (zzcmap_instance[c] == ZZ_CMAP['a'] || zzcmap_instance[c] == ZZ_CMAP['\t']);
     }
 
     /**
-     * Change the character classes of the two given characters.  This
-     * will make the state machine behave as if the characters were switched
-     * when they are encountered in the input.
+     * Change the character classes of the two given characters. This will make
+     * the state machine behave as if the characters were switched when they are
+     * encountered in the input.
      *
      * @param old the old character, its value will be returned to initial
      * @param two second character
      *
      * @since ostermillerutils 1.00.00
      */
-    private void updateCharacterClasses ( char oldChar, char newChar )
-    {
+    private void updateCharacterClasses(char oldChar, char newChar) {
         // before modifying the character map, make sure it isn't static.
-        ensureCharacterMapIsInstance ();
+        ensureCharacterMapIsInstance();
         // make the newChar behave like the oldChar
-        zzcmap_instance[ newChar ] = zzcmap_instance[ oldChar ];
+        zzcmap_instance[newChar] = zzcmap_instance[oldChar];
         // make the oldChar behave like it isn't special.
-        switch ( oldChar )
-        {
+        switch (oldChar) {
             case ',':
-            case '"':
-            {
+            case '"': {
                 // These should act as normal character,
                 // not delimiters or quotes right now.
-                zzcmap_instance[ oldChar ] = ZZ_CMAP[ 'a' ];
+                zzcmap_instance[oldChar] = ZZ_CMAP['a'];
             }
             break;
-            default:
-            {
+            default: {
                 // Set the it back to the way it would act
                 // if not used as a delimiter or quote.
-                zzcmap_instance[ oldChar ] = ZZ_CMAP[ oldChar ];
+                zzcmap_instance[oldChar] = ZZ_CMAP[oldChar];
             }
             break;
         }
@@ -352,23 +356,23 @@ class ExcelCSVLexer
     /**
      * Change this Lexer so that it uses a new delimiter.
      * <p>
-     * The initial character is a comma, the delimiter cannot be changed
-     * to a quote or other character that has special meaning in CSV.
+     * The initial character is a comma, the delimiter cannot be changed to a
+     * quote or other character that has special meaning in CSV.
      *
      * @param newDelim delimiter to which to switch.
-     * @throws BadDelimiterException if the character cannot be used as a delimiter.
+     * @throws BadDelimiterException if the character cannot be used as a
+     * delimiter.
      *
      * @since ostermillerutils 1.00.00
      */
-    public void changeDelimiter ( char newDelim ) throws BadDelimiterException
-    {
-        if ( newDelim == delimiter )
+    public void changeDelimiter(char newDelim) throws BadDelimiterException {
+        if (newDelim == delimiter) {
             return; // no need to do anything.
-        if ( !charIsSafe ( newDelim ) )
-        {
-            throw new BadDelimiterException ( newDelim + " is not a safe delimiter." );
         }
-        updateCharacterClasses ( delimiter, newDelim );
+        if (!charIsSafe(newDelim)) {
+            throw new BadDelimiterException(newDelim + " is not a safe delimiter.");
+        }
+        updateCharacterClasses(delimiter, newDelim);
         // keep a record of the current delimiter.
         delimiter = newDelim;
     }
@@ -376,69 +380,60 @@ class ExcelCSVLexer
     /**
      * Change this Lexer so that it uses a new character for quoting.
      * <p>
-     * The initial character is a double quote ("), the delimiter cannot be changed
-     * to a comma or other character that has special meaning in CSV.
+     * The initial character is a double quote ("), the delimiter cannot be
+     * changed to a comma or other character that has special meaning in CSV.
      *
      * @param newQuote character to use for quoting.
      * @throws BadQuoteException if the character cannot be used as a quote.
      *
      * @since ostermillerutils 1.00.00
      */
-    public void changeQuote ( char newQuote ) throws BadQuoteException
-    {
-        if ( newQuote == quote )
+    public void changeQuote(char newQuote) throws BadQuoteException {
+        if (newQuote == quote) {
             return; // no need to do anything.
-        if ( !charIsSafe ( newQuote ) )
-        {
-            throw new BadQuoteException ( newQuote + " is not a safe quote." );
         }
-        updateCharacterClasses ( quote, newQuote );
+        if (!charIsSafe(newQuote)) {
+            throw new BadQuoteException(newQuote + " is not a safe quote.");
+        }
+        updateCharacterClasses(quote, newQuote);
         // keep a record of the current quote.
         quote = newQuote;
     }
 
-    private String unescape ( String s )
-    {
-        if ( s.indexOf ( '\"', 1 ) == s.length () - 1 )
-        {
-            return s.substring ( 1, s.length () - 1 );
+    private String unescape(String s) {
+        if (s.indexOf('\"', 1) == s.length() - 1) {
+            return s.substring(1, s.length() - 1);
         }
-        StringBuilder sb = new StringBuilder ( s.length () );
-        for ( int i = 1; i < s.length () - 1; i++ )
-        {
-            char c = s.charAt ( i );
-            char c1 = s.charAt ( i + 1 );
-            if ( c == '\"' && c1 == '\"' )
-            {
+        StringBuilder sb = new StringBuilder(s.length());
+        for (int i = 1; i < s.length() - 1; i++) {
+            char c = s.charAt(i);
+            char c1 = s.charAt(i + 1);
+            if (c == '\"' && c1 == '\"') {
                 i++;
-                sb.append ( "\"" );
-            }
-            else
-            {
-                sb.append ( c );
+                sb.append("\"");
+            } else {
+                sb.append(c);
             }
         }
-        return sb.toString ();
+        return sb.toString();
     }
 
     private String commentDelims = "";
 
     /**
      * Set the characters that indicate a comment at the beginning of the line.
-     * For example if the string "#;!" were passed in, all of the following lines
-     * would be comments:<br>
+     * For example if the string "#;!" were passed in, all of the following
+     * lines would be comments:<br>
      * <pre> # Comment
      * ; Another Comment
-     * ! Yet another comment</pre>
-     * By default there are no comments in Excel CVS files.  Commas and quotes may not be
-     * used to indicate comment lines.
+     * ! Yet another comment</pre> By default there are no comments in Excel CVS
+     * files. Commas and quotes may not be used to indicate comment lines.
      *
      * @param commentDelims list of characters a comment line may start with.
      *
      * @since ostermillerutils 1.00.00
      */
-    public void setCommentStart ( String commentDelims )
-    {
+    public void setCommentStart(String commentDelims) {
         this.commentDelims = commentDelims;
     }
 
@@ -448,8 +443,8 @@ class ExcelCSVLexer
     /**
      * Get the line number that the last token came from.
      * <p>
-     * New line breaks that occur in the middle of a token are not
-     * counted in the line number count.
+     * New line breaks that occur in the middle of a token are not counted in
+     * the line number count.
      * <p>
      * If no tokens have been returned, the line number is undefined.
      *
@@ -457,51 +452,48 @@ class ExcelCSVLexer
      *
      * @since ostermillerutils 1.00.00
      */
-    public int getLineNumber ()
-    {
+    public int getLineNumber() {
         return lines;
     }
 
     /**
-     * Creates a new scanner
-     * There is also a java.io.InputStream version of this constructor.
+     * Creates a new scanner There is also a java.io.InputStream version of this
+     * constructor.
      *
-     * @param   in  the java.io.Reader to read input from.
+     * @param in the java.io.Reader to read input from.
      */
-    ExcelCSVLexer ( java.io.Reader in )
-    {
+    ExcelCSVLexer(java.io.Reader in) {
         this.zzReader = in;
     }
 
     /**
-     * Creates a new scanner.
-     * There is also java.io.Reader version of this constructor.
+     * Creates a new scanner. There is also java.io.Reader version of this
+     * constructor.
      *
-     * @param   in  the java.io.Inputstream to read input from.
+     * @param in the java.io.Inputstream to read input from.
      */
-    ExcelCSVLexer ( java.io.InputStream in )
-    {
-        this ( new java.io.InputStreamReader ( in ) );
+    ExcelCSVLexer(java.io.InputStream in) {
+        this(new java.io.InputStreamReader(in));
     }
 
     /**
      * Unpacks the compressed character translation table.
      *
-     * @param packed   the packed character translation table
-     * @return         the unpacked character translation table
+     * @param packed the packed character translation table
+     * @return the unpacked character translation table
      */
-    private static char[] zzUnpackCMap ( String packed )
-    {
-        char[] map = new char[0x10000 ];
-        int i = 0; /* index in packed string  */
-        int j = 0; /* index in unpacked array */
-        while ( i < 18 )
-        {
-            int count = packed.charAt ( i++ );
-            char value = packed.charAt ( i++ );
-            do
-                map[ j++ ] = value;
-            while ( --count > 0 );
+    private static char[] zzUnpackCMap(String packed) {
+        char[] map = new char[0x10000];
+        int i = 0;
+        /* index in packed string  */
+        int j = 0;
+        /* index in unpacked array */
+        while (i < 18) {
+            int count = packed.charAt(i++);
+            char value = packed.charAt(i++);
+            do {
+                map[j++] = value;
+            } while (--count > 0);
         }
         return map;
     }
@@ -511,17 +503,15 @@ class ExcelCSVLexer
      *
      * @return      <code>false</code>, iff there was new input.
      *
-     * @exception   java.io.IOException  if any I/O-Error occurs
+     * @exception java.io.IOException if any I/O-Error occurs
      */
-    private boolean zzRefill () throws java.io.IOException
-    {
+    private boolean zzRefill() throws java.io.IOException {
 
         /* first: make room (if you can) */
-        if ( zzStartRead > 0 )
-        {
-            System.arraycopy ( zzBuffer, zzStartRead,
-                               zzBuffer, 0,
-                               zzEndRead - zzStartRead );
+        if (zzStartRead > 0) {
+            System.arraycopy(zzBuffer, zzStartRead,
+                    zzBuffer, 0,
+                    zzEndRead - zzStartRead);
 
             /* translate stored positions */
             zzEndRead -= zzStartRead;
@@ -532,24 +522,20 @@ class ExcelCSVLexer
         }
 
         /* is the buffer big enough? */
-        if ( zzCurrentPos >= zzBuffer.length )
-        {
+        if (zzCurrentPos >= zzBuffer.length) {
             /* if not: blow it up */
-            char newBuffer[] = new char[zzCurrentPos * 2 ];
-            System.arraycopy ( zzBuffer, 0, newBuffer, 0, zzBuffer.length );
+            char newBuffer[] = new char[zzCurrentPos * 2];
+            System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
             zzBuffer = newBuffer;
         }
 
         /* finally: fill the buffer with new input */
-        int numRead = zzReader.read ( zzBuffer, zzEndRead,
-                                      zzBuffer.length - zzEndRead );
+        int numRead = zzReader.read(zzBuffer, zzEndRead,
+                zzBuffer.length - zzEndRead);
 
-        if ( numRead < 0 )
-        {
+        if (numRead < 0) {
             return true;
-        }
-        else
-        {
+        } else {
             zzEndRead += numRead;
             return false;
         }
@@ -558,27 +544,28 @@ class ExcelCSVLexer
     /**
      * Closes the input stream.
      */
-    public final void yyclose () throws java.io.IOException
-    {
-        zzAtEOF = true; /* indicate end of file */
-        zzEndRead = zzStartRead; /* invalidate buffer    */
+    public final void yyclose() throws java.io.IOException {
+        zzAtEOF = true;
+        /* indicate end of file */
+        zzEndRead = zzStartRead;
+        /* invalidate buffer    */
 
-        if ( zzReader != null )
-            zzReader.close ();
+        if (zzReader != null) {
+            zzReader.close();
+        }
     }
 
     /**
-     * Resets the scanner to read from a new input stream.
-     * Does not close the old reader.
+     * Resets the scanner to read from a new input stream. Does not close the
+     * old reader.
      *
      * All internal variables are reset, the old input stream
-     * <b>cannot</b> be reused (internal buffer is discarded and lost).
-     * Lexical state is set to <tt>ZZ_INITIAL</tt>.
+     * <b>cannot</b> be reused (internal buffer is discarded and lost). Lexical
+     * state is set to <tt>ZZ_INITIAL</tt>.
      *
-     * @param reader   the new input stream
+     * @param reader the new input stream
      */
-    public final void yyreset ( java.io.Reader reader )
-    {
+    public final void yyreset(java.io.Reader reader) {
         zzReader = reader;
         zzAtBOL = true;
         zzAtEOF = false;
@@ -591,8 +578,7 @@ class ExcelCSVLexer
     /**
      * Returns the current lexical state.
      */
-    public final int yystate ()
-    {
+    public final int yystate() {
         return zzLexicalState;
     }
 
@@ -601,69 +587,60 @@ class ExcelCSVLexer
      *
      * @param newState the new lexical state
      */
-    public final void yybegin ( int newState )
-    {
+    public final void yybegin(int newState) {
         zzLexicalState = newState;
     }
 
     /**
      * Returns the text matched by the current regular expression.
      */
-    public final String yytext ()
-    {
-        return new String ( zzBuffer, zzStartRead, zzMarkedPos - zzStartRead );
+    public final String yytext() {
+        return new String(zzBuffer, zzStartRead, zzMarkedPos - zzStartRead);
     }
 
     /**
-     * Returns the character at position <tt>pos</tt> from the
-     * matched text.
+     * Returns the character at position <tt>pos</tt> from the matched text.
      *
      * It is equivalent to yytext().charAt(pos), but faster
      *
-     * @param pos the position of the character to fetch.
-     *            A value from 0 to yylength()-1.
+     * @param pos the position of the character to fetch. A value from 0 to
+     * yylength()-1.
      *
      * @return the character at position pos
      */
-    public final char yycharat ( int pos )
-    {
-        return zzBuffer[ zzStartRead + pos ];
+    public final char yycharat(int pos) {
+        return zzBuffer[zzStartRead + pos];
     }
 
     /**
      * Returns the length of the matched text region.
      */
-    public final int yylength ()
-    {
+    public final int yylength() {
         return zzMarkedPos - zzStartRead;
     }
 
     /**
      * Reports an error that occured while scanning.
      *
-     * In a wellformed scanner (no or only correct usage of
-     * yypushback(int) and a match-all fallback rule) this method
-     * will only be called with things that "Can't Possibly Happen".
-     * If this method is called, something is seriously wrong
-     * (e.g. a JFlex bug producing a faulty scanner etc.).
+     * In a wellformed scanner (no or only correct usage of yypushback(int) and
+     * a match-all fallback rule) this method will only be called with things
+     * that "Can't Possibly Happen". If this method is called, something is
+     * seriously wrong (e.g. a JFlex bug producing a faulty scanner etc.).
      *
-     * Usual syntax/scanner level error handling should be done
-     * in error fallback rules.
+     * Usual syntax/scanner level error handling should be done in error
+     * fallback rules.
      *
-     * @param   errorCode  the code of the errormessage to display
+     * @param errorCode the code of the errormessage to display
      */
-    private void zzScanError ( int errorCode )
-    {
+    private void zzScanError(int errorCode) {
         String message;
-        try
-        {
-            message = ZZ_ERROR_MSG[ errorCode ];
-        } catch ( ArrayIndexOutOfBoundsException e )
-        {
-            message = ZZ_ERROR_MSG[ ZZ_UNKNOWN_ERROR ];
+        try {
+            message = ZZ_ERROR_MSG[errorCode];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            message = ZZ_ERROR_MSG[ZZ_UNKNOWN_ERROR];
         }
 
-        throw new Error ( message );
+        throw new Error(message);
     }
 
     /**
@@ -671,26 +648,25 @@ class ExcelCSVLexer
      *
      * They will be read again by then next call of the scanning method
      *
-     * @param number  the number of characters to be read again.
-     *                This number must not be greater than yylength()!
+     * @param number the number of characters to be read again. This number must
+     * not be greater than yylength()!
      */
-    public void yypushback ( int number )
-    {
-        if ( number > yylength () )
-            zzScanError ( ZZ_PUSHBACK_2BIG );
+    public void yypushback(int number) {
+        if (number > yylength()) {
+            zzScanError(ZZ_PUSHBACK_2BIG);
+        }
 
         zzMarkedPos -= number;
     }
 
     /**
-     * Resumes scanning until the next regular expression is matched,
-     * the end of input is encountered or an I/O-Error occurs.
+     * Resumes scanning until the next regular expression is matched, the end of
+     * input is encountered or an I/O-Error occurs.
      *
-     * @return      the next token
-     * @exception   java.io.IOException  if any I/O-Error occurs
+     * @return the next token
+     * @exception java.io.IOException if any I/O-Error occurs
      */
-    public String getNextToken () throws java.io.IOException
-    {
+    public String getNextToken() throws java.io.IOException {
         int zzInput;
         int zzAction;
 
@@ -705,8 +681,7 @@ class ExcelCSVLexer
         int[] zzRowMapL = ZZ_ROWMAP;
         int[] zzAttrL = ZZ_ATTRIBUTE;
 
-        while ( true )
-        {
+        while (true) {
             zzMarkedPosL = zzMarkedPos;
 
             zzAction = -1;
@@ -716,51 +691,44 @@ class ExcelCSVLexer
             zzState = zzLexicalState;
 
             zzForAction:
-                {
-                while ( true )
-                {
+            {
+                while (true) {
 
-                    if ( zzCurrentPosL < zzEndReadL )
-                        zzInput = zzBufferL[ zzCurrentPosL++ ];
-                    else
-                        if ( zzAtEOF )
-                        {
+                    if (zzCurrentPosL < zzEndReadL) {
+                        zzInput = zzBufferL[zzCurrentPosL++];
+                    } else if (zzAtEOF) {
+                        zzInput = YYEOF;
+                        break zzForAction;
+                    } else {
+                        // store back cached positions
+                        zzCurrentPos = zzCurrentPosL;
+                        zzMarkedPos = zzMarkedPosL;
+                        boolean eof = zzRefill();
+                        // get translated positions and possibly new buffer
+                        zzCurrentPosL = zzCurrentPos;
+                        zzMarkedPosL = zzMarkedPos;
+                        zzBufferL = zzBuffer;
+                        zzEndReadL = zzEndRead;
+                        if (eof) {
                             zzInput = YYEOF;
                             break zzForAction;
+                        } else {
+                            zzInput = zzBufferL[zzCurrentPosL++];
                         }
-                        else
-                        {
-                            // store back cached positions
-                            zzCurrentPos = zzCurrentPosL;
-                            zzMarkedPos = zzMarkedPosL;
-                            boolean eof = zzRefill ();
-                            // get translated positions and possibly new buffer
-                            zzCurrentPosL = zzCurrentPos;
-                            zzMarkedPosL = zzMarkedPos;
-                            zzBufferL = zzBuffer;
-                            zzEndReadL = zzEndRead;
-                            if ( eof )
-                            {
-                                zzInput = YYEOF;
-                                break zzForAction;
-                            }
-                            else
-                            {
-                                zzInput = zzBufferL[ zzCurrentPosL++ ];
-                            }
-                        }
-                    int zzNext = zzTransL[ zzRowMapL[ zzState ] + zzCMapL[ zzInput ] ];
-                    if ( zzNext == -1 )
+                    }
+                    int zzNext = zzTransL[zzRowMapL[zzState] + zzCMapL[zzInput]];
+                    if (zzNext == -1) {
                         break zzForAction;
+                    }
                     zzState = zzNext;
 
-                    int zzAttributes = zzAttrL[ zzState ];
-                    if ( ( zzAttributes & 1 ) == 1 )
-                    {
+                    int zzAttributes = zzAttrL[zzState];
+                    if ((zzAttributes & 1) == 1) {
                         zzAction = zzState;
                         zzMarkedPosL = zzCurrentPosL;
-                        if ( ( zzAttributes & 8 ) == 8 )
+                        if ((zzAttributes & 8) == 8) {
                             break zzForAction;
+                        }
                     }
 
                 }
@@ -769,127 +737,106 @@ class ExcelCSVLexer
             // store back cached position
             zzMarkedPos = zzMarkedPosL;
 
-            switch ( zzAction < 0 ? zzAction : ZZ_ACTION[ zzAction ] )
-            {
-                case 2:
-                {
+            switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
+                case 2: {
                     lines += addLine;
                     addLine = 0;
-                    String text = yytext ();
-                    if ( commentDelims.indexOf ( text.charAt ( 0 ) ) == -1 )
-                    {
-                        yybegin ( AFTER );
-                        return ( text );
-                    }
-                    else
-                    {
-                        yybegin ( COMMENT );
+                    String text = yytext();
+                    if (commentDelims.indexOf(text.charAt(0)) == -1) {
+                        yybegin(AFTER);
+                        return (text);
+                    } else {
+                        yybegin(COMMENT);
                     }
                 }
                 case 13:
                     break;
-                case 8:
-                {
-                    yybegin ( BEFORE );
-                    return ( "" );
+                case 8: {
+                    yybegin(BEFORE);
+                    return ("");
                 }
                 case 14:
                     break;
-                case 3:
-                {
+                case 3: {
                     addLine++;
-                    yybegin ( YYINITIAL );
+                    yybegin(YYINITIAL);
                 }
                 case 15:
                     break;
-                case 4:
-                {
+                case 4: {
                     lines += addLine;
                     addLine = 0;
-                    yybegin ( BEFORE );
-                    return ( "" );
+                    yybegin(BEFORE);
+                    return ("");
                 }
                 case 16:
                     break;
-                case 11:
-                {
+                case 11: {
                     lines += addLine;
                     addLine = 0;
-                    yybegin ( AFTER );
-                    return ( unescape ( yytext () ) );
+                    yybegin(AFTER);
+                    return (unescape(yytext()));
                 }
                 case 17:
                     break;
-                case 6:
-                {
-                    yybegin ( AFTER );
-                    return ( yytext () );
+                case 6: {
+                    yybegin(AFTER);
+                    return (yytext());
                 }
                 case 18:
                     break;
-                case 7:
-                {
-                    yybegin ( YYINITIAL );
+                case 7: {
+                    yybegin(YYINITIAL);
                     addLine++;
-                    return ( "" );
+                    return ("");
                 }
                 case 19:
                     break;
-                case 5:
-                {
+                case 5: {
                     lines += addLine;
                     addLine = 0;
-                    yybegin ( YYINITIAL );
-                    return ( yytext () );
+                    yybegin(YYINITIAL);
+                    return (yytext());
                 }
                 case 20:
                     break;
-                case 10:
-                {
-                    yybegin ( BEFORE );
+                case 10: {
+                    yybegin(BEFORE);
                 }
                 case 21:
                     break;
-                case 12:
-                {
-                    yybegin ( AFTER );
-                    return ( unescape ( yytext () ) );
+                case 12: {
+                    yybegin(AFTER);
+                    return (unescape(yytext()));
                 }
                 case 22:
                     break;
-                case 9:
-                {
-                    yybegin ( YYINITIAL );
-                    return ( yytext () );
+                case 9: {
+                    yybegin(YYINITIAL);
+                    return (yytext());
                 }
                 case 23:
                     break;
-                case 1:
-                {
+                case 1: {
                 }
                 case 24:
                     break;
                 default:
-                    if ( zzInput == YYEOF && zzStartRead == zzCurrentPos )
-                    {
+                    if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
                         zzAtEOF = true;
-                        switch ( zzLexicalState )
-                        {
-                            case BEFORE:
-                            {
-                                yybegin ( YYINITIAL );
+                        switch (zzLexicalState) {
+                            case BEFORE: {
+                                yybegin(YYINITIAL);
                                 addLine++;
-                                return ( "" );
+                                return ("");
                             }
                             case 20:
                                 break;
                             default:
                                 return null;
                         }
-                    }
-                    else
-                    {
-                        zzScanError ( ZZ_NO_MATCH );
+                    } else {
+                        zzScanError(ZZ_NO_MATCH);
                     }
             }
         }

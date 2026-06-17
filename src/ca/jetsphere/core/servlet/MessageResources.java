@@ -14,196 +14,210 @@ import java.util.Properties;
 /**
  *
  */
+public class MessageResources extends org.apache.struts.util.MessageResources {
 
-public class MessageResources extends org.apache.struts.util.MessageResources
-{
-    protected List bundles; protected HashMap loaded, messages;
-
-    /**
-     *
-     */
-
-    public MessageResources ( List bundles )
-
-    { super ( null, null ); clear(); this.bundles = bundles; }
+    protected List bundles;
+    protected HashMap loaded, messages;
 
     /**
      *
      */
-
-    public void clear()
-
-    { bundles = new ArrayList(); loaded = new HashMap(); messages = new HashMap(); }
-
-    /**
-     *
-     */
-
-    public void clearFormats() { loaded = new HashMap(); messages = new HashMap(); formats.clear(); }
-
-    /**
-     *
-     */
-
-    protected ClassLoader getClassLoader()
-    {
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-
-    if ( classLoader == null ) classLoader = getClass().getClassLoader();
-
-    return classLoader;
+    public MessageResources(List bundles) {
+        super(null, null);
+        clear();
+        this.bundles = bundles;
     }
 
     /**
      *
      */
-
-    protected String getFilename ( String localeKey, String bundle )
-    {
-    String filename = bundle;
-
-    if ( localeKey.length () > 0 ) filename += "_" + localeKey;
-
-    filename += ".properties";
-
-    return filename;
+    public void clear() {
+        bundles = new ArrayList();
+        loaded = new HashMap();
+        messages = new HashMap();
     }
 
     /**
      *
      */
-
-    protected InputStreamReader getInputStreamReader ( ClassLoader classLoader, String filename )
-    {
-    InputStreamReader isr = null;
-
-    try { isr = new InputStreamReader ( classLoader.getResourceAsStream ( filename ), "UTF-8" ); } catch ( Exception e ) {}
-
-    if ( isr == null ) Common.debug ( "RESOURCE FILE AWOL: " + filename );
-
-    return isr;
+    public void clearFormats() {
+        loaded = new HashMap();
+        messages = new HashMap();
+        formats.clear();
     }
 
     /**
      *
      */
+    protected ClassLoader getClassLoader() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-    public String getMessage ( Locale locale, String key )
-    {
-    String message = getMessageX ( locale, key );
+        if (classLoader == null) {
+            classLoader = getClass().getClassLoader();
+        }
 
-    if ( message != null ) return message;
-
-    message = getMessageX ( locale, key.toLowerCase() );
-
-    if ( message != null ) return message;
-
-    return key;
+        return classLoader;
     }
 
     /**
      *
      */
+    protected String getFilename(String localeKey, String bundle) {
+        String filename = bundle;
 
-    public String getMessageX ( Locale locale, String key )
-    {
-    String localeKey = localeKey ( locale );
+        if (localeKey.length() > 0) {
+            filename += "_" + localeKey;
+        }
 
-    String messageKey = messageKey ( localeKey, key.trim().replaceAll ( "  ", "." ).replaceAll ( ": ", "." ).replaceAll ( " / ", "." ).replaceAll ( " \\ ", "." ).replaceAll ( " - ", "." ).replaceAll ( ":", "." ).replaceAll ( "'", "." ).replaceAll ( " ", "." ).replaceAll ( "&nbsp;", "." ).replaceAll ( "/", "." ).replaceAll ( "-", "." ) );
+        filename += ".properties";
 
-    String message = ( String ) messages.get ( messageKey );
-
-    if ( message != null ) return message;
-
-    message = getMessage ( localeKey, key );
-
-    if ( message != null ) return message;
-
-    if ( ! defaultLocale.equals ( locale ) ) message = getMessage ( localeKey ( defaultLocale ), key );
-
-    if ( message != null ) return message;
-
-    return getMessage ( "", key );
+        return filename;
     }
 
     /**
      *
      */
+    protected InputStreamReader getInputStreamReader(ClassLoader classLoader, String filename) {
+        InputStreamReader isr = null;
 
-    public String getMessage ( String localeKey, String key )
-    {
-    for ( int cc = 0; cc < bundles.size (); cc++ )
-    {
-    String bundle = ( String ) bundles.get ( cc );
+        try {
+            isr = new InputStreamReader(classLoader.getResourceAsStream(filename), "UTF-8");
+        } catch (Exception e) {
+        }
 
-    setMessages ( localeKey, bundle );
+        if (isr == null) {
+            Common.debug("RESOURCE FILE AWOL: " + filename);
+        }
 
-    String message = ( String ) messages.get ( messageKey ( localeKey, key ) );
-
-    if ( message != null ) return message;
-    }
-
-    return null;
-    }
-
-    /**
-     *
-     */
-
-    protected Properties getProperties ( String filename )
-    {
-    Properties properties = new Properties();
-
-    try {
-
-        ClassLoader classLoader = getClassLoader();
-
-        InputStreamReader isr = getInputStreamReader ( classLoader, filename );
-
-        if ( isr == null ) return properties;
-
-        properties.load ( isr );
-
-        isr.close();
-
-    } catch ( IOException e ) { Common.trace ( e ); }
-
-    return properties;
+        return isr;
     }
 
     /**
      *
      */
+    public String getMessage(Locale locale, String key) {
+        String message = getMessageX(locale, key);
 
-    protected void setMessages ( String localeKey, String bundle )
-    {
-    String filename = getFilename(localeKey, bundle);
+        if (message != null) {
+            return message;
+        }
 
-    if ( loaded.get ( filename ) != null ) return;
+        message = getMessageX(locale, key.toLowerCase());
 
-    loaded.put ( filename, localeKey );
+        if (message != null) {
+            return message;
+        }
 
-    setMessagesByProperties(localeKey, filename);
+        return key;
     }
 
     /**
      *
      */
+    public String getMessageX(Locale locale, String key) {
+        String localeKey = localeKey(locale);
 
-    public void setMessagesByProperties ( String localeKey, String filename )
-    {
-    Properties properties = getProperties ( filename );
+        String messageKey = messageKey(localeKey, key.trim().replaceAll("  ", ".").replaceAll(": ", ".").replaceAll(" / ", ".").replaceAll(" \\ ", ".").replaceAll(" - ", ".").replaceAll(":", ".").replaceAll("'", ".").replaceAll(" ", ".").replaceAll("&nbsp;", ".").replaceAll("/", ".").replaceAll("-", "."));
 
-    synchronized ( this.messages )
-    {
-    Iterator keySet = properties.keySet().iterator();
+        String message = (String) messages.get(messageKey);
 
-    while ( keySet.hasNext() )
-    {
-    String key = ( String ) keySet.next();
+        if (message != null) {
+            return message;
+        }
 
-    messages.put ( messageKey ( localeKey, key ), properties.getProperty ( key ) );
-    } }
+        message = getMessage(localeKey, key);
+
+        if (message != null) {
+            return message;
+        }
+
+        if (!defaultLocale.equals(locale)) {
+            message = getMessage(localeKey(defaultLocale), key);
+        }
+
+        if (message != null) {
+            return message;
+        }
+
+        return getMessage("", key);
+    }
+
+    /**
+     *
+     */
+    public String getMessage(String localeKey, String key) {
+        for (int cc = 0; cc < bundles.size(); cc++) {
+            String bundle = (String) bundles.get(cc);
+
+            setMessages(localeKey, bundle);
+
+            String message = (String) messages.get(messageKey(localeKey, key));
+
+            if (message != null) {
+                return message;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *
+     */
+    protected Properties getProperties(String filename) {
+        Properties properties = new Properties();
+
+        try {
+
+            ClassLoader classLoader = getClassLoader();
+
+            InputStreamReader isr = getInputStreamReader(classLoader, filename);
+
+            if (isr == null) {
+                return properties;
+            }
+
+            properties.load(isr);
+
+            isr.close();
+
+        } catch (IOException e) {
+            Common.trace(e);
+        }
+
+        return properties;
+    }
+
+    /**
+     *
+     */
+    protected void setMessages(String localeKey, String bundle) {
+        String filename = getFilename(localeKey, bundle);
+
+        if (loaded.get(filename) != null) {
+            return;
+        }
+
+        loaded.put(filename, localeKey);
+
+        setMessagesByProperties(localeKey, filename);
+    }
+
+    /**
+     *
+     */
+    public void setMessagesByProperties(String localeKey, String filename) {
+        Properties properties = getProperties(filename);
+
+        synchronized (this.messages) {
+            Iterator keySet = properties.keySet().iterator();
+
+            while (keySet.hasNext()) {
+                String key = (String) keySet.next();
+
+                messages.put(messageKey(localeKey, key), properties.getProperty(key));
+            }
+        }
 
     }
 

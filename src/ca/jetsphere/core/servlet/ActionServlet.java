@@ -26,133 +26,148 @@ import java.util.StringTokenizer;
 /**
  *
  */
-
-public class ActionServlet extends org.apache.struts.action.ActionServlet
-{
-    /**
-     *
-     */
-
-    protected ModuleConfig initModuleConfig ( String prefix, String paths ) throws ServletException
-    {
-    ModuleConfigFactory factoryObject = ModuleConfigFactory.createFactory();
-
-    ModuleConfig config = factoryObject.createModuleConfig ( prefix );
-
-    String mapping = getServletConfig().getInitParameter ( "mapping" );
-
-    if ( mapping != null ) config.setActionMappingClass ( mapping );
-
-    Digester digester = initConfigDigester();
-
-    while ( paths.length() > 0 )
-    {
-        digester.push ( config );
-
-        String path = null;
-
-        int comma = paths.indexOf ( ',' );
-
-        if ( comma >= 0 ) { path = paths.substring ( 0, comma ).trim(); paths = paths.substring ( comma + 1 ); }  else { path = paths.trim(); paths = ""; }
-
-        if ( path.length () < 1 )  break;
-
-        this.parseModuleConfigFile ( prefix, paths, config, digester, path );
-    }
-
-    FormBeanConfig fbs[] = config.findFormBeanConfigs ();
-
-    for ( int i = 0; i < fbs.length; i++ )
-    {
-    if ( ! fbs[ i ].getDynamic() ) continue;
-
-    FormPropertyConfig includes = fbs[ i ].findFormPropertyConfig ( "includes" );
-
-    if ( includes != null )
-    {
-    String formBeanToInclude = includes.getInitial ();
-
-    FormBeanConfig includeConfig = config.findFormBeanConfig ( formBeanToInclude );
-
-    FormPropertyConfig[] props = includeConfig.findFormPropertyConfigs ();
-
-    for ( int j = 0; j < props.length; j++ ) { FormPropertyConfig prop = props[ j ]; fbs[ i ].addFormPropertyConfig ( prop ); }
-    }
-
-    DynaActionFormClass.createDynaActionFormClass ( fbs[i] );
-    }
-
-    return config;
-    }
+public class ActionServlet extends org.apache.struts.action.ActionServlet {
 
     /**
      *
      */
+    protected ModuleConfig initModuleConfig(String prefix, String paths) throws ServletException {
+        ModuleConfigFactory factoryObject = ModuleConfigFactory.createFactory();
 
-    protected void initModuleMessageResources ( ModuleConfig config ) throws ServletException
-    {
-    List fileNames = new ArrayList();
+        ModuleConfig config = factoryObject.createModuleConfig(prefix);
 
-    MessageResourcesConfig resourceConfig = config.findMessageResourcesConfigs()[ 0 ];
+        String mapping = getServletConfig().getInitParameter("mapping");
 
-    if ( resourceConfig.getFactory() == null || resourceConfig.getParameter() == null )
+        if (mapping != null) {
+            config.setActionMappingClass(mapping);
+        }
 
-    { Common.trace ( "NO MESSAGE RESOURCE CONFIGURATION DEFINED!" ); return; }
+        Digester digester = initConfigDigester();
 
-    String configParam = resourceConfig.getParameter ();
+        while (paths.length() > 0) {
+            digester.push(config);
 
-    if ( configParam.indexOf ( "," ) != -1 )
-    {
-        StringTokenizer tokenizer = new StringTokenizer ( configParam, "," );
+            String path = null;
 
-        while ( tokenizer.hasMoreTokens() ) { String token = tokenizer.nextToken(); fileNames.add ( token.trim() ); }
-    }
-    else { fileNames.add ( configParam ); }
+            int comma = paths.indexOf(',');
 
-    MessageResources resources = new MessageResources ( fileNames );
+            if (comma >= 0) {
+                path = paths.substring(0, comma).trim();
+                paths = paths.substring(comma + 1);
+            } else {
+                path = paths.trim();
+                paths = "";
+            }
 
-    getServletContext().setAttribute ( resourceConfig.getKey() + config.getPrefix(), resources );
+            if (path.length() < 1) {
+                break;
+            }
 
-    Knock.setMessageResources ( getServletContext() );
+            this.parseModuleConfigFile(prefix, paths, config, digester, path);
+        }
+
+        FormBeanConfig fbs[] = config.findFormBeanConfigs();
+
+        for (int i = 0; i < fbs.length; i++) {
+            if (!fbs[i].getDynamic()) {
+                continue;
+            }
+
+            FormPropertyConfig includes = fbs[i].findFormPropertyConfig("includes");
+
+            if (includes != null) {
+                String formBeanToInclude = includes.getInitial();
+
+                FormBeanConfig includeConfig = config.findFormBeanConfig(formBeanToInclude);
+
+                FormPropertyConfig[] props = includeConfig.findFormPropertyConfigs();
+
+                for (int j = 0; j < props.length; j++) {
+                    FormPropertyConfig prop = props[j];
+                    fbs[i].addFormPropertyConfig(prop);
+                }
+            }
+
+            DynaActionFormClass.createDynaActionFormClass(fbs[i]);
+        }
+
+        return config;
     }
 
     /**
      *
      */
+    protected void initModuleMessageResources(ModuleConfig config) throws ServletException {
+        List fileNames = new ArrayList();
 
-    private void parseModuleConfigFile ( String prefix, String paths, ModuleConfig config, Digester digester, String path ) throws UnavailableException
-    {
-    InputStream input = null;
+        MessageResourcesConfig resourceConfig = config.findMessageResourcesConfigs()[0];
 
-    try
-    {
-        URL url = getServletContext().getResource ( path );
+        if (resourceConfig.getFactory() == null || resourceConfig.getParameter() == null) {
+            Common.trace("NO MESSAGE RESOURCE CONFIGURATION DEFINED!");
+            return;
+        }
 
-        InputSource is = new InputSource ( url.toExternalForm() );
+        String configParam = resourceConfig.getParameter();
 
-        input = getServletContext().getResourceAsStream ( path );
+        if (configParam.indexOf(",") != -1) {
+            StringTokenizer tokenizer = new StringTokenizer(configParam, ",");
 
-        is.setByteStream ( input );
+            while (tokenizer.hasMoreTokens()) {
+                String token = tokenizer.nextToken();
+                fileNames.add(token.trim());
+            }
+        } else {
+            fileNames.add(configParam);
+        }
 
-        digester.parse ( is );
+        MessageResources resources = new MessageResources(fileNames);
 
-        getServletContext().setAttribute ( Globals.MODULE_KEY + prefix, config );
+        getServletContext().setAttribute(resourceConfig.getKey() + config.getPrefix(), resources);
 
-    } catch ( MalformedURLException e ) { handleConfigException ( paths, e ); }
-
-    catch ( IOException e ) { handleConfigException ( paths, e ); }
-
-    catch ( SAXException e ) { handleConfigException ( paths, e ); }
-
-    finally {  if ( input != null ) { try { input.close(); } catch ( IOException e ) { throw new UnavailableException ( e.getMessage() ); } } }
+        Knock.setMessageResources(getServletContext());
     }
 
     /**
      *
      */
+    private void parseModuleConfigFile(String prefix, String paths, ModuleConfig config, Digester digester, String path) throws UnavailableException {
+        InputStream input = null;
 
-    private void handleConfigException ( String paths, Exception e ) throws UnavailableException
+        try {
+            URL url = getServletContext().getResource(path);
 
-    { throw new UnavailableException ( internal.getMessage ( "configParse", paths ) ); }
+            InputSource is = new InputSource(url.toExternalForm());
+
+            input = getServletContext().getResourceAsStream(path);
+
+            is.setByteStream(input);
+
+            digester.parse(is);
+
+            getServletContext().setAttribute(Globals.MODULE_KEY + prefix, config);
+
+        } catch (MalformedURLException e) {
+            handleConfigException(paths, e);
+        } catch (IOException e) {
+            handleConfigException(paths, e);
+        } catch (SAXException e) {
+            handleConfigException(paths, e);
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    throw new UnavailableException(e.getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    private void handleConfigException(String paths, Exception e) throws UnavailableException {
+        throw new UnavailableException(internal.getMessage("configParse", paths));
+    }
 
 }

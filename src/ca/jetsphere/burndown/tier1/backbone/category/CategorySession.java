@@ -12,81 +12,107 @@ import java.sql.ResultSet;
 /**
  *
  */
-public class CategorySession extends CategoryMap implements ISessionObject
-{
-    /**
-     *
-     */
-    public CategorySession() { super(); }
+public class CategorySession extends CategoryMap implements ISessionObject {
 
     /**
      *
      */
-    public CategorySession ( JDBC jdbc, int application_id ) { super ( jdbc, application_id ); }
-
-    /**
-     *
-     */
-    public void add ( JDBC jdbc, ResultSet rs ) throws Exception { add ( new Category ( jdbc, rs ) ); }
-
-    /**
-     *
-     */
-    public String [] captions() { return Category.captions(); }
-
-    /**
-     *
-     */
-    public void clearSelected ( HttpServletRequest request ) { setNonQualifiedSelected ( request, new Category() ); }
-
-    /**
-     *
-     */
-    public String [] fields() { return Category.fields(); }
-
-    /**
-     *
-     */
-    static public CategorySession getInstance ( HttpServletRequest request )
-
-    { return ( CategorySession ) SessionCache.getSessionObject ( request, Category.key(), CategorySession.class ); }
-
-    /**
-     *
-     */
-    static public int getRequestedId ( HttpServletRequest request ) { return getInstance ( request ).getId ( request ); }
-
-    /**
-     *
-     */
-    static public Category getSelected ( HttpServletRequest request ) { return ( Category ) getInstance ( request ).getSelected(); }
-
-    /**
-     *
-     */
-    public void paste ( Tree parent, Tree child )
-    {
-    Category p = ( Category ) parent; Category c = ( Category ) child;
-
-    c.setApplicationId ( p.getApplicationId() ); c.setParentId ( p.getId() ); c.setParentUuid ( p.getUuid() ); c.setOrdinal ( p.getChildCount() );
-
-    p.addChild ( c );
+    public CategorySession() {
+        super();
     }
 
     /**
      *
      */
-    static public CategorySession query ( JDBC jdbc, HttpServletRequest request, int application_id, boolean blank )
-
-    { CategorySession session = getInstance ( request ); session.find ( jdbc, application_id ); session.options ( request, blank ); return session; }
-
-    /**
-     *
-     */
-    static public void setRequested ( HttpServletRequest request ) { getInstance ( request ).setQualifiedSelected ( request, getRequestedId ( request ) ); }
+    public CategorySession(JDBC jdbc, int application_id) {
+        super(jdbc, application_id);
+    }
 
     /**
      *
      */
-    static public void setSelected ( HttpServletRequest request, Category selected ) { getInstance ( request ).setQualifiedSelected ( request, selected ); }
+    public void add(JDBC jdbc, ResultSet rs) throws Exception {
+        add(new Category(jdbc, rs));
+    }
+
+    /**
+     *
+     */
+    public String[] captions() {
+        return Category.captions();
+    }
+
+    /**
+     *
+     */
+    public void clearSelected(HttpServletRequest request) {
+        setNonQualifiedSelected(request, new Category());
+    }
+
+    /**
+     *
+     */
+    public String[] fields() {
+        return Category.fields();
+    }
+
+    /**
+     *
+     */
+    static public CategorySession getInstance(HttpServletRequest request) {
+        return (CategorySession) SessionCache.getSessionObject(request, Category.key(), CategorySession.class);
+    }
+
+    /**
+     *
+     */
+    static public int getRequestedId(HttpServletRequest request) {
+        return getInstance(request).getId(request);
+    }
+
+    /**
+     *
+     */
+    static public Category getSelected(HttpServletRequest request) {
+        return (Category) getInstance(request).getSelected();
+    }
+
+    /**
+     *
+     */
+    public void paste(Tree parent, Tree child) {
+        Category p = (Category) parent;
+        Category c = (Category) child;
+
+        c.setApplicationId(p.getApplicationId());
+        c.setParentId(p.getId());
+        c.setParentUuid(p.getUuid());
+        c.setOrdinal(p.getChildCount());
+
+        p.addChild(c);
+    }
+
+    /**
+     *
+     */
+    static public CategorySession query(JDBC jdbc, HttpServletRequest request, int application_id, boolean blank) {
+        CategorySession session = getInstance(request);
+        session.find(jdbc, application_id);
+        session.options(request, blank);
+        return session;
+    }
+
+    /**
+     *
+     */
+    static public void setRequested(HttpServletRequest request) {
+        getInstance(request).setQualifiedSelected(request, getRequestedId(request));
+    }
+
+    /**
+     *
+     */
+    static public void setSelected(HttpServletRequest request, Category selected) {
+        getInstance(request).setQualifiedSelected(request, selected);
+    }
 }

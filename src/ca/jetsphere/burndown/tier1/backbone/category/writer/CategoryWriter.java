@@ -7,26 +7,32 @@ import ca.jetsphere.core.tier2.tree.TreeTableWriter;
 /**
  *
  */
-public class CategoryWriter extends TreeTableWriter
-{
-    /**
-     *
-     */
-    public CategoryWriter ( CategorySession categories, String[] headers, String[] fields )
-
-    { super ( categories, headers, fields ); }
+public class CategoryWriter extends TreeTableWriter {
 
     /**
      *
      */
-    protected void columns ( Tree tree )
-
-    { for ( int column = 2; column < getColumns(); column ++ ) column ( tree, column ); }
+    public CategoryWriter(CategorySession categories, String[] headers, String[] fields) {
+        super(categories, headers, fields);
+    }
 
     /**
      *
      */
-    protected void headers()
+    protected void columns(Tree tree) {
+        for (int column = 2; column < getColumns(); column++) {
+            column(tree, column);
+        }
+    }
 
-    { write ( "<thead><tr>" ); for ( int column = 2; column < getColumns(); column ++ ) header ( column ); write ( "</tr></thead>" ); }
+    /**
+     *
+     */
+    protected void headers() {
+        write("<thead><tr>");
+        for (int column = 2; column < getColumns(); column++) {
+            header(column);
+        }
+        write("</tr></thead>");
+    }
 }

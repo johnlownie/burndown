@@ -9,86 +9,82 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  */
-
-public class CookieYard
-{
-    /**
-     *
-     */
-
-    static public void addCookie ( HttpServletResponse response, String name, String value )
-
-    { addCookie ( response, name, value, 0, "", "" ); }
+public class CookieYard {
 
     /**
      *
      */
-
-    static public void addCookie ( HttpServletResponse response, String name, String value, int max_age, String path, String domain )
-    {
-    Cookie cookie = new Cookie ( name, value );
-
-    cookie.setMaxAge ( max_age );
-
-    cookie.setPath ( DockYard.isWhiteSpace ( path ) ? "/" : path );
-
-    if ( ! DockYard.isWhiteSpace ( domain ) ) cookie.setDomain ( domain );
-
-    response.addCookie ( cookie );
+    static public void addCookie(HttpServletResponse response, String name, String value) {
+        addCookie(response, name, value, 0, "", "");
     }
 
     /**
      *
      */
+    static public void addCookie(HttpServletResponse response, String name, String value, int max_age, String path, String domain) {
+        Cookie cookie = new Cookie(name, value);
 
-    static public Cookie getCookie ( HttpServletRequest request, String name )
-    {
-    Cookie[] cookies = request.getCookies();
+        cookie.setMaxAge(max_age);
 
-    if ( cookies == null ) return null;
+        cookie.setPath(DockYard.isWhiteSpace(path) ? "/" : path);
 
-    for( int cc=0; cc < cookies.length; cc++)
+        if (!DockYard.isWhiteSpace(domain)) {
+            cookie.setDomain(domain);
+        }
 
-    { if ( cookies[ cc ].getName().equals ( name ) ) return cookies[ cc ]; }
-
-    return null;
+        response.addCookie(cookie);
     }
 
     /**
      *
      */
+    static public Cookie getCookie(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
 
-    static public String getValue ( HttpServletRequest request, String name )
-    {
-    Cookie cookie = getCookie ( request, name );
+        if (cookies == null) {
+            return null;
+        }
 
-    return cookie == null ? "" : cookie.getValue();
+        for (int cc = 0; cc < cookies.length; cc++) {
+            if (cookies[cc].getName().equals(name)) {
+                return cookies[cc];
+            }
+        }
+
+        return null;
     }
 
     /**
      *
      */
+    static public String getValue(HttpServletRequest request, String name) {
+        Cookie cookie = getCookie(request, name);
 
-    static public boolean hasCookie ( HttpServletRequest request, String name )
-    {
-    Cookie[] cookies = request.getCookies();
-
-    for ( int cc=0; cc < cookies.length; cc++)
-
-    { if ( cookies[ cc ].getName().equals ( name ) ) return true; }
-
-    return false;
+        return cookie == null ? "" : cookie.getValue();
     }
 
     /**
      *
      */
+    static public boolean hasCookie(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
 
-    static public boolean isTrue ( HttpServletRequest request, String name )
-    {
-    Cookie cookie = getCookie ( request, name );
+        for (int cc = 0; cc < cookies.length; cc++) {
+            if (cookies[cc].getName().equals(name)) {
+                return true;
+            }
+        }
 
-    return cookie == null ? false : DockYard.toBoolean ( cookie.getValue() );
+        return false;
+    }
+
+    /**
+     *
+     */
+    static public boolean isTrue(HttpServletRequest request, String name) {
+        Cookie cookie = getCookie(request, name);
+
+        return cookie == null ? false : DockYard.toBoolean(cookie.getValue());
     }
 
 }

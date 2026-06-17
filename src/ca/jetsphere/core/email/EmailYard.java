@@ -12,53 +12,52 @@ import java.util.regex.Pattern;
 /**
  *
  */
+public class EmailYard {
 
-public class EmailYard
-{
     /**
      *
      */
+    static public boolean isValid(String address) {
+        try {
 
-    static public boolean isValid ( String address )
-    {
-    try {
+            InternetAddress emailAddress = new InternetAddress(address);
 
-        InternetAddress emailAddress = new InternetAddress ( address );
+            emailAddress.validate();
 
-        emailAddress.validate();
+            Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 
-        Pattern pattern = Pattern.compile ( "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$" );
+            Matcher matcher = pattern.matcher(address);
 
-        Matcher matcher = pattern.matcher ( address );
+            return matcher.matches();
 
-        return matcher.matches();
-
-    } catch ( AddressException ex ) { return false; }
+        } catch (AddressException ex) {
+            return false;
+        }
 
     }
 
     /**
      *
      */
+    static public void sendEmail(ca.jetsphere.core.email.Message message, Errors errors) {
+        try {
 
-    static public void sendEmail (ca.jetsphere.core.email.Message message, Errors errors )
-    {
-    try {
+            if (DockYard.isWhiteSpace(message.getSignature())) {
+                SendEmail email = new SendEmail(message.getSender(), message.getRecipients(), message.getSubject());
 
-        if ( DockYard.isWhiteSpace ( message.getSignature() ) )
-        {
-        SendEmail email = new SendEmail ( message.getSender(), message.getRecipients(), message.getSubject() );
+                email.send(message);
 
-        email.send ( message );
+            } else {
 
-        } else {
+                SendEmail email = new SendEmail(message.getSender(), message.getSignature(), message.getRecipients(), message.getSubject());
 
-        SendEmail email = new SendEmail ( message.getSender(), message.getSignature(), message.getRecipients(), message.getSubject() );
+                email.send(message);
+            }
 
-        email.send ( message );
+        } catch (Exception e) {
+            Common.trace(e);
+            errors.add("error.email.not.sent");
         }
-
-    } catch ( Exception e ) { Common.trace ( e ); errors.add ( "error.email.not.sent" ); }
 
     }
 

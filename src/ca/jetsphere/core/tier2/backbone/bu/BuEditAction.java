@@ -1,7 +1,6 @@
 /**
  * COPYRIGHT 2011-2012 DAKOTA GRC, INC.
  */
-
 package ca.jetsphere.core.tier2.backbone.bu;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,85 +19,82 @@ import ca.jetsphere.core.tier2.common.Errors;
 /**
  *
  */
+public class BuEditAction extends AbstractEditAction {
 
-public class BuEditAction extends AbstractEditAction
-{
     /**
      *
      */
+    public ActionForward delete(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Bu bu = (Bu) store.getForm();
 
-    public ActionForward delete ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Bu bu = ( Bu ) store.getForm();
+        bu.delete(jdbc);
 
-    bu.delete ( jdbc );
-
-    return new ActionForward ( store.getForward ( "success" ).getPath() + "?select=" + bu.getParentId() );
+        return new ActionForward(store.getForward("success").getPath() + "?select=" + bu.getParentId());
     }
 
     /**
      *
      */
+    public ActionForward edit(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Bu bu = (Bu) store.getForm();
 
-    public ActionForward edit ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Bu bu = ( Bu ) store.getForm();
+        BuSession.setSelected(store.getRequest(), bu);
 
-    BuSession.setSelected ( store.getRequest(), bu );
-
-    return store.getForward ( "failure" );
+        return store.getForward("failure");
     }
 
     /**
      *
      */
-
-    public String getKey() { return Bu.key(); }
-
-    /**
-     *
-     */
-
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-
-    { return store.getForward ( "failure" ); }
-
-    /**
-     *
-     */
-
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    Bu bu = ( Bu ) bolt;
-
-    Bu parent = new Bu ( jdbc, bu.getParentId() );
-
-    if ( parent == null || ! parent.isValid() ) return;
-
-    bu.setPeriodId    ( parent.getPeriodId()  );
-
-    bu.setParentUuid ( parent.getUuid() );
-
-    bu.setDepth      ( parent.getDepth() + 1 );
-
-    bu.setLineage    ( parent.getLineage() + parent.getId() + "/" );
-
-    if ( bu.getOrdinal() < 0 ) bu.setOrdinal ( BuYard.getCount ( parent.getPeriodId(), parent.getId() ) );
+    public String getKey() {
+        return Bu.key();
     }
 
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        return store.getForward("failure");
+    }
 
-    public ActionForward update ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Bu bu = ( Bu ) store.getForm();
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        Bu bu = (Bu) bolt;
 
-    ActionForward forward = super.update ( jdbc, store, errors );
+        Bu parent = new Bu(jdbc, bu.getParentId());
 
-    if ( "failure" .equals ( forward.getName() ) ) return forward;
+        if (parent == null || !parent.isValid()) {
+            return;
+        }
 
-    return new ActionForward ( store.getForward ( "success" ).getPath() + "?select=" + bu.getId(), true );
+        bu.setPeriodId(parent.getPeriodId());
+
+        bu.setParentUuid(parent.getUuid());
+
+        bu.setDepth(parent.getDepth() + 1);
+
+        bu.setLineage(parent.getLineage() + parent.getId() + "/");
+
+        if (bu.getOrdinal() < 0) {
+            bu.setOrdinal(BuYard.getCount(parent.getPeriodId(), parent.getId()));
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward update(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Bu bu = (Bu) store.getForm();
+
+        ActionForward forward = super.update(jdbc, store, errors);
+
+        if ("failure".equals(forward.getName())) {
+            return forward;
+        }
+
+        return new ActionForward(store.getForward("success").getPath() + "?select=" + bu.getId(), true);
     }
 
 }

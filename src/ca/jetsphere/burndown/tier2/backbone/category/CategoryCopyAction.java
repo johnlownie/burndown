@@ -14,40 +14,40 @@ import ca.jetsphere.core.tier2.common.Errors;
 
 import org.apache.struts.action.ActionForward;
 
-
 /**
  *
  */
-public class CategoryCopyAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-    public String getKey() { return Category.key (); }
-    
-    /**
-     *
-     */
-    public ActionForward insert ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+public class CategoryCopyAction extends AbstractDoAction {
 
-    CategoryCopy categoryCopy = new CategoryCopy ( new BoltCopyMap() );
-    
-    categoryCopy.copy ( jdbc, qaf.getApplicationId(), qaf.getRoleId() );
-    
-    return getForward ( store );
+    /**
+     *
+     */
+    public String getKey() {
+        return Category.key();
     }
 
     /**
      *
      */
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
-    
-    ApplicationSession applications = ApplicationSession.query ( jdbc, store.getRequest(), company.getId(), false );
+    public ActionForward insert(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    return getForward ( store );
+        CategoryCopy categoryCopy = new CategoryCopy(new BoltCopyMap());
+
+        categoryCopy.copy(jdbc, qaf.getApplicationId(), qaf.getRoleId());
+
+        return getForward(store);
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Company company = CompanySession.getSelected(store.getRequest());
+
+        ApplicationSession applications = ApplicationSession.query(jdbc, store.getRequest(), company.getId(), false);
+
+        return getForward(store);
     }
 }

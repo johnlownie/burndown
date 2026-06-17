@@ -6,46 +6,50 @@ import ca.jetsphere.core.tier1.tree.TreeSession;
 /**
  *
  */
-
-abstract public class BuMap extends TreeSession
-{
-    /**
-     *
-     */
-
-    public BuMap() { super(); }
+abstract public class BuMap extends TreeSession {
 
     /**
      *
      */
-
-    public BuMap ( JDBC jdbc, int id ) { this(); query ( jdbc, id ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int period_id )
-    {
-    String query = "select * from jet_base_bu";
-
-    if ( period_id > 0 ) query += " where bu_period_id = " + period_id; else
-
-    query ( jdbc,  query );
-
-    treeify();
+    public BuMap() {
+        super();
     }
 
     /**
      *
      */
-
-    public String getKey() { return Bu.key(); }
+    public BuMap(JDBC jdbc, int id) {
+        this();
+        query(jdbc, id);
+    }
 
     /**
      *
      */
+    public void find(JDBC jdbc, int period_id) {
+        String query = "select * from jet_base_bu";
 
-    public Bu getBu ( int id ) { return ( Bu ) getTree ( id ); }
+        if (period_id > 0) {
+            query += " where bu_period_id = " + period_id;
+        } else {
+            query(jdbc, query);
+        }
+
+        treeify();
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return Bu.key();
+    }
+
+    /**
+     *
+     */
+    public Bu getBu(int id) {
+        return (Bu) getTree(id);
+    }
 
 }

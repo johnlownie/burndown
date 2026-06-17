@@ -11,82 +11,77 @@ import java.sql.Timestamp;
 /**
  *
  */
+public class CompanyDao extends AbstractDao {
 
-public class CompanyDao extends AbstractDao
-{
     /**
      *
      */
+    public boolean delete(JDBC jdbc, Company company) throws Exception {
+        // CompanyMemberDelete.delete ( jdbc, company.getId() ); ApplicationDelete.delete ( jdbc, company.getId() ); ActionDelete.delete ( jdbc, company.getId() );
 
-    public boolean delete ( JDBC jdbc, Company company ) throws Exception
-    {
-    // CompanyMemberDelete.delete ( jdbc, company.getId() ); ApplicationDelete.delete ( jdbc, company.getId() ); ActionDelete.delete ( jdbc, company.getId() );
-
-    return delete ( jdbc, company, "delete from jet_base_company where company_id = " + company.getId() );
+        return delete(jdbc, company, "delete from jet_base_company where company_id = " + company.getId());
     }
 
     /**
      *
      */
+    public void insert(JDBC jdbc, Bolt bolt, PreparedStatement ps) throws Exception {
+        Company company = (Company) bolt;
 
-    public void insert ( JDBC jdbc, Bolt bolt, PreparedStatement ps ) throws Exception
-    {
-    Company company = ( Company ) bolt;
+        String s = "insert into jet_base_company "
+                + "( company_uuid, company_name, company_short, company_street, company_city, company_province, company_postal_code, company_phone, company_fax, company_url, company_email, company_default, company_last_update, company_created )"
+                + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
-    String s = "insert into jet_base_company "
-            + "( company_uuid, company_name, company_short, company_street, company_city, company_province, company_postal_code, company_phone, company_fax, company_url, company_email, company_default, company_last_update, company_created )"
-            + "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        ps.setStatement(s, new String[]{"company_id"});
 
-    ps.setStatement ( s, new String [] { "company_id" } );
+        company.setUuid(UUID.get());
+        company.setCreated(new Timestamp(System.currentTimeMillis()));
+        company.setLastUpdate(company.getCreated());
 
-    company.setUuid ( UUID.get() ); company.setCreated ( new Timestamp ( System.currentTimeMillis() ) ); company.setLastUpdate ( company.getCreated() );
-
-    ps.setString    (  1, company.getUuid       () );
-    ps.setString    (  2, company.getName       () );
-    ps.setString    (  3, company.getShort      () );
-    ps.setString    (  4, company.getStreet     () );
-    ps.setString    (  5, company.getCity       () );
-    ps.setString    (  6, company.getProvince   () );
-    ps.setString    (  7, company.getPostalCode () );
-    ps.setString    (  8, company.getPhone      () );
-    ps.setString    (  9, company.getFax        () );
-    ps.setString    ( 10, company.getUrl        () );
-    ps.setString    ( 11, company.getEmail      () );
-    ps.setBoolean   ( 12, company.getDefault    () );
-    ps.setTimestamp ( 13, company.getLastUpdate () );
-    ps.setTimestamp ( 14, company.getCreated    () );
+        ps.setString(1, company.getUuid());
+        ps.setString(2, company.getName());
+        ps.setString(3, company.getShort());
+        ps.setString(4, company.getStreet());
+        ps.setString(5, company.getCity());
+        ps.setString(6, company.getProvince());
+        ps.setString(7, company.getPostalCode());
+        ps.setString(8, company.getPhone());
+        ps.setString(9, company.getFax());
+        ps.setString(10, company.getUrl());
+        ps.setString(11, company.getEmail());
+        ps.setBoolean(12, company.getDefault());
+        ps.setTimestamp(13, company.getLastUpdate());
+        ps.setTimestamp(14, company.getCreated());
     }
 
     /**
      *
      */
+    public void update(JDBC jdbc, Bolt bolt, PreparedStatement ps, boolean ts) throws Exception {
+        Company company = (Company) bolt;
 
-    public void update ( JDBC jdbc, Bolt bolt, PreparedStatement ps, boolean ts ) throws Exception
-    {
-    Company company = ( Company ) bolt;
+        String s = "update jet_base_company "
+                + "set company_uuid = ?, company_name = ?, company_short = ?, company_street = ?, company_city = ?, company_province= ?, company_postal_code = ?, company_phone = ?, company_fax = ?, company_url = ?, company_email = ?, company_default = ?, company_last_update = ? "
+                + "where company_id = ?";
 
-    String s = "update jet_base_company "
-            + "set company_uuid = ?, company_name = ?, company_short = ?, company_street = ?, company_city = ?, company_province= ?, company_postal_code = ?, company_phone = ?, company_fax = ?, company_url = ?, company_email = ?, company_default = ?, company_last_update = ? "
-            + "where company_id = ?";
+        ps.setStatement(s);
 
-    ps.setStatement ( s );
+        company.setLastUpdate(new Timestamp(System.currentTimeMillis()));
 
-    company.setLastUpdate ( new Timestamp ( System.currentTimeMillis() ) );
-
-    ps.setString    (  1, company.getUuid       () );
-    ps.setString    (  2, company.getName       () );
-    ps.setString    (  3, company.getShort      () );
-    ps.setString    (  4, company.getStreet     () );
-    ps.setString    (  5, company.getCity       () );
-    ps.setString    (  6, company.getProvince   () );
-    ps.setString    (  7, company.getPostalCode () );
-    ps.setString    (  8, company.getPhone      () );
-    ps.setString    (  9, company.getFax        () );
-    ps.setString    ( 10, company.getUrl        () );
-    ps.setString    ( 11, company.getEmail      () );
-    ps.setBoolean   ( 12, company.getDefault    () );
-    ps.setTimestamp ( 13, company.getLastUpdate () );
-    ps.setInt       ( 14, company.getId         () );
+        ps.setString(1, company.getUuid());
+        ps.setString(2, company.getName());
+        ps.setString(3, company.getShort());
+        ps.setString(4, company.getStreet());
+        ps.setString(5, company.getCity());
+        ps.setString(6, company.getProvince());
+        ps.setString(7, company.getPostalCode());
+        ps.setString(8, company.getPhone());
+        ps.setString(9, company.getFax());
+        ps.setString(10, company.getUrl());
+        ps.setString(11, company.getEmail());
+        ps.setBoolean(12, company.getDefault());
+        ps.setTimestamp(13, company.getLastUpdate());
+        ps.setInt(14, company.getId());
     }
 
 }

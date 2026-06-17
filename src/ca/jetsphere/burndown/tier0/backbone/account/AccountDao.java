@@ -11,64 +11,64 @@ import java.sql.Timestamp;
 /**
  *
  */
-public class AccountDao extends AbstractDao
-{
-    /**
-     *
-     */
-    public boolean delete ( JDBC jdbc, Account account) throws Exception
-
-    {  return delete ( jdbc, account, "delete from jet_burndown_account where account_id = " + account.getId() ); }
+public class AccountDao extends AbstractDao {
 
     /**
      *
      */
-    public void insert ( JDBC jdbc, Bolt bolt, PreparedStatement ps ) throws Exception
-    {
-    Account account = ( Account ) bolt;
-
-    String s = "insert into jet_burndown_account" +
-            " ( account_uuid, account_application_id, account_name, account_type, account_number, account_secondary, account_bank_id, account_url, account_last_update, account_created )" +
-            " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-
-    ps.setStatement ( s, new String [] { "account_id" } );
-
-    account.setUuid ( UUID.get () ); account.setCreated ( new Timestamp ( System.currentTimeMillis() ) ); account.setLastUpdate ( account.getCreated() );
-
-    ps.setString    (  1, account.getUuid          () );
-    ps.setInt       (  2, account.getApplicationId () );
-    ps.setString    (  3, account.getName          () );
-    ps.setString    (  4, account.getType          () );
-    ps.setString    (  5, account.getNumber        () );
-    ps.setString    (  6, account.getSecondary     () );
-    ps.setString    (  7, account.getBankId        () );
-    ps.setString    (  8, account.getUrl           () );
-    ps.setTimestamp (  9, account.getLastUpdate    () );
-    ps.setTimestamp ( 10, account.getCreated       () );
+    public boolean delete(JDBC jdbc, Account account) throws Exception {
+        return delete(jdbc, account, "delete from jet_burndown_account where account_id = " + account.getId());
     }
 
     /**
      *
      */
-    public void update ( JDBC jdbc, Bolt bolt, PreparedStatement ps, boolean ts ) throws Exception
-    {
-    Account account = ( Account ) bolt;
+    public void insert(JDBC jdbc, Bolt bolt, PreparedStatement ps) throws Exception {
+        Account account = (Account) bolt;
 
-    String s = "update jet_burndown_account set account_uuid = ?, account_application_id = ?, account_name = ?, account_type = ?, account_number = ?, account_secondary = ?, account_bank_id = ?, account_url = ?, account_last_update = ? where account_id = ?";
+        String s = "insert into jet_burndown_account"
+                + " ( account_uuid, account_application_id, account_name, account_type, account_number, account_secondary, account_bank_id, account_url, account_last_update, account_created )"
+                + " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 
-    ps.setStatement ( s );
+        ps.setStatement(s, new String[]{"account_id"});
 
-    account.setLastUpdate ( new Timestamp ( System.currentTimeMillis() ) );
+        account.setUuid(UUID.get());
+        account.setCreated(new Timestamp(System.currentTimeMillis()));
+        account.setLastUpdate(account.getCreated());
 
-    ps.setString    (  1, account.getUuid          () );
-    ps.setInt       (  2, account.getApplicationId () );
-    ps.setString    (  3, account.getName          () );
-    ps.setString    (  4, account.getType          () );
-    ps.setString    (  5, account.getNumber        () );
-    ps.setString    (  6, account.getSecondary     () );
-    ps.setString    (  7, account.getBankId        () );
-    ps.setString    (  8, account.getUrl           () );
-    ps.setTimestamp (  9, account.getLastUpdate    () );
-    ps.setInt       ( 10, account.getId            () );
+        ps.setString(1, account.getUuid());
+        ps.setInt(2, account.getApplicationId());
+        ps.setString(3, account.getName());
+        ps.setString(4, account.getType());
+        ps.setString(5, account.getNumber());
+        ps.setString(6, account.getSecondary());
+        ps.setString(7, account.getBankId());
+        ps.setString(8, account.getUrl());
+        ps.setTimestamp(9, account.getLastUpdate());
+        ps.setTimestamp(10, account.getCreated());
+    }
+
+    /**
+     *
+     */
+    public void update(JDBC jdbc, Bolt bolt, PreparedStatement ps, boolean ts) throws Exception {
+        Account account = (Account) bolt;
+
+        String s = "update jet_burndown_account set account_uuid = ?, account_application_id = ?, account_name = ?, account_type = ?, account_number = ?, account_secondary = ?, account_bank_id = ?, account_url = ?, account_last_update = ? where account_id = ?";
+
+        ps.setStatement(s);
+
+        account.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+        ps.setString(1, account.getUuid());
+        ps.setInt(2, account.getApplicationId());
+        ps.setString(3, account.getName());
+        ps.setString(4, account.getType());
+        ps.setString(5, account.getNumber());
+        ps.setString(6, account.getSecondary());
+        ps.setString(7, account.getBankId());
+        ps.setString(8, account.getUrl());
+        ps.setTimestamp(9, account.getLastUpdate());
+        ps.setInt(10, account.getId());
     }
 }

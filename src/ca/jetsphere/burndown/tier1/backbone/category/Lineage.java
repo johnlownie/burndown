@@ -17,117 +17,116 @@ import ca.jetsphere.core.tier1.backbone.period.PeriodSession;
 /**
  *
  */
+public class Lineage {
 
-public class Lineage
-{
     /**
      *
      */
-    static public List getLineage ( Category category )
-    {
-    ArrayList list = new ArrayList();
+    static public List getLineage(Category category) {
+        ArrayList list = new ArrayList();
 
-    StringTokenizer st = new StringTokenizer ( category.getLineage(), "/" );
+        StringTokenizer st = new StringTokenizer(category.getLineage(), "/");
 
-    while ( st.hasMoreTokens() )
+        while (st.hasMoreTokens()) {
+            String t = st.nextToken();
+            if (!DockYard.isWhiteSpace(t)) {
+                list.add(t);
+            }
+        }
 
-    { String t = st.nextToken(); if ( ! DockYard.isWhiteSpace ( t ) ) list.add ( t ); }
+        Collections.reverse(list);
 
-    Collections.reverse ( list );
-
-    return list;
+        return list;
     }
 
     /**
      *
      */
-    static public String getMySql ( int application_id )
-    {
-    StringBuffer sb = new StringBuffer();
-    
-    sb.append ( "update jet_burndown_category as c " );
-    sb.append ( " inner join jet_burndown_category as p on p.category_id = c.category_parent_id" );
-    sb.append ( " set c.category_depth = p.category_depth + 1, c.category_lineage = concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/' )" );
-    sb.append ( " where p.category_depth >= 0" );
-    sb.append ( " and p.category_lineage is not null" );
-    sb.append ( " and c.category_depth is null" );
-    sb.append ( " and p.category_application_id = " + application_id );
-    sb.append ( " and c.category_application_id = " + application_id );
+    static public String getMySql(int application_id) {
+        StringBuffer sb = new StringBuffer();
 
-    return sb.toString();
+        sb.append("update jet_burndown_category as c ");
+        sb.append(" inner join jet_burndown_category as p on p.category_id = c.category_parent_id");
+        sb.append(" set c.category_depth = p.category_depth + 1, c.category_lineage = concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/' )");
+        sb.append(" where p.category_depth >= 0");
+        sb.append(" and p.category_lineage is not null");
+        sb.append(" and c.category_depth is null");
+        sb.append(" and p.category_application_id = " + application_id);
+        sb.append(" and c.category_application_id = " + application_id);
+
+        return sb.toString();
     }
 
     /**
      *
      */
-    static public boolean okay ( JDBC jdbc, int application_id ) throws Exception
-    {
-    CategorySession categorys = new CategorySession ( jdbc, application_id );
+    static public boolean okay(JDBC jdbc, int application_id) throws Exception {
+        CategorySession categorys = new CategorySession(jdbc, application_id);
 
-    Iterator it = categorys.iterator ( false );
+        Iterator it = categorys.iterator(false);
 
-    while ( it.hasNext() )
+        while (it.hasNext()) {
+            Category category = (Category) it.next();
+            if (!okay(jdbc, category)) {
+                return false;
+            }
+        }
 
-    { Category category = ( Category ) it.next(); if ( ! okay ( jdbc, category ) ) return false; }
-
-    return true;
+        return true;
     }
 
     /**
      *
      */
-    static public boolean okay ( JDBC jdbc, Category category ) throws Exception
-    {
-    List list = getLineage ( category );
+    static public boolean okay(JDBC jdbc, Category category) throws Exception {
+        List list = getLineage(category);
 
-    Iterator it = list.iterator();
+        Iterator it = list.iterator();
 
-    while ( it.hasNext() )
-    {
-    String s = ( String ) it.next();
+        while (it.hasNext()) {
+            String s = (String) it.next();
 
-    Category parent = new Category ( jdbc, category.getParentId() );
+            Category parent = new Category(jdbc, category.getParentId());
 
-    if ( DockYard.toInteger ( s ) != parent.getId() )
+            if (DockYard.toInteger(s) != parent.getId()) {
+                Common.trace("BAD LINEAGE: " + category.getId());
+                return false;
+            }
 
-    { Common.trace ( "BAD LINEAGE: " + category.getId() ); return false; }
+            category = parent;
+        }
 
-    category = parent;
-    }
-
-    return true;
-    }
-
-    /**
-     *
-     */
-    static public void reset ( JDBC jdbc, int application_id ) throws Exception
-
-    { QueryYard.update ( jdbc, "update jet_burndown_category set category_lineage = null, category_depth = null where category_application_id = " + application_id, false ); }
-
-    /**
-     *
-     */
-    static public void set ( JDBC jdbc, HttpServletRequest request ) throws Exception
-    {
-    int period_id = PeriodSession.getRequestedId ( request );
-
-    set ( jdbc, period_id );
+        return true;
     }
 
     /**
      *
      */
-    static public void set ( JDBC jdbc, int application_id ) throws Exception
-    {
-    reset ( jdbc, application_id );
+    static public void reset(JDBC jdbc, int application_id) throws Exception {
+        QueryYard.update(jdbc, "update jet_burndown_category set category_lineage = null, category_depth = null where category_application_id = " + application_id, false);
+    }
 
-    Common.trace ( "SET LINEAGE: BU-SET # " + application_id );
+    /**
+     *
+     */
+    static public void set(JDBC jdbc, HttpServletRequest request) throws Exception {
+        int period_id = PeriodSession.getRequestedId(request);
 
-    QueryYard.update ( jdbc, "update jet_burndown_category set category_lineage = '/', category_depth = 0 where category_parent_id = 0 and category_application_id = " + application_id, false );
+        set(jdbc, period_id);
+    }
 
-    String query = getMySql ( application_id );
+    /**
+     *
+     */
+    static public void set(JDBC jdbc, int application_id) throws Exception {
+        reset(jdbc, application_id);
 
-    QueryYard.update ( jdbc, query, true );
+        Common.trace("SET LINEAGE: BU-SET # " + application_id);
+
+        QueryYard.update(jdbc, "update jet_burndown_category set category_lineage = '/', category_depth = 0 where category_parent_id = 0 and category_application_id = " + application_id, false);
+
+        String query = getMySql(application_id);
+
+        QueryYard.update(jdbc, query, true);
     }
 }

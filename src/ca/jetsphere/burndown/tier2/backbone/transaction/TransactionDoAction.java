@@ -27,95 +27,107 @@ import net.sf.json.JSONObject;
 /**
  *
  */
-public class TransactionDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-    public String getKey() { return Transaction.key (); }
+public class TransactionDoAction extends AbstractDoAction {
 
     /**
      *
      */
-    public ActionForward fetch ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-    
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); JSONObject jsonObject = new JSONObject();
-    
-        Application application = ApplicationSession.getSelected ( store.getRequest() ); Period selected = PeriodSession.getSelected ( store.getRequest() );
-        
-        if ( !ApplicationYard.hasPeriod ( jdbc, application.getId(), qaf.getPeriodId() ) ) 
-        
-        { qaf.setPeriodId ( selected.getId() ); qaf.setStartDateAsString ( selected.getStartDateAsString() ); qaf.setEndDateAsString ( selected.getEndDateAsString() ); }
-        
-        if ( qaf.getPeriodId() != selected.getId() )
-        {
-        Period period = new Period ( jdbc, qaf.getPeriodId() ); 
-        
-        qaf.setStartDateAsString ( period.getStartDateAsString() ); qaf.setEndDateAsString ( period.getEndDateAsString() );
-        
-        PeriodSession.setSelected ( store.getRequest(), period );
+    public String getKey() {
+        return Transaction.key();
+    }
 
-        jsonObject.put ( "startDate", period.getStartDateAsString() ); jsonObject.put ( "endDate", period.getEndDateAsString() );
+    /**
+     *
+     */
+    public ActionForward fetch(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
+
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
+            JSONObject jsonObject = new JSONObject();
+
+            Application application = ApplicationSession.getSelected(store.getRequest());
+            Period selected = PeriodSession.getSelected(store.getRequest());
+
+            if (!ApplicationYard.hasPeriod(jdbc, application.getId(), qaf.getPeriodId())) {
+                qaf.setPeriodId(selected.getId());
+                qaf.setStartDateAsString(selected.getStartDateAsString());
+                qaf.setEndDateAsString(selected.getEndDateAsString());
+            }
+
+            if (qaf.getPeriodId() != selected.getId()) {
+                Period period = new Period(jdbc, qaf.getPeriodId());
+
+                qaf.setStartDateAsString(period.getStartDateAsString());
+                qaf.setEndDateAsString(period.getEndDateAsString());
+
+                PeriodSession.setSelected(store.getRequest(), period);
+
+                jsonObject.put("startDate", period.getStartDateAsString());
+                jsonObject.put("endDate", period.getEndDateAsString());
+            }
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            out.write(jsonObject.toString());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
         }
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        out.write ( jsonObject.toString() );
-        
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
     }
 
     /**
      *
      */
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        TransactionSession transactions = TransactionYard.set ( jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getToggle(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
+            TransactionSession transactions = TransactionYard.set(jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getToggle(), qaf.getStartDateAsString(), qaf.getEndDateAsString());
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        PrintWriter out = store.getResponse().getWriter();
+            PrintWriter out = store.getResponse().getWriter();
 
-        DataTableWriter dataTableWriter = new DataTableWriter ( transactions, Transaction.captions(), Transaction.fields() );
+            DataTableWriter dataTableWriter = new DataTableWriter(transactions, Transaction.captions(), Transaction.fields());
 
-        dataTableWriter.print ( out, store.getRequest() );
+            dataTableWriter.print(out, store.getRequest());
 
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
-    
-    Period period = PeriodSession.getSelected ( store.getRequest() );
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Application application = ApplicationSession.getSelected(store.getRequest());
 
-    int period_id = qaf.getPeriodId () <= 0 ? period.getId() : qaf.getPeriodId ();
+        Period period = PeriodSession.getSelected(store.getRequest());
 
-    qaf.setPeriodId ( period_id );
+        int period_id = qaf.getPeriodId() <= 0 ? period.getId() : qaf.getPeriodId();
 
-    qaf.setStartDateAsString ( period.getStartDateAsString() ); qaf.setEndDateAsString ( period.getEndDateAsString() );
+        qaf.setPeriodId(period_id);
 
-    AccountSession.query ( jdbc, store.getRequest(), application.getId(), true );
-    
-    CategorySession.query ( jdbc, store.getRequest(), application.getId(), true );
+        qaf.setStartDateAsString(period.getStartDateAsString());
+        qaf.setEndDateAsString(period.getEndDateAsString());
 
-    TransactionSession.query ( jdbc, store.getRequest(), qaf.getPeriodId(), false );
+        AccountSession.query(jdbc, store.getRequest(), application.getId(), true);
 
-    return getForward ( store );
+        CategorySession.query(jdbc, store.getRequest(), application.getId(), true);
+
+        TransactionSession.query(jdbc, store.getRequest(), qaf.getPeriodId(), false);
+
+        return getForward(store);
     }
 }

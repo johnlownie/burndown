@@ -11,68 +11,65 @@ import java.sql.Timestamp;
 /**
  *
  */
-
-public class UserDao extends AbstractDao
-{
-    /**
-     *
-     */
-
-    public boolean delete ( JDBC jdbc, User user ) throws Exception
-
-    {  return delete ( jdbc, user, "delete from jet_base_user where user_id = " + user.getId() ); }
+public class UserDao extends AbstractDao {
 
     /**
      *
      */
-
-    public void insert ( JDBC jdbc, Bolt bolt, PreparedStatement ps ) throws Exception
-    {
-    User user = ( User ) bolt;
-
-    String s = "insert into jet_base_user ( user_uuid, user_username, user_password, user_status, user_last_login, user_role_ids, user_application_id, user_notes, user_last_update, user_created )" +
-            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    ps.setStatement ( s, new String [] { "user_id" } );
-
-    user.setUuid ( UUID.get() ); user.setCreated ( new Timestamp ( System.currentTimeMillis() ) ); user.setLastUpdate ( user.getCreated() ); user.setLastLogin ( user.getCreated() );
-
-    ps.setString    (  1, user.getUuid          () );
-    ps.setString    (  2, user.getUsername      () );
-    ps.setString    (  3, user.getPassword      () );
-    ps.setInt       (  4, user.getStatus        () );
-    ps.setTimestamp (  5, user.getLastLogin     () );
-    ps.setString    (  6, user.getRoleIds       () );
-    ps.setInt       (  7, user.getApplicationId () );
-    ps.setString    (  8, user.getNotes         () );
-    ps.setTimestamp (  9, user.getLastUpdate    () );
-    ps.setTimestamp ( 10, user.getCreated       () );
+    public boolean delete(JDBC jdbc, User user) throws Exception {
+        return delete(jdbc, user, "delete from jet_base_user where user_id = " + user.getId());
     }
 
     /**
      *
      */
+    public void insert(JDBC jdbc, Bolt bolt, PreparedStatement ps) throws Exception {
+        User user = (User) bolt;
 
-    public void update ( JDBC jdbc, Bolt bolt, PreparedStatement ps, boolean ts ) throws Exception
-    {
-    User user = ( User ) bolt;
+        String s = "insert into jet_base_user ( user_uuid, user_username, user_password, user_status, user_last_login, user_role_ids, user_application_id, user_notes, user_last_update, user_created )"
+                + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    String s = "update jet_base_user set user_uuid = ?, user_username = ?, user_password = ?, user_status = ?, user_last_login = ?, user_role_ids = ?, user_application_id = ?, user_notes = ?, user_last_update = ? where user_id = ?";
+        ps.setStatement(s, new String[]{"user_id"});
 
-    ps.setStatement ( s );
+        user.setUuid(UUID.get());
+        user.setCreated(new Timestamp(System.currentTimeMillis()));
+        user.setLastUpdate(user.getCreated());
+        user.setLastLogin(user.getCreated());
 
-    user.setLastUpdate ( new Timestamp ( System.currentTimeMillis() ) );
+        ps.setString(1, user.getUuid());
+        ps.setString(2, user.getUsername());
+        ps.setString(3, user.getPassword());
+        ps.setInt(4, user.getStatus());
+        ps.setTimestamp(5, user.getLastLogin());
+        ps.setString(6, user.getRoleIds());
+        ps.setInt(7, user.getApplicationId());
+        ps.setString(8, user.getNotes());
+        ps.setTimestamp(9, user.getLastUpdate());
+        ps.setTimestamp(10, user.getCreated());
+    }
 
-    ps.setString    (  1, user.getUuid          () );
-    ps.setString    (  2, user.getUsername      () );
-    ps.setString    (  3, user.getPassword      () );
-    ps.setInt       (  4, user.getStatus        () );
-    ps.setTimestamp (  5, user.getLastLogin     () );
-    ps.setString    (  6, user.getRoleIds       () );
-    ps.setInt       (  7, user.getApplicationId () );
-    ps.setString    (  8, user.getNotes         () );
-    ps.setTimestamp (  9, user.getLastUpdate    () );
-    ps.setInt       ( 10, user.getId            () );
-}
+    /**
+     *
+     */
+    public void update(JDBC jdbc, Bolt bolt, PreparedStatement ps, boolean ts) throws Exception {
+        User user = (User) bolt;
+
+        String s = "update jet_base_user set user_uuid = ?, user_username = ?, user_password = ?, user_status = ?, user_last_login = ?, user_role_ids = ?, user_application_id = ?, user_notes = ?, user_last_update = ? where user_id = ?";
+
+        ps.setStatement(s);
+
+        user.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+        ps.setString(1, user.getUuid());
+        ps.setString(2, user.getUsername());
+        ps.setString(3, user.getPassword());
+        ps.setInt(4, user.getStatus());
+        ps.setTimestamp(5, user.getLastLogin());
+        ps.setString(6, user.getRoleIds());
+        ps.setInt(7, user.getApplicationId());
+        ps.setString(8, user.getNotes());
+        ps.setTimestamp(9, user.getLastUpdate());
+        ps.setInt(10, user.getId());
+    }
 
 }

@@ -6,39 +6,41 @@ import ca.jetsphere.core.jdbc.JDBC;
 /**
  *
  */
-
-abstract public class MailServerMap extends BoltMap
-{
-    /**
-     *
-     */
-
-    public MailServerMap() { super(); }
+abstract public class MailServerMap extends BoltMap {
 
     /**
      *
      */
-
-    public MailServerMap ( JDBC jdbc, int id ) { query ( jdbc, id ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int company_id )
-
-    { query ( jdbc, "select * from jet_base_mail_server" + ( company_id > 0 ? " where mail_server_company_id = " + company_id : "" ) ); }
+    public MailServerMap() {
+        super();
+    }
 
     /**
      *
      */
-
-    public MailServer getMailServer ( int id ) { return ( MailServer ) get ( id ); }
+    public MailServerMap(JDBC jdbc, int id) {
+        query(jdbc, id);
+    }
 
     /**
      *
      */
+    public void find(JDBC jdbc, int company_id) {
+        query(jdbc, "select * from jet_base_mail_server" + (company_id > 0 ? " where mail_server_company_id = " + company_id : ""));
+    }
 
-    public String getKey() { return MailServer.key(); }
+    /**
+     *
+     */
+    public MailServer getMailServer(int id) {
+        return (MailServer) get(id);
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return MailServer.key();
+    }
 
 }

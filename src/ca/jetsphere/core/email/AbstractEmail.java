@@ -8,9 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
+public class AbstractEmail {
 
-public class AbstractEmail
-{
-    JDBC jdbc; HttpServletRequest request; Errors errors;
+    JDBC jdbc;
+    HttpServletRequest request;
+    Errors errors;
 
 }

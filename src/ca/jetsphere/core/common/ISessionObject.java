@@ -10,24 +10,22 @@ import java.util.Iterator;
 /**
  *
  */
+public interface ISessionObject {
 
-public interface ISessionObject
-{
     /**
      *
      */
+    public String[] captions();
 
-    public String [] captions();
+    public void clearSelected(HttpServletRequest request);
 
-    public void clearSelected ( HttpServletRequest request );
+    public boolean contains(Bolt bolt);
 
-    public boolean contains ( Bolt bolt );
+    public String[] fields();
 
-    public String [] fields();
+    public Bolt getBolt(int id);
 
-    public Bolt getBolt ( int id );
-
-    public Bolt getBoltByUuid ( String uuid );
+    public Bolt getBoltByUuid(String uuid);
 
     public BoltMap getBoltMap();
 
@@ -39,16 +37,16 @@ public interface ISessionObject
 
     public boolean isEmpty();
 
-    public boolean isSelected ( Bolt bolt );
+    public boolean isSelected(Bolt bolt);
 
-    public Iterator iterator ( boolean sort );
+    public Iterator iterator(boolean sort);
 
-    public Iterator iterator ( Comparator comparator );
+    public Iterator iterator(Comparator comparator);
 
-    public void setQualifiedSelected ( HttpServletRequest request, int edit );
+    public void setQualifiedSelected(HttpServletRequest request, int edit);
 
-    public void setQualifiedSelected ( HttpServletRequest request, String edit );
+    public void setQualifiedSelected(HttpServletRequest request, String edit);
 
-    public void setQualifiedSelected ( HttpServletRequest request, Bolt bolt );
+    public void setQualifiedSelected(HttpServletRequest request, Bolt bolt);
 
 }

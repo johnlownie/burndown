@@ -3,13 +3,13 @@ package ca.jetsphere.core.common;
 /**
  *
  */
+public class Tag {
 
-public class Tag
-{
     /**
      *
      */
-
-    static public String get ( String key ) { return key + "Id"; }
+    static public String get(String key) {
+        return key + "Id";
+    }
 
 }

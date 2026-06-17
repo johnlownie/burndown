@@ -5,5 +5,5 @@ import org.apache.struts.action.ActionForm;
 /**
  *
  */
-
-public class EmptyActionForm extends ActionForm {}
+public class EmptyActionForm extends ActionForm {
+}

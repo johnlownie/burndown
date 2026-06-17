@@ -11,59 +11,63 @@ import java.util.List;
 /**
  *
  */
+public class ResultSetBoltList extends ResultSetBoltMap {
 
-public class ResultSetBoltList extends ResultSetBoltMap
-{
     List list = new ArrayList();
 
     /**
      *
      */
-
-    public ResultSetBoltList() { super(); }
-
-    /**
-     *
-     */
-
-    public ResultSetBoltList ( JDBC jdbc, ResultSet rs ) throws Exception
-
-    { this(); get ( jdbc, rs ); }
+    public ResultSetBoltList() {
+        super();
+    }
 
     /**
      *
      */
-
-    public ResultSetBoltList ( JDBC jdbc, String query ) throws Exception
-
-    { this(); if ( ! DockYard.isWhiteSpace ( query ) ) query ( jdbc, query ); }
-
-    /**
-     *
-     */
-
-    public void add ( Bolt bolt )
-
-    { super.add ( bolt ); list.add ( bolt ); }
+    public ResultSetBoltList(JDBC jdbc, ResultSet rs) throws Exception {
+        this();
+        get(jdbc, rs);
+    }
 
     /**
      *
      */
-
-    public void add ( JDBC jdbc, ResultSet rs ) throws Exception
-
-    { add ( new ResultSetBolt ( size(), getCaptions(), rs ) ); }
-
-    /**
-     *
-     */
-
-    public void clear() { super.clear(); list.clear(); }
+    public ResultSetBoltList(JDBC jdbc, String query) throws Exception {
+        this();
+        if (!DockYard.isWhiteSpace(query)) {
+            query(jdbc, query);
+        }
+    }
 
     /**
      *
      */
+    public void add(Bolt bolt) {
+        super.add(bolt);
+        list.add(bolt);
+    }
 
-    public List list ( boolean sort ) { return list; }
+    /**
+     *
+     */
+    public void add(JDBC jdbc, ResultSet rs) throws Exception {
+        add(new ResultSetBolt(size(), getCaptions(), rs));
+    }
+
+    /**
+     *
+     */
+    public void clear() {
+        super.clear();
+        list.clear();
+    }
+
+    /**
+     *
+     */
+    public List list(boolean sort) {
+        return list;
+    }
 
 }

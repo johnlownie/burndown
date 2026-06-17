@@ -23,68 +23,70 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class UserDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return User.key(); }
+public class UserDoAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); qaf.setDtCount ( UserYard.getCount ( jdbc ) ); qaf.setDts ( store.getRequest() );
-
-        UserSession users = UserYard.get ( jdbc, store.getRequest(), qaf.getDtStart(), qaf.getDtLength(), qaf.getDtOrderColumn(), qaf.getDtOrderDir(), qaf.getDtSearch() );
-
-        qaf.setDtFiltered ( UserYard.getCount ( jdbc, qaf.getDtSearch() ) );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( users, User.captions(), User.fields() );
-
-        dataTableWriter.print ( out, store.getRequest(), qaf.getDtDraw(), qaf.getDtCount(), qaf.getDtFiltered(), qaf.getDtStart(), Math.min ( qaf.getDtLength(), qaf.getDtFiltered() - qaf.getDtStart() ) );
-
-    } catch ( Exception e ) { Common.trace( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return User.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
+            qaf.setDtCount(UserYard.getCount(jdbc));
+            qaf.setDts(store.getRequest());
 
-    RoleYard.getCompanyRoles ( jdbc, store.getRequest(), true );
-    
-    ApplicationSession.query ( jdbc, store.getRequest(), company.getId(), true );
+            UserSession users = UserYard.get(jdbc, store.getRequest(), qaf.getDtStart(), qaf.getDtLength(), qaf.getDtOrderColumn(), qaf.getDtOrderDir(), qaf.getDtSearch());
 
-    return getForward ( store );
+            qaf.setDtFiltered(UserYard.getCount(jdbc, qaf.getDtSearch()));
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(users, User.captions(), User.fields());
+
+            dataTableWriter.print(out, store.getRequest(), qaf.getDtDraw(), qaf.getDtCount(), qaf.getDtFiltered(), qaf.getDtStart(), Math.min(qaf.getDtLength(), qaf.getDtFiltered() - qaf.getDtStart()));
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Company company = CompanySession.getSelected(store.getRequest());
 
-    public ActionForward role ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+        RoleYard.getCompanyRoles(jdbc, store.getRequest(), true);
 
-    if ( !DockYard.isWhiteSpace ( qaf.getRole() ) ) return store.getForward ( "role", "?role=true&id=" + qaf.getRole() );
+        ApplicationSession.query(jdbc, store.getRequest(), company.getId(), true);
 
-    return  getForward ( store );
+        return getForward(store);
+    }
+
+    /**
+     *
+     */
+    public ActionForward role(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+
+        if (!DockYard.isWhiteSpace(qaf.getRole())) {
+            return store.getForward("role", "?role=true&id=" + qaf.getRole());
+        }
+
+        return getForward(store);
     }
 
 }

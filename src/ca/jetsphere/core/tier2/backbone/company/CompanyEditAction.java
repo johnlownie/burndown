@@ -6,13 +6,13 @@ import ca.jetsphere.core.tier2.common.AbstractEditAction;
 /**
  *
  */
+public class CompanyEditAction extends AbstractEditAction {
 
-public class CompanyEditAction extends AbstractEditAction
-{
     /**
      *
      */
-
-    public String getKey() { return Company.key(); }
+    public String getKey() {
+        return Company.key();
+    }
 
 }

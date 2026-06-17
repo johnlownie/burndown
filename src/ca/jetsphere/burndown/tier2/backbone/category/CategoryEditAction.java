@@ -20,140 +20,186 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-public class CategoryEditAction extends AbstractEditAction
-{
+public class CategoryEditAction extends AbstractEditAction {
+
     /**
      *
      */
-    public ActionForward delete ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+    public ActionForward delete(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-        if ( DockYard.isWhiteSpace ( uuid ) ) errors.add ( "error.category.cut" );
+            if (DockYard.isWhiteSpace(uuid)) {
+                errors.add("error.category.cut");
+            }
 
-        CategorySession categories = CategorySession.getInstance ( store.getRequest() ); categories.clearSelected ( store.getRequest() );
+            CategorySession categories = CategorySession.getInstance(store.getRequest());
+            categories.clearSelected(store.getRequest());
 
-        Category child = ( Category ) categories.getBoltByUuid ( uuid );
+            Category child = (Category) categories.getBoltByUuid(uuid);
 
-        if ( child == null || !child.isValid() ) errors.add ( "error.category.cut" );
+            if (child == null || !child.isValid()) {
+                errors.add("error.category.cut");
+            }
 
-        Category parent = ( Category ) categories.get ( child.getParentId() );
+            Category parent = (Category) categories.get(child.getParentId());
 
-        if ( parent == null || !parent.isValid() ) errors.add ( "error.category.cut" );
+            if (parent == null || !parent.isValid()) {
+                errors.add("error.category.cut");
+            }
 
-        if ( errors.isEmpty() ) { TreeYard.cut ( jdbc, parent, child ); categories.remove ( child ); }
+            if (errors.isEmpty()) {
+                TreeYard.cut(jdbc, parent, child);
+                categories.remove(child);
+            }
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            jsonObject.put("success", errors.isEmpty());
 
-        out.write ( jsonObject.toString() );
+            out.write(jsonObject.toString());
 
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-    protected void finito ( JDBC jdbc, HttpServletRequest request, Bolt bolt, boolean isUpdate, Errors errors ) throws Exception
-    {
-    if ( isUpdate ) return;
+    protected void finito(JDBC jdbc, HttpServletRequest request, Bolt bolt, boolean isUpdate, Errors errors) throws Exception {
+        if (isUpdate) {
+            return;
+        }
 
-    Category category = ( Category ) bolt; category.foreign ( jdbc );
+        Category category = (Category) bolt;
+        category.foreign(jdbc);
 
-    CategorySession categories = CategorySession.getInstance ( request );
+        CategorySession categories = CategorySession.getInstance(request);
 
-    categories.add ( category ); categories.treeify();
+        categories.add(category);
+        categories.treeify();
     }
 
     /**
      *
      */
-    public String getKey() { return Category.key(); }
-
-    /**
-     *
-     */
-    public ActionForward insert ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-        
-        CategorySession categories = CategorySession.getInstance ( store.getRequest() ); categories.clearSelected ( store.getRequest() );
-
-        String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
-
-        boolean is_before = DockYard.toBoolean ( store.getRequest(), "before" ); boolean is_child = DockYard.toBoolean ( store.getRequest(), "child" );
-
-        if ( DockYard.isWhiteSpace ( uuid ) ) return null;
-
-        Category selected = ( Category ) categories.getBoltByUuid ( uuid ); Category form = ( Category ) categories.getSelected();
-
-        Category sibling = new Category(); sibling.copy ( selected );
-
-        if ( sibling != null && sibling.isValid() ) sibling.getPayload ( jdbc );
-
-        form.clear(); form.setParentId ( is_child ? sibling.getId() : sibling.getParentId() ); form.setInsertType ( is_before ? 1 : 2 );
-        
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return query ( jdbc, store, errors ); }
+    public String getKey() {
+        return Category.key();
     }
 
     /**
      *
      */
-    public ActionForward paste ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+    public ActionForward insert(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
+            CategorySession categories = CategorySession.getInstance(store.getRequest());
+            categories.clearSelected(store.getRequest());
 
-        if ( DockYard.isWhiteSpace ( uuid ) ) errors.add ( "error.category.paste" );
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-        CategorySession roleRights = CategorySession.getInstance ( store.getRequest() );
+            boolean is_before = DockYard.toBoolean(store.getRequest(), "before");
+            boolean is_child = DockYard.toBoolean(store.getRequest(), "child");
 
-        Category parent = ( Category ) roleRights.getBoltByUuid ( uuid );
+            if (DockYard.isWhiteSpace(uuid)) {
+                return null;
+            }
 
-        if ( parent == null || !parent.isValid() )  errors.add ( "error.category.paste" );
+            Category selected = (Category) categories.getBoltByUuid(uuid);
+            Category form = (Category) categories.getSelected();
 
-        Category child = ( Category ) DockYard.getAttribute ( store.getRequest(), "[copyTree]" );
+            Category sibling = new Category();
+            sibling.copy(selected);
 
-        if ( child == null || !child.isValid() )  errors.add ( "error.category.paste" );
+            if (sibling != null && sibling.isValid()) {
+                sibling.getPayload(jdbc);
+            }
 
-        if ( errors.isEmpty() ) TreeYard.paste ( jdbc, roleRights, parent, child );
+            form.clear();
+            form.setParentId(is_child ? sibling.getId() : sibling.getParentId());
+            form.setInsertType(is_before ? 1 : 2);
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put ( "success", errors.isEmpty() );
-
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return query(jdbc, store, errors);
+        }
     }
 
     /**
      *
      */
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    Category category = ( Category ) bolt; Category parent = new Category ( jdbc, category.getParentId() );
+    public ActionForward paste(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    if ( parent == null || ! parent.isValid() ) return;
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-    category.setApplicationId ( parent.getApplicationId() ); category.setParentUuid ( parent.getUuid() );
+            if (DockYard.isWhiteSpace(uuid)) {
+                errors.add("error.category.paste");
+            }
 
-    category.setDepth ( parent.getDepth() + 1 ); category.setLineage ( parent.getLineage() + DockYard.zeroPad ( parent.getOrdinal(), 2 ) + "/" );
+            CategorySession roleRights = CategorySession.getInstance(store.getRequest());
 
-    if ( category.getOrdinal() < 0 ) category.setOrdinal ( CategoryYard.getCount ( jdbc, parent.getApplicationId(), parent.getId() ) );
+            Category parent = (Category) roleRights.getBoltByUuid(uuid);
+
+            if (parent == null || !parent.isValid()) {
+                errors.add("error.category.paste");
+            }
+
+            Category child = (Category) DockYard.getAttribute(store.getRequest(), "[copyTree]");
+
+            if (child == null || !child.isValid()) {
+                errors.add("error.category.paste");
+            }
+
+            if (errors.isEmpty()) {
+                TreeYard.paste(jdbc, roleRights, parent, child);
+            }
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("success", errors.isEmpty());
+
+            out.write(jsonObject.toString());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        Category category = (Category) bolt;
+        Category parent = new Category(jdbc, category.getParentId());
+
+        if (parent == null || !parent.isValid()) {
+            return;
+        }
+
+        category.setApplicationId(parent.getApplicationId());
+        category.setParentUuid(parent.getUuid());
+
+        category.setDepth(parent.getDepth() + 1);
+        category.setLineage(parent.getLineage() + DockYard.zeroPad(parent.getOrdinal(), 2) + "/");
+
+        if (category.getOrdinal() < 0) {
+            category.setOrdinal(CategoryYard.getCount(jdbc, parent.getApplicationId(), parent.getId()));
+        }
     }
 }

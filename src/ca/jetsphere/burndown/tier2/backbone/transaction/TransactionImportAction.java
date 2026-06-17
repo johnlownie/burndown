@@ -28,96 +28,107 @@ import java.util.Iterator;
 /**
  *
  */
-public class TransactionImportAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-    public String getKey() { return Transaction.key (); }
+public class TransactionImportAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward improt ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Application application = ApplicationSession.getSelected ( store.getRequest() );
-    
-    TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() );
-    
-    Iterator it = transactions.iterator();
-    
-    while ( it.hasNext() )
-    {
-    Transaction transaction = ( Transaction ) it.next();
-    
-    if ( TransactionYard.exists ( jdbc, transaction ) ) continue;
-    
-    Period period = PeriodYard.getByDate ( jdbc, application.getId(), transaction.getDateAsString() );
-    
-    if ( !period.isValid() ) continue;
-    
-    Account account = AccountYard.getOrCreate ( jdbc, transaction.getAccount(), transaction.getAccountType(), transaction.getBankId() );
-    
-    if ( !CalendarYard.isBetween ( transaction.getDateAsString(), period.getStartDateAsString(), period.getEndDateAsString() ) ) continue;
-    
-    if ( DockYard.isWhiteSpace ( transaction.getName() ) ) { transaction.setName ( transaction.getMemo() ); transaction.setMemo ( "" ); }
-    
-    transaction.setId ( -1 ); transaction.setPeriodId ( period.getId() ); transaction.setAccountId ( account.getId() ); transaction.save ( jdbc );
-    }
-
-    return store.getForward ( "success" );
+    public String getKey() {
+        return Transaction.key();
     }
 
     /**
      *
      */
-    public ActionForward items ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-    
-    TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() );
+    public ActionForward improt(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Application application = ApplicationSession.getSelected(store.getRequest());
 
-    TransactionYard.parseAttachment ( jdbc, transactions, qaf.getFormFile() );
-    
-    return getForward ( store );
+        TransactionSession transactions = TransactionSession.getInstance(store.getRequest());
+
+        Iterator it = transactions.iterator();
+
+        while (it.hasNext()) {
+            Transaction transaction = (Transaction) it.next();
+
+            if (TransactionYard.exists(jdbc, transaction)) {
+                continue;
+            }
+
+            Period period = PeriodYard.getByDate(jdbc, application.getId(), transaction.getDateAsString());
+
+            if (!period.isValid()) {
+                continue;
+            }
+
+            Account account = AccountYard.getOrCreate(jdbc, transaction.getAccount(), transaction.getAccountType(), transaction.getBankId());
+
+            if (!CalendarYard.isBetween(transaction.getDateAsString(), period.getStartDateAsString(), period.getEndDateAsString())) {
+                continue;
+            }
+
+            if (DockYard.isWhiteSpace(transaction.getName())) {
+                transaction.setName(transaction.getMemo());
+                transaction.setMemo("");
+            }
+
+            transaction.setId(-1);
+            transaction.setPeriodId(period.getId());
+            transaction.setAccountId(account.getId());
+            transaction.save(jdbc);
+        }
+
+        return store.getForward("success");
     }
-    
+
     /**
      *
      */
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+    public ActionForward items(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-    
-        TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() );
+        TransactionSession transactions = TransactionSession.getInstance(store.getRequest());
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+        TransactionYard.parseAttachment(jdbc, transactions, qaf.getFormFile());
 
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( transactions, Transaction.captions_import(), Transaction.fields_import() );
-
-        dataTableWriter.print ( out, store.getRequest() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        return getForward(store);
     }
 
     /**
      *
      */
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-    
-    TransactionSession transactions = TransactionSession.getInstance ( store.getRequest() );
-    
-    transactions.clear();
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    return getForward ( store );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
+
+            TransactionSession transactions = TransactionSession.getInstance(store.getRequest());
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(transactions, Transaction.captions_import(), Transaction.fields_import());
+
+            dataTableWriter.print(out, store.getRequest());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+
+        TransactionSession transactions = TransactionSession.getInstance(store.getRequest());
+
+        transactions.clear();
+
+        return getForward(store);
     }
 }

@@ -8,53 +8,70 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class Category extends ca.jetsphere.burndown.tier0.backbone.category.foreign.Category
-{
-    /**
-     *
-     */
-    public Category() { clear(); }
+public class Category extends ca.jetsphere.burndown.tier0.backbone.category.foreign.Category {
 
     /**
      *
      */
-    public Category ( JDBC jdbc, int id ) { Registry.get ( jdbc, this, id ); }
+    public Category() {
+        clear();
+    }
 
     /**
      *
      */
-    public void delete ( JDBC jdbc ) throws Exception { Registry.getCategoryDao().delete ( jdbc, this ); }
+    public Category(JDBC jdbc, int id) {
+        Registry.get(jdbc, this, id);
+    }
 
     /**
      *
      */
-    public String getKey() { return key(); }
+    public void delete(JDBC jdbc) throws Exception {
+        Registry.getCategoryDao().delete(jdbc, this);
+    }
 
     /**
      *
      */
-    public String getText ( HttpServletRequest request ) { return null; }
+    public String getKey() {
+        return key();
+    }
 
     /**
      *
      */
-    public void insert ( JDBC jdbc ) throws Exception { Registry.getCategoryDao().insert ( jdbc, this ); }
+    public String getText(HttpServletRequest request) {
+        return null;
+    }
 
     /**
      *
      */
-    public void paste ( Tree tree )
-
-    { Category parent = ( Category ) tree; setApplicationId ( parent.getApplicationId() ); pasteBelow ( parent ); }
-
-    /**
-     *
-     */
-    public Tree twin() { return null; }
+    public void insert(JDBC jdbc) throws Exception {
+        Registry.getCategoryDao().insert(jdbc, this);
+    }
 
     /**
      *
      */
-    public boolean update ( JDBC jdbc ) throws Exception { return Registry.getCategoryDao().update ( jdbc, this ); }
+    public void paste(Tree tree) {
+        Category parent = (Category) tree;
+        setApplicationId(parent.getApplicationId());
+        pasteBelow(parent);
+    }
+
+    /**
+     *
+     */
+    public Tree twin() {
+        return null;
+    }
+
+    /**
+     *
+     */
+    public boolean update(JDBC jdbc) throws Exception {
+        return Registry.getCategoryDao().update(jdbc, this);
+    }
 }

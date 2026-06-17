@@ -35,179 +35,195 @@ import java.util.Iterator;
 /**
  *
  */
+public class RegistrationWithoutEmailAction extends UserEditAction {
 
-public class RegistrationWithoutEmailAction extends UserEditAction
-{
     /**
      *
      */
+    public ActionForward commit(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward commit  ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            String username = DockYard.getParameter(store.getRequest(), "username");
 
-        String username = DockYard.getParameter ( store.getRequest(), "username" );
+            if (DockYard.isWhiteSpace(username)) {
+                return null;
+            }
 
-        if ( DockYard.isWhiteSpace ( username ) ) return null;
+            User x = UserYard.getByUsername(jdbc, username);
 
-        User x = UserYard.getByUsername ( jdbc, username );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            jsonObject.put("valid", !x.isValid());
 
-        jsonObject.put ( "valid", ! x.isValid() );
+            out.write(jsonObject.toString());
 
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    public ActionForward fetch(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        jdbc.setAutoCommit(false);
 
-    public ActionForward fetch ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    jdbc.setAutoCommit ( false );
+        try {
 
-    try {
+            User applicant = (User) store.getForm();
 
-        User applicant = ( User ) store.getForm();
+            String g_recaptcha_response = DockYard.getParameter(store.getRequest(), "g-recaptcha-response");
 
-        String g_recaptcha_response = DockYard.getParameter ( store.getRequest(), "g-recaptcha-response" );
+            RegisterValidate registerValidate = new RegisterValidate();
 
-        RegisterValidate registerValidate = new RegisterValidate();
+            registerValidate.validate(jdbc, applicant, g_recaptcha_response, errors);
 
-        registerValidate.validate ( jdbc, applicant, g_recaptcha_response, errors );
+            JSONObject fields = errors.getFields(store.getRequest());
 
-        JSONObject fields = errors.getFields ( store.getRequest() );
+            if (errors.isEmpty()) {
+                applicant.setStatus(Status.ACTIVE);
+                applicant.setPassword(PasswordHash.createHash(applicant.getNewPassword()));
 
-        if ( errors.isEmpty() )
-        {
-        applicant.setStatus ( Status.ACTIVE ); applicant.setPassword ( PasswordHash.createHash ( applicant.getNewPassword() ) );
+                setDefaultRole(jdbc, store.getRequest(), applicant);
 
-        setDefaultRole ( jdbc, store.getRequest(), applicant );
+                applicant.save(jdbc);
 
-        applicant.save ( jdbc );
+                setCompanyMember(jdbc, store.getRequest(), applicant);
 
-        setCompanyMember ( jdbc, store.getRequest(), applicant );
+                jdbc.commit();
+            }
 
-        jdbc.commit();
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
+
+            if (fields.isEmpty()) {
+                jsonObject.put("url", "login.do?verified=true");
+            } else {
+                jsonObject.put("fields", fields);
+            }
+            jsonObject.put("success", fields.isEmpty());
+
+            out.write(jsonObject.toString());
+
+        } catch (Exception e) {
+            jdbc.rollback();
+            Common.trace(e);
+        } finally {
+            jdbc.setAutoCommit(true);
         }
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
-
-        if ( fields.isEmpty() ) jsonObject.put ( "url", "login.do?verified=true" ); else jsonObject.put ( "fields", fields ); jsonObject.put ( "success", fields.isEmpty() );
-
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { jdbc.rollback(); Common.trace ( e ); }
-
-    finally { jdbc.setAutoCommit ( true ); }
-
-    return null;
+        return null;
     }
 
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        CompanyYard.setDefault(jdbc, store.getRequest());
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    CompanyYard.setDefault ( jdbc, store.getRequest() );
+        Company company = CompanySession.getSelected(store.getRequest());
 
-    Company company = CompanySession.getSelected ( store.getRequest() );
+        PolicySession.query(jdbc, store.getRequest(), company.getId(), false);
 
-    PolicySession.query ( jdbc, store.getRequest(), company.getId (), false );
-
-    return super.getForward ( store );
+        return super.getForward(store);
     }
 
     /**
      *
      */
+    protected void setCompanyMember(JDBC jdbc, HttpServletRequest request, User user) throws Exception {
+        Company company = CompanyYard.getDefault(jdbc);
 
-    protected void setCompanyMember ( JDBC jdbc, HttpServletRequest request, User user ) throws Exception
-    {
-    Company company = CompanyYard.getDefault ( jdbc );
+        CompanyMember companyMember = new CompanyMember();
+        user.setCompanyMember(companyMember);
 
-    CompanyMember companyMember = new CompanyMember(); user.setCompanyMember ( companyMember );
+        companyMember.setUserId(user.getId());
+        companyMember.setCompanyId(company.getId());
 
-    companyMember.setUserId ( user.getId() ); companyMember.setCompanyId ( company.getId() );
+        companyMember.setFirstname(DockYard.getToken(user.getFullname(), 1, " "));
+        companyMember.setLastname(DockYard.getRemaining(user.getFullname(), " "));
 
-    companyMember.setFirstname ( DockYard.getToken ( user.getFullname(), 1, " " ) ); companyMember.setLastname ( DockYard.getRemaining ( user.getFullname(), " " ) );
+        companyMember.setMobilePhone(user.getPhone());
+        companyMember.setEmail(user.getUsername());
+        companyMember.setAvatarId(1);
 
-    companyMember.setMobilePhone ( user.getPhone() ); companyMember.setEmail ( user.getUsername () ); companyMember.setAvatarId ( 1 );
-
-    companyMember.save ( jdbc );
+        companyMember.save(jdbc);
     }
 
     /**
      *
      */
+    protected void setDefaultRole(JDBC jdbc, HttpServletRequest request, User user) throws Exception {
+        Application application = ApplicationYard.getDefaultApplication(jdbc, request);
 
-    protected void setDefaultRole ( JDBC jdbc, HttpServletRequest request, User user ) throws Exception
-    {
-    Application application = ApplicationYard.getDefaultApplication ( jdbc, request );
+        Role role = new Role(jdbc, application.getRoleId());
 
-    Role role = new Role ( jdbc, application.getRoleId() );
-
-    user.setRoleIds ( DockYard.toString ( role.getId() ) );
+        user.setRoleIds(DockYard.toString(role.getId()));
     }
 
     /**
      *
      */
+    public ActionForward update(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        User user = (User) store.getForm();
 
-    public ActionForward update ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    User user = ( User ) store.getForm();
+        update(jdbc, store.getRequest(), user, errors);
 
-    update ( jdbc, store.getRequest(), user, errors );
+        if (!errors.isEmpty()) {
+            return errors.forward(store);
+        }
 
-    if ( !errors.isEmpty() ) return errors.forward ( store );
-
-    return store.getForward ( "success", "?verified=true" );
+        return store.getForward("success", "?verified=true");
     }
 
     /**
      *
      */
+    public Errors update(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        jdbc.setAutoCommit(false);
 
-    public Errors update ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    jdbc.setAutoCommit ( false );
+        try {
 
-    try {
+            User applicant = (User) bolt;
 
-        User applicant = ( User ) bolt;
+            String g_recaptcha_response = DockYard.getParameter(request, "g-recaptcha-response");
 
-        String g_recaptcha_response = DockYard.getParameter ( request, "g-recaptcha-response" );
+            RegisterValidate registerValidate = new RegisterValidate();
 
-        RegisterValidate registerValidate = new RegisterValidate();
+            registerValidate.validate(jdbc, applicant, g_recaptcha_response, errors);
+            if (!errors.isEmpty()) {
+                applicant.clear();
+                return errors;
+            }
 
-        registerValidate.validate ( jdbc, applicant, g_recaptcha_response, errors ); if ( ! errors.isEmpty() ) { applicant.clear(); return errors; }
+            applicant.setStatus(Status.ACTIVE);
+            applicant.setPassword(PasswordHash.createHash(applicant.getNewPassword()));
 
-        applicant.setStatus ( Status.ACTIVE ); applicant.setPassword ( PasswordHash.createHash ( applicant.getNewPassword () ) );
+            setDefaultRole(jdbc, request, applicant);
 
-        setDefaultRole ( jdbc, request, applicant );
+            applicant.save(jdbc);
 
-        applicant.save ( jdbc );
+            setCompanyMember(jdbc, request, applicant);
 
-        setCompanyMember ( jdbc, request, applicant );
+            jdbc.commit();
 
-        jdbc.commit();
+        } catch (Exception e) {
+            jdbc.rollback();
+            Common.trace(e);
+        } finally {
+            jdbc.setAutoCommit(true);
+        }
 
-    } catch ( Exception e ) { jdbc.rollback(); Common.trace ( e ); }
-
-    finally { jdbc.setAutoCommit ( true ); }
-
-    return errors;
+        return errors;
     }
 
 }

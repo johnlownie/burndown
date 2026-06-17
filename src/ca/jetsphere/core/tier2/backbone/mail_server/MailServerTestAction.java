@@ -20,31 +20,32 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class MailServerTestAction extends AbstractAction
-{
+public class MailServerTestAction extends AbstractAction {
 
     /**
      *
      */
+    public ActionForward send(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        HttpServletRequest request = store.getRequest();
 
-    public ActionForward send ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    HttpServletRequest request = store.getRequest();
+        Message message = (Message) store.getForm();
 
-    Message message = ( Message ) store.getForm();
+        Company company = CompanySession.getSelected(request);
 
-    Company company = CompanySession.getSelected ( request );
+        String from = company == null || !company.isValid() || DockYard.isWhiteSpace(company.getEmail()) ? Knock.get("SMTP-MAIL-SERVER-SENDER") : company.getEmail();
 
-    String from = company == null || ! company.isValid() || DockYard.isWhiteSpace ( company.getEmail() ) ? Knock.get ( "SMTP-MAIL-SERVER-SENDER" ) : company.getEmail();
+        message.setSender(from);
+        message.setSignature(company.getName());
+        message.setRecipients();
 
-    message.setSender ( from ); message.setSignature ( company.getName() ); message.setRecipients();
+        EmailYard.sendEmail(message, errors);
 
-    EmailYard.sendEmail ( message, errors );
+        if (errors.isEmpty()) {
+            NotificationYard.add(jdbc, store.getRequest(), "success", "envelope", Caption.get(store.getRequest(), "mail.server.test"), Caption.get(store.getRequest(), "error.email.sent"), "floating", 4000);
+            message.clear();
+        }
 
-    if ( errors.isEmpty() ) { NotificationYard.add ( jdbc, store.getRequest(), "success", "envelope", Caption.get ( store.getRequest(), "mail.server.test" ), Caption.get ( store.getRequest(), "error.email.sent" ), "floating", 4000 ); message.clear (); }
-
-    return errors.forward ( store );
+        return errors.forward(store);
     }
 
 }

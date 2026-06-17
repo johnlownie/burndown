@@ -12,32 +12,35 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-
-public class CompanyMemberUnsubscribedAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return CompanyMember.key(); }
+public class CompanyMemberUnsubscribedAction extends AbstractDoAction {
 
     /**
      *
      */
+    public String getKey() {
+        return CompanyMember.key();
+    }
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-    if ( DockYard.isWhiteSpace ( uuid ) ) return store.getForward ( "success" );
+        if (DockYard.isWhiteSpace(uuid)) {
+            return store.getForward("success");
+        }
 
-    CompanyMember companyMember = CompanyMemberYard.getByUuid ( jdbc, uuid );
+        CompanyMember companyMember = CompanyMemberYard.getByUuid(jdbc, uuid);
 
-    if ( companyMember == null || ! companyMember.isValid() ) return store.getForward ( "success" );
+        if (companyMember == null || !companyMember.isValid()) {
+            return store.getForward("success");
+        }
 
-    companyMember.setSubscribed ( false ); companyMember.save ( jdbc );
+        companyMember.setSubscribed(false);
+        companyMember.save(jdbc);
 
-    return super.getForward ( store );
+        return super.getForward(store);
     }
 
 }

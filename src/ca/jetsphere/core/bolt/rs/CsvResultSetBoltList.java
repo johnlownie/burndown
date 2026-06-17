@@ -8,65 +8,57 @@ import java.util.Iterator;
 /**
  *
  */
-
-public class CsvResultSetBoltList extends ResultSetBoltList
-{
-    /**
-     *
-     */
-
-    public CsvResultSetBoltList()
-
-    { super(); }
+public class CsvResultSetBoltList extends ResultSetBoltList {
 
     /**
      *
      */
-
-    public CsvResultSetBoltList ( JDBC jdbc, ResultSet rs ) throws Exception
-
-    { super ( jdbc, rs ); }
-
-    /**
-     *
-     */
-
-    public CsvResultSetBoltList ( ResultSetBoltMap rsbm ) throws Exception
-
-    { super(); add ( rsbm ); }
-
-    /**
-     *
-     */
-
-    public CsvResultSetBoltList ( JDBC jdbc, String query ) throws Exception
-
-    { super ( jdbc, query ); }
-
-    /**
-     *
-     */
-
-    public void add ( ResultSetBoltMap rsbm ) throws Exception
-    {
-    Iterator it = rsbm.iterator();
-
-    while ( it.hasNext() )
-    {
-    ResultSetBolt bolt = ( ResultSetBolt ) it.next();
-
-    add ( new CsvResultSetBolt ( bolt.getId(), bolt.getCaptions(), bolt.getMap() ) );
-    }
-
-    setCaptions ( rsbm.getCaptions() );
+    public CsvResultSetBoltList() {
+        super();
     }
 
     /**
      *
      */
+    public CsvResultSetBoltList(JDBC jdbc, ResultSet rs) throws Exception {
+        super(jdbc, rs);
+    }
 
-    public void add ( JDBC jdbc, ResultSet rs ) throws Exception
+    /**
+     *
+     */
+    public CsvResultSetBoltList(ResultSetBoltMap rsbm) throws Exception {
+        super();
+        add(rsbm);
+    }
 
-    { add ( new CsvResultSetBolt ( size(), getCaptions(), rs ) ); }
+    /**
+     *
+     */
+    public CsvResultSetBoltList(JDBC jdbc, String query) throws Exception {
+        super(jdbc, query);
+    }
+
+    /**
+     *
+     */
+    public void add(ResultSetBoltMap rsbm) throws Exception {
+        Iterator it = rsbm.iterator();
+
+        while (it.hasNext()) {
+            ResultSetBolt bolt = (ResultSetBolt) it.next();
+
+            add(new CsvResultSetBolt(bolt.getId(), bolt.getCaptions(), bolt.getMap()));
+        }
+
+        setCaptions(rsbm.getCaptions());
+    }
+
+    /**
+     *
+     */
+    public void add(JDBC jdbc, ResultSet rs) throws Exception {
+        add(new CsvResultSetBolt(size(), getCaptions(), rs));
+    }
 
 }

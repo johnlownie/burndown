@@ -9,63 +9,71 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class RoleRight extends ca.jetsphere.core.tier0.backbone.role_right.foreign.RoleRight
-{
-    /**
-     *
-     */
-
-    public RoleRight() { clear(); }
+public class RoleRight extends ca.jetsphere.core.tier0.backbone.role_right.foreign.RoleRight {
 
     /**
      *
      */
-
-    public RoleRight ( JDBC jdbc, int id ) { Registry.get ( jdbc, this, id ); }
-
-    /**
-     *
-     */
-
-    public void delete ( JDBC jdbc ) throws Exception { Registry.getRoleRightDao().delete ( jdbc, this ); }
+    public RoleRight() {
+        clear();
+    }
 
     /**
      *
      */
-
-    public String getKey() { return key(); }
-
-    /**
-     *
-     */
-
-    public String getText ( HttpServletRequest request ) { return null; }
+    public RoleRight(JDBC jdbc, int id) {
+        Registry.get(jdbc, this, id);
+    }
 
     /**
      *
      */
-
-    public void insert ( JDBC jdbc ) throws Exception { Registry.getRoleRightDao().insert ( jdbc, this ); }
-
-    /**
-     *
-     */
-
-    public void paste ( Tree tree )
-
-    { RoleRight parent = ( RoleRight ) tree; setRoleId ( parent.getRoleId() ); pasteBelow ( parent ); }
+    public void delete(JDBC jdbc) throws Exception {
+        Registry.getRoleRightDao().delete(jdbc, this);
+    }
 
     /**
      *
      */
-
-    public Tree twin() { return null; }
+    public String getKey() {
+        return key();
+    }
 
     /**
      *
      */
+    public String getText(HttpServletRequest request) {
+        return null;
+    }
 
-    public boolean update ( JDBC jdbc ) throws Exception { return Registry.getRoleRightDao().update ( jdbc, this ); }
+    /**
+     *
+     */
+    public void insert(JDBC jdbc) throws Exception {
+        Registry.getRoleRightDao().insert(jdbc, this);
+    }
+
+    /**
+     *
+     */
+    public void paste(Tree tree) {
+        RoleRight parent = (RoleRight) tree;
+        setRoleId(parent.getRoleId());
+        pasteBelow(parent);
+    }
+
+    /**
+     *
+     */
+    public Tree twin() {
+        return null;
+    }
+
+    /**
+     *
+     */
+    public boolean update(JDBC jdbc) throws Exception {
+        return Registry.getRoleRightDao().update(jdbc, this);
+    }
 
 }

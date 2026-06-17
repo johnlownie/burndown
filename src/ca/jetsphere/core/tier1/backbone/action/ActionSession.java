@@ -11,90 +11,101 @@ import java.sql.ResultSet;
 /**
  *
  */
-
-public class ActionSession extends ActionMap implements ISessionObject
-{
-    /**
-     *
-     */
-
-    public ActionSession() { super(); }
+public class ActionSession extends ActionMap implements ISessionObject {
 
     /**
      *
      */
-
-    public ActionSession ( JDBC jdbc, int company_id ) { super ( jdbc, company_id ); }
-
-    /**
-     *
-     */
-
-    public ActionSession ( JDBC jdbc, String query ) { super(); query ( jdbc, query ); }
+    public ActionSession() {
+        super();
+    }
 
     /**
      *
      */
-
-    public void add ( JDBC jdbc, ResultSet rs ) throws Exception { add ( new Action ( jdbc, rs ) ); }
-
-    /**
-     *
-     */
-
-    public String [] captions() { return Action.captions(); }
+    public ActionSession(JDBC jdbc, int company_id) {
+        super(jdbc, company_id);
+    }
 
     /**
      *
      */
-
-    public void clearSelected ( HttpServletRequest request ) { setNonQualifiedSelected ( request, new Action() ); }
-
-    /**
-     *
-     */
-
-    public String [] fields() { return Action.fields(); }
+    public ActionSession(JDBC jdbc, String query) {
+        super();
+        query(jdbc, query);
+    }
 
     /**
      *
      */
-
-    static public ActionSession getInstance ( HttpServletRequest request )
-
-    { return ( ActionSession ) SessionCache.getSessionObject ( request, Action.key(), ActionSession.class ); }
-
-    /**
-     *
-     */
-
-    static public int getRequestedId ( HttpServletRequest request ) { return getInstance ( request ).getId ( request ); }
+    public void add(JDBC jdbc, ResultSet rs) throws Exception {
+        add(new Action(jdbc, rs));
+    }
 
     /**
      *
      */
-
-    static public Action getSelected ( HttpServletRequest request ) { return ( Action ) getInstance ( request ).getSelected(); }
-
-    /**
-     *
-     */
-
-    static public ActionSession query ( JDBC jdbc, HttpServletRequest request, int company_id, boolean blank )
-
-    { ActionSession session = getInstance ( request ); session.find ( jdbc, company_id ); session.options ( request, blank ); return session; }
+    public String[] captions() {
+        return Action.captions();
+    }
 
     /**
      *
      */
-
-    static public void setRequested ( HttpServletRequest request ) { getInstance ( request ).setQualifiedSelected ( request, getRequestedId ( request ) ); }
+    public void clearSelected(HttpServletRequest request) {
+        setNonQualifiedSelected(request, new Action());
+    }
 
     /**
      *
      */
+    public String[] fields() {
+        return Action.fields();
+    }
 
-    static public void setSelected ( HttpServletRequest request, Action selected ) { getInstance ( request ).setQualifiedSelected ( request, selected ); }
+    /**
+     *
+     */
+    static public ActionSession getInstance(HttpServletRequest request) {
+        return (ActionSession) SessionCache.getSessionObject(request, Action.key(), ActionSession.class);
+    }
+
+    /**
+     *
+     */
+    static public int getRequestedId(HttpServletRequest request) {
+        return getInstance(request).getId(request);
+    }
+
+    /**
+     *
+     */
+    static public Action getSelected(HttpServletRequest request) {
+        return (Action) getInstance(request).getSelected();
+    }
+
+    /**
+     *
+     */
+    static public ActionSession query(JDBC jdbc, HttpServletRequest request, int company_id, boolean blank) {
+        ActionSession session = getInstance(request);
+        session.find(jdbc, company_id);
+        session.options(request, blank);
+        return session;
+    }
+
+    /**
+     *
+     */
+    static public void setRequested(HttpServletRequest request) {
+        getInstance(request).setQualifiedSelected(request, getRequestedId(request));
+    }
+
+    /**
+     *
+     */
+    static public void setSelected(HttpServletRequest request, Action selected) {
+        getInstance(request).setQualifiedSelected(request, selected);
+    }
 
 }
-

@@ -14,26 +14,24 @@ import ca.jetsphere.core.tier2.common.Errors;
 /**
  *
  */
-
-public class BuMemberEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return BuMember.key (); }
+public class BuMemberEditAction extends AbstractEditAction {
 
     /**
      *
      */
+    public String getKey() {
+        return BuMember.key();
+    }
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Application application = ApplicationYard.getDefaultApplication ( jdbc, store.getRequest() );
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Application application = ApplicationYard.getDefaultApplication(jdbc, store.getRequest());
 
-    CompanyMemberYard.setActiveMembers ( jdbc, store.getRequest(), application.getCompanyId() );
+        CompanyMemberYard.setActiveMembers(jdbc, store.getRequest(), application.getCompanyId());
 
-    return store.getForward ( "failure" );
+        return store.getForward("failure");
     }
 
 }

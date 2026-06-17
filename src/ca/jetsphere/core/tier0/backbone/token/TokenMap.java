@@ -6,31 +6,34 @@ import ca.jetsphere.core.jdbc.JDBC;
 /**
  *
  */
-
-abstract public class TokenMap extends BoltMap
-{
-    /**
-     *
-     */
-
-    public TokenMap() { super(); }
+abstract public class TokenMap extends BoltMap {
 
     /**
      *
      */
-
-    public TokenMap ( JDBC jdbc, int id ) { query ( jdbc, -1 ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int id ) { query ( jdbc, "select * from jet_base_token" ); }
+    public TokenMap() {
+        super();
+    }
 
     /**
      *
      */
+    public TokenMap(JDBC jdbc, int id) {
+        query(jdbc, -1);
+    }
 
-    public String getKey() { return Token.key (); }
+    /**
+     *
+     */
+    public void find(JDBC jdbc, int id) {
+        query(jdbc, "select * from jet_base_token");
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return Token.key();
+    }
 
 }

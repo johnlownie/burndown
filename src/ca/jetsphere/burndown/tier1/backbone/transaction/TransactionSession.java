@@ -11,69 +11,92 @@ import java.sql.ResultSet;
 /**
  *
  */
-public class TransactionSession extends TransactionMap implements ISessionObject
-{
-    /**
-     *
-     */
-    public TransactionSession() { super(); }
+public class TransactionSession extends TransactionMap implements ISessionObject {
 
     /**
      *
      */
-    public TransactionSession ( JDBC jdbc, int period_id ) { super ( jdbc, period_id ); }
+    public TransactionSession() {
+        super();
+    }
 
     /**
      *
      */
-    public void add ( JDBC jdbc, ResultSet rs ) throws Exception { add ( new Transaction ( jdbc, rs ) ); }
+    public TransactionSession(JDBC jdbc, int period_id) {
+        super(jdbc, period_id);
+    }
 
     /**
      *
      */
-    public String [] captions() { return Transaction.captions(); }
+    public void add(JDBC jdbc, ResultSet rs) throws Exception {
+        add(new Transaction(jdbc, rs));
+    }
 
     /**
      *
      */
-    public void clearSelected ( HttpServletRequest request ) { setNonQualifiedSelected ( request, new Transaction() ); }
+    public String[] captions() {
+        return Transaction.captions();
+    }
 
     /**
      *
      */
-    public String [] fields() { return Transaction.fields(); }
+    public void clearSelected(HttpServletRequest request) {
+        setNonQualifiedSelected(request, new Transaction());
+    }
 
     /**
      *
      */
-    static public TransactionSession getInstance ( HttpServletRequest request )
-
-    { return ( TransactionSession ) SessionCache.getSessionObject ( request, Transaction.key(), TransactionSession.class ); }
-
-    /**
-     *
-     */
-    static public int getRequestedId ( HttpServletRequest request ) { return getInstance ( request ).getId ( request ); }
+    public String[] fields() {
+        return Transaction.fields();
+    }
 
     /**
      *
      */
-    static public Transaction getSelected ( HttpServletRequest request ) { return ( Transaction ) getInstance ( request ).getSelected(); }
+    static public TransactionSession getInstance(HttpServletRequest request) {
+        return (TransactionSession) SessionCache.getSessionObject(request, Transaction.key(), TransactionSession.class);
+    }
 
     /**
      *
      */
-    static public TransactionSession query ( JDBC jdbc, HttpServletRequest request, int period_id, boolean blank )
-
-    { TransactionSession session = getInstance ( request ); session.find ( jdbc, period_id ); session.options ( request, blank ); return session; }
-
-    /**
-     *
-     */
-    static public void setRequested ( HttpServletRequest request ) { getInstance ( request ).setQualifiedSelected ( request, getRequestedId ( request ) ); }
+    static public int getRequestedId(HttpServletRequest request) {
+        return getInstance(request).getId(request);
+    }
 
     /**
      *
      */
-    static public void setSelected ( HttpServletRequest request, Transaction selected ) { getInstance ( request ).setQualifiedSelected ( request, selected ); }
+    static public Transaction getSelected(HttpServletRequest request) {
+        return (Transaction) getInstance(request).getSelected();
+    }
+
+    /**
+     *
+     */
+    static public TransactionSession query(JDBC jdbc, HttpServletRequest request, int period_id, boolean blank) {
+        TransactionSession session = getInstance(request);
+        session.find(jdbc, period_id);
+        session.options(request, blank);
+        return session;
+    }
+
+    /**
+     *
+     */
+    static public void setRequested(HttpServletRequest request) {
+        getInstance(request).setQualifiedSelected(request, getRequestedId(request));
+    }
+
+    /**
+     *
+     */
+    static public void setSelected(HttpServletRequest request, Transaction selected) {
+        getInstance(request).setQualifiedSelected(request, selected);
+    }
 }

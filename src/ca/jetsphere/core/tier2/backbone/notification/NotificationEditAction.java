@@ -11,19 +11,19 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class NotificationEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Notification.key(); }
+public class NotificationEditAction extends AbstractEditAction {
 
     /**
      *
      */
+    public String getKey() {
+        return Notification.key();
+    }
 
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception {}
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+    }
 
 }

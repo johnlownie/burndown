@@ -12,24 +12,22 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-
-public class LogDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Log.key (); }
+public class LogDoAction extends AbstractDoAction {
 
     /**
      *
      */
+    public String getKey() {
+        return Log.key();
+    }
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    LogSession.query ( store.getRequest (), false );
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        LogSession.query(store.getRequest(), false);
 
-    return getForward ( store );
+        return getForward(store);
     }
 
 }

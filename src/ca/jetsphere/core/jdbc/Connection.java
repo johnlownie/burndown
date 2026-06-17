@@ -14,213 +14,235 @@ import java.util.Hashtable;
 /**
  *
  */
+public class Connection extends Status {
 
-public class Connection extends Status
-{
-    String ds; DataSource dataSource; java.sql.Connection connection;
-
-    /**
-     *
-     */
-
-    public Connection ( Object object )
-
-    { super ( object ); setDataSourceName ( "jdbc/connection" ); }
+    String ds;
+    DataSource dataSource;
+    java.sql.Connection connection;
 
     /**
      *
      */
-
-    public void close()
-
-    { try { if ( connection != null && ! connection.isClosed() ) { connection.close(); super.close(); } } catch ( SQLException e ) {} connection = null; }
-
-    /**
-     *
-     */
-
-    public void commit() throws SQLException { if ( ! isClosed() ) connection.commit(); }
-
-    /**
-     *
-     */
-
-    public Statement createStatement() throws NamingException, SQLException { if ( isClosed() ) open(); return new Statement ( connection ); }
-
-    /**
-     *
-     */
-
-    protected java.sql.Connection getConnection() throws NamingException, SQLException { return getConnection ( "jdbc/connection" ); }
-
-    /**
-     *
-     */
-
-    synchronized protected java.sql.Connection getConnection ( String ds ) throws NamingException, SQLException
-
-    { return getTomcatConnection ( ds ); }
-    /**
-     *
-     */
-
-    synchronized protected java.sql.Connection getAccessConnection() throws NamingException, SQLException
-    {
-    String url = "jdbc:odbc:Providers";
-
-    try {
-
-        Class.forName ( "sun.jdbc.odbc.JdbcOdbcDriver" );
-
-    } catch ( ClassNotFoundException e ) { System.err.println ( "JdbcOdbc Bridge Driver not found!" ); return null; }
-
-    return DriverManager.getConnection(url, "", "");
+    public Connection(Object object) {
+        super(object);
+        setDataSourceName("jdbc/connection");
     }
 
     /**
      *
      */
+    public void close() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                super.close();
+            }
+        } catch (SQLException e) {
+        }
+        connection = null;
+    }
 
-    protected java.sql.Connection getTomcatConnection ( String ds ) throws NamingException, SQLException
-    {
-    this.dataSource = getDataSource ( ds );
+    /**
+     *
+     */
+    public void commit() throws SQLException {
+        if (!isClosed()) {
+            connection.commit();
+        }
+    }
 
-    connection = this.dataSource.getConnection();
+    /**
+     *
+     */
+    public Statement createStatement() throws NamingException, SQLException {
+        if (isClosed()) {
+            open();
+        }
+        return new Statement(connection);
+    }
 
-    if ( connection == null )
+    /**
+     *
+     */
+    protected java.sql.Connection getConnection() throws NamingException, SQLException {
+        return getConnection("jdbc/connection");
+    }
 
-        throw new SQLException ( "No Database Connection" );
+    /**
+     *
+     */
+    synchronized protected java.sql.Connection getConnection(String ds) throws NamingException, SQLException {
+        return getTomcatConnection(ds);
+    }
+
+    /**
+     *
+     */
+    synchronized protected java.sql.Connection getAccessConnection() throws NamingException, SQLException {
+        String url = "jdbc:odbc:Providers";
+
+        try {
+
+            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+
+        } catch (ClassNotFoundException e) {
+            System.err.println("JdbcOdbc Bridge Driver not found!");
+            return null;
+        }
+
+        return DriverManager.getConnection(url, "", "");
+    }
+
+    /**
+     *
+     */
+    protected java.sql.Connection getTomcatConnection(String ds) throws NamingException, SQLException {
+        this.dataSource = getDataSource(ds);
+
+        connection = this.dataSource.getConnection();
+
+        if (connection == null) {
+            throw new SQLException("No Database Connection");
+        }
 
 //    return new net.sf.log4jdbc.ConnectionSpy ( connection );
-
-    return connection;
+        return connection;
     }
 
     /**
      *
      */
-
-    protected DataSource getDataSource ( String ds ) throws NamingException, SQLException
-
-    { return  getTomcatDataSource ( ds ); }
-
-    /**
-     *
-     */
-
-    protected String getDataSourceName() { return ds; }
-
-    /**
-     *
-     */
-
-    protected DataSource getDataSource ( Context context, String ds ) throws NamingException, SQLException
-    {
-    if ( context == null )
-
-        throw new SQLException ( "No Initial Context [ java:comp/env ]" );
-
-    DataSource dataSource = ( DataSource ) context.lookup ( ds );
-
-    if ( dataSource == null )
-
-        throw new SQLException ( "No Data Source : " + ds );
-
-    return dataSource;
+    protected DataSource getDataSource(String ds) throws NamingException, SQLException {
+        return getTomcatDataSource(ds);
     }
 
     /**
      *
      */
-
-    protected DataSource getTomcatDataSource ( String ds ) throws NamingException, SQLException
-    {
-    Context context = ( Context ) new InitialContext().lookup ( "java:comp/env" );
-
-    return getDataSource ( context, ds );
+    protected String getDataSourceName() {
+        return ds;
     }
 
     /**
      *
      */
+    protected DataSource getDataSource(Context context, String ds) throws NamingException, SQLException {
+        if (context == null) {
+            throw new SQLException("No Initial Context [ java:comp/env ]");
+        }
 
-    protected DataSource getWebSphereDataSource ( String ds ) throws NamingException, SQLException
-    {
-    Hashtable environment = new Hashtable();
+        DataSource dataSource = (DataSource) context.lookup(ds);
 
-    environment.put ( Context.INITIAL_CONTEXT_FACTORY, "com.ibm.websphere.naming.WsnInitialContextFactory" );
+        if (dataSource == null) {
+            throw new SQLException("No Data Source : " + ds);
+        }
 
-    InitialContext context = new InitialContext ( environment );
-
-    return getDataSource ( context, ds );
+        return dataSource;
     }
 
     /**
      *
      */
+    protected DataSource getTomcatDataSource(String ds) throws NamingException, SQLException {
+        Context context = (Context) new InitialContext().lookup("java:comp/env");
 
-    public boolean isClosed() throws SQLException
-
-    { return connection != null ? connection.isClosed() : true; }
-
-    /**
-     *
-     */
-
-    public boolean isReadOnly()
-
-    { try { return connection.isReadOnly(); } catch ( SQLException e ) { return false; } }
+        return getDataSource(context, ds);
+    }
 
     /**
      *
      */
+    protected DataSource getWebSphereDataSource(String ds) throws NamingException, SQLException {
+        Hashtable environment = new Hashtable();
 
-    public void open() throws NamingException, SQLException
+        environment.put(Context.INITIAL_CONTEXT_FACTORY, "com.ibm.websphere.naming.WsnInitialContextFactory");
 
-    { connection = getConnection ( getDataSourceName() ); super.open(); }
+        InitialContext context = new InitialContext(environment);
 
-    /**
-     *
-     */
-
-    public PreparedStatement prepareStatement() throws NamingException, SQLException
-
-    { if ( isClosed() ) open(); return new PreparedStatement ( connection ); }
+        return getDataSource(context, ds);
+    }
 
     /**
      *
      */
-
-    public PreparedStatement prepareStatement ( String sql ) throws NamingException, SQLException
-
-    { if ( isClosed() ) open(); return new PreparedStatement ( connection, sql ); }
-
-    /**
-     *
-     */
-
-    public PreparedStatement prepareStatement ( String sql, String[] autoGeneratedColumns ) throws NamingException, SQLException
-
-    { PreparedStatement ps = prepareStatement(); ps.setStatement ( sql, autoGeneratedColumns ); return ps; }
+    public boolean isClosed() throws SQLException {
+        return connection != null ? connection.isClosed() : true;
+    }
 
     /**
      *
      */
-
-    public void rollback() { try { connection.rollback(); } catch ( SQLException e ) { Common.trace ( e ); } }
-
-    /**
-     *
-     */
-
-    public void setAutoCommit ( boolean autoCommit ) throws NamingException, SQLException
-
-    { if ( isClosed() ) open(); connection.setAutoCommit ( autoCommit ); }
+    public boolean isReadOnly() {
+        try {
+            return connection.isReadOnly();
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 
     /**
      *
      */
+    public void open() throws NamingException, SQLException {
+        connection = getConnection(getDataSourceName());
+        super.open();
+    }
 
-    public void setDataSourceName ( String ds ) { this.ds = ds; }
+    /**
+     *
+     */
+    public PreparedStatement prepareStatement() throws NamingException, SQLException {
+        if (isClosed()) {
+            open();
+        }
+        return new PreparedStatement(connection);
+    }
+
+    /**
+     *
+     */
+    public PreparedStatement prepareStatement(String sql) throws NamingException, SQLException {
+        if (isClosed()) {
+            open();
+        }
+        return new PreparedStatement(connection, sql);
+    }
+
+    /**
+     *
+     */
+    public PreparedStatement prepareStatement(String sql, String[] autoGeneratedColumns) throws NamingException, SQLException {
+        PreparedStatement ps = prepareStatement();
+        ps.setStatement(sql, autoGeneratedColumns);
+        return ps;
+    }
+
+    /**
+     *
+     */
+    public void rollback() {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            Common.trace(e);
+        }
+    }
+
+    /**
+     *
+     */
+    public void setAutoCommit(boolean autoCommit) throws NamingException, SQLException {
+        if (isClosed()) {
+            open();
+        }
+        connection.setAutoCommit(autoCommit);
+    }
+
+    /**
+     *
+     */
+    public void setDataSourceName(String ds) {
+        this.ds = ds;
+    }
 
 }

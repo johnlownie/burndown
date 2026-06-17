@@ -13,15 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  */
+public class MyExceptionHandler extends ExceptionHandler {
 
-public class MyExceptionHandler extends ExceptionHandler
-{
     /**
      *
      */
-
-    public ActionForward execute  ( Exception ex, ExceptionConfig ec, ActionMapping mapping, ActionForm formInstance, HttpServletRequest request, HttpServletResponse response ) throws ServletException
-
-    { Common.trace ( this, ex ); return new ActionForward ( "/500.do" ); }
+    public ActionForward execute(Exception ex, ExceptionConfig ec, ActionMapping mapping, ActionForm formInstance, HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        Common.trace(this, ex);
+        return new ActionForward("/500.do");
+    }
 
 }

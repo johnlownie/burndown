@@ -9,96 +9,106 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
+public class SessionCache implements Serializable {
 
-public class SessionCache implements Serializable
-{
     Map map = new HashMap();
 
     /**
      *
      */
-
-    public SessionCache ( HttpServletRequest request ) { setSessionCache ( request, this ); }
-
-    /**
-     *
-     */
-
-    public void add ( ISessionObject iso ) { map.put ( iso.getKey(), iso ); }
-
-    /**
-     *
-     */
-
-    public void add ( Object key, ISessionObject iso ) { map.put ( key, iso ); }
-
-    /**
-     *
-     */
-
-    public ISessionObject getSessionObject ( String key ) { return ( ISessionObject ) map.get ( key ); }
-
-    /**
-     *
-     */
-
-    static public String key() { return "cache"; }
-
-    /**
-     *
-     */
-
-    static public SessionCache getSessionCache ( HttpServletRequest request )
-    {
-    SessionCache cache = ( SessionCache ) request.getSession().getAttribute ( key() );
-
-    if ( cache == null ) cache = new SessionCache ( request );
-
-    return cache;
+    public SessionCache(HttpServletRequest request) {
+        setSessionCache(request, this);
     }
 
     /**
      *
      */
+    public void add(ISessionObject iso) {
+        map.put(iso.getKey(), iso);
+    }
 
-    static public ISessionObject getSessionObject ( HttpServletRequest request, String key, Class clazz )
-    {
-    try {
+    /**
+     *
+     */
+    public void add(Object key, ISessionObject iso) {
+        map.put(key, iso);
+    }
 
-        SessionCache cache = getSessionCache ( request );
+    /**
+     *
+     */
+    public ISessionObject getSessionObject(String key) {
+        return (ISessionObject) map.get(key);
+    }
 
-        ISessionObject iso = cache.getSessionObject ( key );
+    /**
+     *
+     */
+    static public String key() {
+        return "cache";
+    }
 
-        if ( iso != null ) return iso;
+    /**
+     *
+     */
+    static public SessionCache getSessionCache(HttpServletRequest request) {
+        SessionCache cache = (SessionCache) request.getSession().getAttribute(key());
 
-        iso = ( ISessionObject ) clazz.newInstance();
+        if (cache == null) {
+            cache = new SessionCache(request);
+        }
 
-        cache.add ( key, iso );
+        return cache;
+    }
 
-        return iso;
+    /**
+     *
+     */
+    static public ISessionObject getSessionObject(HttpServletRequest request, String key, Class clazz) {
+        try {
 
-    } catch ( Exception e ) { Common.trace ( e ); return null; }
+            SessionCache cache = getSessionCache(request);
+
+            ISessionObject iso = cache.getSessionObject(key);
+
+            if (iso != null) {
+                return iso;
+            }
+
+            iso = (ISessionObject) clazz.newInstance();
+
+            cache.add(key, iso);
+
+            return iso;
+
+        } catch (Exception e) {
+            Common.trace(e);
+            return null;
+        }
 
     }
 
     /**
      *
      */
-
-    static public ISessionObject getSessionObject ( HttpServletRequest request, String key ) { return getSessionCache ( request ).getSessionObject ( key ); }
-
-    /**
-     *
-     */
-
-    public void remove ( String key ) { add ( key, null ); }
+    static public ISessionObject getSessionObject(HttpServletRequest request, String key) {
+        return getSessionCache(request).getSessionObject(key);
+    }
 
     /**
      *
      */
+    public void remove(String key) {
+        add(key, null);
+    }
 
-    private void setSessionCache ( HttpServletRequest request, SessionCache cache )
-
-    { if ( request.getSession().getAttribute ( key() ) == null ) request.getSession().setAttribute ( key(), cache ); }
+    /**
+     *
+     */
+    private void setSessionCache(HttpServletRequest request, SessionCache cache) {
+        if (request.getSession().getAttribute(key()) == null) {
+            request.getSession().setAttribute(key(), cache);
+        }
+    }
 
 }

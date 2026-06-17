@@ -6,39 +6,41 @@ import ca.jetsphere.core.jdbc.JDBC;
 /**
  *
  */
-
-abstract public class CompanyMap extends BoltMap
-{
-    /**
-     *
-     */
-
-    public CompanyMap() { super(); }
+abstract public class CompanyMap extends BoltMap {
 
     /**
      *
      */
-
-    public CompanyMap ( JDBC jdbc ) { query ( jdbc, -1 ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int company_id )
-
-    { query ( jdbc, "select * from jet_base_company" + ( company_id > 0 ? " where company_id = " + company_id : "" ) ); }
+    public CompanyMap() {
+        super();
+    }
 
     /**
      *
      */
-
-    public Company getCompany ( int id ) { return ( Company ) get ( id ); }
+    public CompanyMap(JDBC jdbc) {
+        query(jdbc, -1);
+    }
 
     /**
      *
      */
+    public void find(JDBC jdbc, int company_id) {
+        query(jdbc, "select * from jet_base_company" + (company_id > 0 ? " where company_id = " + company_id : ""));
+    }
 
-    public String getKey() { return Company.key(); }
+    /**
+     *
+     */
+    public Company getCompany(int id) {
+        return (Company) get(id);
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return Company.key();
+    }
 
 }

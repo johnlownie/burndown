@@ -25,198 +25,239 @@ import java.io.PrintWriter;
 /**
  *
  */
+public class RoleRightEditAction extends AbstractEditAction {
 
-public class RoleRightEditAction extends AbstractEditAction
-{
     /**
      *
      */
+    public ActionForward copy(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward copy ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-        String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
+            if (DockYard.isWhiteSpace(uuid)) {
+                errors.add("error.role.right.copy");
+            }
 
-        if ( DockYard.isWhiteSpace ( uuid ) ) errors.add ( "error.role.right.copy" );
+            RoleRightSession roleRights = RoleRightSession.getInstance(store.getRequest());
 
-        RoleRightSession roleRights = RoleRightSession.getInstance ( store.getRequest() );
+            RoleRight roleRight = (RoleRight) roleRights.getBoltByUuid(uuid);
 
-        RoleRight roleRight = ( RoleRight ) roleRights.getBoltByUuid ( uuid );
+            if (roleRight == null || !roleRight.isValid()) {
+                errors.add("error.role.right.copy");
+            }
 
-        if ( roleRight == null || !roleRight.isValid() ) errors.add ( "error.role.right.copy" );
+            RoleRight copyTree = (RoleRight) TreeYard.copy(roleRight);
 
-        RoleRight copyTree = ( RoleRight ) TreeYard.copy ( roleRight );
+            DockYard.setAttribute(store.getRequest(), "[copyTree]", errors.isEmpty() ? copyTree : null);
 
-        DockYard.setAttribute ( store.getRequest(), "[copyTree]", errors.isEmpty() ? copyTree : null );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            jsonObject.put("success", errors.isEmpty());
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            out.write(jsonObject.toString());
 
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    public ActionForward delete(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward delete ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-        String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
+            if (DockYard.isWhiteSpace(uuid)) {
+                errors.add("error.role.right.cut");
+            }
 
-        if ( DockYard.isWhiteSpace ( uuid ) ) errors.add ( "error.role.right.cut" );
+            RoleRightSession roleRights = RoleRightSession.getInstance(store.getRequest());
+            roleRights.clearSelected(store.getRequest());
 
-        RoleRightSession roleRights = RoleRightSession.getInstance ( store.getRequest() ); roleRights.clearSelected ( store.getRequest() );
+            RoleRight child = (RoleRight) roleRights.getBoltByUuid(uuid);
 
-        RoleRight child = ( RoleRight ) roleRights.getBoltByUuid ( uuid );
+            if (child == null || !child.isValid()) {
+                errors.add("error.role.right.cut");
+            }
 
-        if ( child == null || !child.isValid() ) errors.add ( "error.role.right.cut" );
+            RoleRight parent = (RoleRight) roleRights.get(child.getParentId());
 
-        RoleRight parent = ( RoleRight ) roleRights.get ( child.getParentId() );
+            if (parent == null || !parent.isValid()) {
+                errors.add("error.role.right.cut");
+            }
 
-        if ( parent == null || !parent.isValid() ) errors.add ( "error.role.right.cut" );
+            if (errors.isEmpty()) {
+                TreeYard.cut(jdbc, parent, child);
+                roleRights.remove(child);
+            }
 
-        if ( errors.isEmpty() ) { TreeYard.cut ( jdbc, parent, child ); roleRights.remove ( child ); }
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            jsonObject.put("success", errors.isEmpty());
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            out.write(jsonObject.toString());
 
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    protected void finito(JDBC jdbc, HttpServletRequest request, Bolt bolt, boolean isUpdate, Errors errors) throws Exception {
+        if (isUpdate) {
+            return;
+        }
 
-    protected void finito ( JDBC jdbc, HttpServletRequest request, Bolt bolt, boolean isUpdate, Errors errors ) throws Exception
-    {
-    if ( isUpdate ) return;
+        RoleRight roleRight = (RoleRight) bolt;
+        roleRight.foreign(jdbc);
 
-    RoleRight roleRight = ( RoleRight ) bolt; roleRight.foreign ( jdbc );
+        RoleRightSession roleRights = RoleRightSession.getInstance(request);
 
-    RoleRightSession roleRights = RoleRightSession.getInstance ( request );
-
-    roleRights.add ( roleRight ); roleRights.treeify();
+        roleRights.add(roleRight);
+        roleRights.treeify();
     }
 
     /**
      *
      */
-
-    public String getKey() { return RoleRight.key(); }
-
-    /**
-     *
-     */
-
-    public ActionForward insert ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        RoleRightSession roleRights = RoleRightSession.getInstance ( store.getRequest() ); roleRights.clearSelected ( store.getRequest() );
-
-        String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
-
-        boolean is_before = DockYard.toBoolean ( store.getRequest(), "before" ); boolean is_child = DockYard.toBoolean ( store.getRequest(), "child" );
-
-        if ( DockYard.isWhiteSpace ( uuid ) ) return null;
-
-        RoleRight selected = ( RoleRight ) roleRights.getBoltByUuid ( uuid ); RoleRight form = ( RoleRight ) roleRights.getSelected();
-
-        RoleRight sibling = new RoleRight(); sibling.copy ( selected );
-
-        if ( sibling != null && sibling.isValid() ) sibling.getPayload ( jdbc );
-
-        form.clear(); form.setParentId ( is_child ? sibling.getId() : sibling.getParentId() ); form.setInsertType ( is_before ? 1 : 2 );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return query ( jdbc, store, errors ); }
+    public String getKey() {
+        return RoleRight.key();
     }
 
     /**
      *
      */
+    public ActionForward insert(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward paste ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            RoleRightSession roleRights = RoleRightSession.getInstance(store.getRequest());
+            roleRights.clearSelected(store.getRequest());
 
-        String uuid = DockYard.getParameter ( store.getRequest(), "csrf" );
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-        if ( DockYard.isWhiteSpace ( uuid ) ) errors.add ( "error.role.right.paste" );
+            boolean is_before = DockYard.toBoolean(store.getRequest(), "before");
+            boolean is_child = DockYard.toBoolean(store.getRequest(), "child");
 
-        RoleRightSession roleRights = RoleRightSession.getInstance ( store.getRequest() );
+            if (DockYard.isWhiteSpace(uuid)) {
+                return null;
+            }
 
-        RoleRight parent = ( RoleRight ) roleRights.getBoltByUuid ( uuid );
+            RoleRight selected = (RoleRight) roleRights.getBoltByUuid(uuid);
+            RoleRight form = (RoleRight) roleRights.getSelected();
 
-        if ( parent == null || !parent.isValid() )  errors.add ( "error.role.right.paste" );
+            RoleRight sibling = new RoleRight();
+            sibling.copy(selected);
 
-        RoleRight child = ( RoleRight ) DockYard.getAttribute ( store.getRequest(), "[copyTree]" );
+            if (sibling != null && sibling.isValid()) {
+                sibling.getPayload(jdbc);
+            }
 
-        if ( child == null || !child.isValid() )  errors.add ( "error.role.right.paste" );
+            form.clear();
+            form.setParentId(is_child ? sibling.getId() : sibling.getParentId());
+            form.setInsertType(is_before ? 1 : 2);
 
-        if ( errors.isEmpty() ) TreeYard.paste ( jdbc, roleRights, parent, child );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put ( "success", errors.isEmpty() );
-
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return query(jdbc, store, errors);
+        }
     }
 
     /**
      *
      */
+    public ActionForward paste(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Company company = CompanySession.getSelected ( store.getRequest() );
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
 
-    ActionSession.query ( jdbc, store.getRequest(), company.getId(), true );
+            if (DockYard.isWhiteSpace(uuid)) {
+                errors.add("error.role.right.paste");
+            }
 
-    return store.getForward ( "failure" );
+            RoleRightSession roleRights = RoleRightSession.getInstance(store.getRequest());
+
+            RoleRight parent = (RoleRight) roleRights.getBoltByUuid(uuid);
+
+            if (parent == null || !parent.isValid()) {
+                errors.add("error.role.right.paste");
+            }
+
+            RoleRight child = (RoleRight) DockYard.getAttribute(store.getRequest(), "[copyTree]");
+
+            if (child == null || !child.isValid()) {
+                errors.add("error.role.right.paste");
+            }
+
+            if (errors.isEmpty()) {
+                TreeYard.paste(jdbc, roleRights, parent, child);
+            }
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("success", errors.isEmpty());
+
+            out.write(jsonObject.toString());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Company company = CompanySession.getSelected(store.getRequest());
 
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    RoleRight right = ( RoleRight ) bolt; RoleRight parent = new RoleRight ( jdbc, right.getParentId() );
+        ActionSession.query(jdbc, store.getRequest(), company.getId(), true);
 
-    if ( parent == null || ! parent.isValid() ) return;
+        return store.getForward("failure");
+    }
 
-    right.setRoleId ( parent.getRoleId() ); right.setParentUuid ( parent.getUuid() );
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        RoleRight right = (RoleRight) bolt;
+        RoleRight parent = new RoleRight(jdbc, right.getParentId());
 
-    right.setDepth ( parent.getDepth() + 1 ); right.setLineage ( parent.getLineage() + parent.getId() + "/" );
+        if (parent == null || !parent.isValid()) {
+            return;
+        }
 
-    if ( right.getOrdinal() < 0 )
+        right.setRoleId(parent.getRoleId());
+        right.setParentUuid(parent.getUuid());
 
-        right.setOrdinal ( RoleRightYard.getCount ( jdbc, parent.getRoleId(), parent.getId() ) );
+        right.setDepth(parent.getDepth() + 1);
+        right.setLineage(parent.getLineage() + parent.getId() + "/");
+
+        if (right.getOrdinal() < 0) {
+            right.setOrdinal(RoleRightYard.getCount(jdbc, parent.getRoleId(), parent.getId()));
+        }
     }
 
 }

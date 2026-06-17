@@ -17,51 +17,50 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class ApplicationDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Application.key(); }
+public class ApplicationDoAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-
-        ApplicationSession applications = ApplicationSession.query ( jdbc, store.getRequest(), qaf.getCompanyId(), false );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( applications, Application.captions(), Application.fields() );
-
-        dataTableWriter.print ( out, store.getRequest() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return Application.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    ApplicationSession applications = ApplicationSession.query ( jdbc, store.getRequest(), qaf.getCompanyId(), false );
+            ApplicationSession applications = ApplicationSession.query(jdbc, store.getRequest(), qaf.getCompanyId(), false);
 
-    return getForward ( store );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(applications, Application.captions(), Application.fields());
+
+            dataTableWriter.print(out, store.getRequest());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+
+        ApplicationSession applications = ApplicationSession.query(jdbc, store.getRequest(), qaf.getCompanyId(), false);
+
+        return getForward(store);
     }
 
 }

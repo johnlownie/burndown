@@ -6,13 +6,13 @@ import ca.jetsphere.core.tier2.common.AbstractEditAction;
 /**
  *
  */
+public class MailServerEditAction extends AbstractEditAction {
 
-public class MailServerEditAction extends AbstractEditAction
-{
     /**
      *
      */
-
-    public String getKey() { return MailServer.key(); }
+    public String getKey() {
+        return MailServer.key();
+    }
 
 }

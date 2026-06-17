@@ -19,51 +19,52 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class MailServerDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return MailServer.key(); }
+public class MailServerDoAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest() );
-
-        MailServerSession mailServers = MailServerSession.query ( jdbc, store.getRequest(), company.getId(), false );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( mailServers, MailServer.captions(), MailServer.fields() );
-
-        dataTableWriter.print ( out, store.getRequest() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return MailServer.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
+            Company company = CompanySession.getSelected(store.getRequest());
 
-    MailServerSession.query ( jdbc, store.getRequest(), company.getId(), false );
+            MailServerSession mailServers = MailServerSession.query(jdbc, store.getRequest(), company.getId(), false);
 
-    return getForward ( store );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(mailServers, MailServer.captions(), MailServer.fields());
+
+            dataTableWriter.print(out, store.getRequest());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Company company = CompanySession.getSelected(store.getRequest());
+
+        MailServerSession.query(jdbc, store.getRequest(), company.getId(), false);
+
+        return getForward(store);
     }
 
 }

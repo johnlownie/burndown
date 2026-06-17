@@ -23,144 +23,153 @@ import java.io.PrintWriter;
 /**
  *
  */
+public class RoleRightDoAction extends AbstractDoAction {
 
-public class RoleRightDoAction extends AbstractDoAction
-{
     /**
      *
      */
+    public ActionForward close(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward close ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+            boolean expand = DockYard.toBoolean(store.getRequest(), "expand");
 
-        boolean expand = DockYard.toBoolean ( store.getRequest(), "expand" );
+            RoleRightSession roleRights = RoleRightSession.getInstance(store.getRequest());
 
-        RoleRightSession roleRights = RoleRightSession.getInstance ( store.getRequest() );
+            if (expand) {
+                TreeYard.expand(qaf.getOpenSet(), roleRights.getRoot());
+            } else {
+                TreeYard.collapse(qaf.getOpenSet(), roleRights.getRoot());
+            }
 
-        if ( expand ) TreeYard.expand ( qaf.getOpenSet(), roleRights.getRoot() ); else TreeYard.collapse ( qaf.getOpenSet(), roleRights.getRoot() );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            jsonObject.put("success", errors.isEmpty());
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            out.write(jsonObject.toString());
 
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    public ActionForward export(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward export ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+            int id = DockYard.toInteger(store.getRequest(), "nodeId");
 
-        int id = DockYard.toInteger ( store.getRequest(), "nodeId" );
+            RoleRightSession roleRights = RoleRightSession.getInstance(store.getRequest());
 
-        RoleRightSession roleRights = RoleRightSession.getInstance ( store.getRequest() );
+            RoleRight roleRight = (RoleRight) roleRights.get(id);
 
-        RoleRight roleRight = ( RoleRight ) roleRights.get ( id );
+            qaf.getOpenSet().toggle(roleRight.getId());
 
-        qaf.getOpenSet().toggle ( roleRight.getId() );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            jsonObject.put("success", errors.isEmpty());
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            out.write(jsonObject.toString());
 
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    public ActionForward fetch(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward fetch ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+            RoleRightSession roleRights = RoleRightSession.query(jdbc, store.getRequest(), qaf.getRoleId(), false);
 
-        RoleRightSession roleRights = RoleRightSession.query ( jdbc, store.getRequest(), qaf.getRoleId(), false );
+            TreeYard.collapse(qaf.getOpenSet(), roleRights.getRoot());
 
-        TreeYard.collapse ( qaf.getOpenSet(), roleRights.getRoot() );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
-
-        jsonObject.put ( "success", errors.isEmpty() );
+            jsonObject.put("success", errors.isEmpty());
 
 //        JsonWriter jsonWriter = new JsonWriter ( roleRights );
-
 //        String s = jsonWriter.get ( store.getRequest(), id );
+            out.write(jsonObject.toString());
 
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-
-    public String getKey() { return RoleRight.key(); }
-
-    /**
-     *
-     */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-
-        RoleRightSession roleRights = RoleRightSession.getInstance ( store.getRequest() );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableTreeWriter tableWriter = new DataTableTreeWriter ( roleRights, RoleRight.captions(), RoleRight.fields() );
-
-        tableWriter.print ( out, store.getRequest(), qaf.getOpenSet() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return RoleRight.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    qaf.getOpenSet().clear();
+            RoleRightSession roleRights = RoleRightSession.getInstance(store.getRequest());
 
-    if ( company != null && company.isValid() ) qaf.setCompanyId ( company.getId() );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-    RoleSession.query ( jdbc, store.getRequest(), qaf.getCompanyId(), false );
+            PrintWriter out = store.getResponse().getWriter();
 
-    return getForward ( store );
+            DataTableTreeWriter tableWriter = new DataTableTreeWriter(roleRights, RoleRight.captions(), RoleRight.fields());
+
+            tableWriter.print(out, store.getRequest(), qaf.getOpenSet());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Company company = CompanySession.getSelected(store.getRequest());
+
+        qaf.getOpenSet().clear();
+
+        if (company != null && company.isValid()) {
+            qaf.setCompanyId(company.getId());
+        }
+
+        RoleSession.query(jdbc, store.getRequest(), qaf.getCompanyId(), false);
+
+        return getForward(store);
     }
 
 }

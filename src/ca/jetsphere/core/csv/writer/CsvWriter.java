@@ -17,78 +17,79 @@ import java.util.Locale;
 /**
  *
  */
+public class CsvWriter {
 
-public class CsvWriter
-{
-    HttpServletRequest request; Locale locale; ResultSetBoltMap rsbl;
-
-    /**
-     *
-     */
-
-    public CsvWriter ( HttpServletRequest request, ResultSetBoltMap rsbl )
-
-    { this.request = request; this.locale = request.getLocale(); this.rsbl = rsbl; }
+    HttpServletRequest request;
+    Locale locale;
+    ResultSetBoltMap rsbl;
 
     /**
      *
      */
-
-    public CsvWriter ( Locale locale, ResultSetBoltMap rsbl )
-
-    { this.locale = locale; this.rsbl = rsbl; }
+    public CsvWriter(HttpServletRequest request, ResultSetBoltMap rsbl) {
+        this.request = request;
+        this.locale = request.getLocale();
+        this.rsbl = rsbl;
+    }
 
     /**
      *
      */
+    public CsvWriter(Locale locale, ResultSetBoltMap rsbl) {
+        this.locale = locale;
+        this.rsbl = rsbl;
+    }
 
-    public List getCaptions()
-    {
-    List list = new ArrayList();
+    /**
+     *
+     */
+    public List getCaptions() {
+        List list = new ArrayList();
 
-    try {
+        try {
 
-        for ( int cc = 0; cc < rsbl.getCaptions().length; cc ++ )
+            for (int cc = 0; cc < rsbl.getCaptions().length; cc++) {
+                rsbl.setCaption(cc, Caption.get(locale, rsbl.getCaption(cc)));
+            }
 
-            rsbl.setCaption ( cc, Caption.get ( locale, rsbl.getCaption ( cc ) ) );
+            return Arrays.asList(rsbl.getCaptions());
 
-        return Arrays.asList ( rsbl.getCaptions() );
-
-    } catch ( Exception e ) { return list; }
+        } catch (Exception e) {
+            return list;
+        }
 
     }
 
     /**
      *
      */
-
-    public List getList ( ResultSetBolt bolt ) throws Exception
-
-    { bolt.setLocale ( locale ); return bolt.list(); }
-
-    /**
-     *
-     */
-
-    public void print ( Writer writer ) throws Exception
-
-    { print ( writer, true ); }
+    public List getList(ResultSetBolt bolt) throws Exception {
+        bolt.setLocale(locale);
+        return bolt.list();
+    }
 
     /**
      *
      */
+    public void print(Writer writer) throws Exception {
+        print(writer, true);
+    }
 
-    public void print ( Writer writer, boolean doCaptions ) throws Exception
-    {
-    ExcelCSVPrinter $writer = new ExcelCSVPrinter ( writer );
+    /**
+     *
+     */
+    public void print(Writer writer, boolean doCaptions) throws Exception {
+        ExcelCSVPrinter $writer = new ExcelCSVPrinter(writer);
 
-    if ( doCaptions ) CsvYard.csv ( $writer, getCaptions() );
+        if (doCaptions) {
+            CsvYard.csv($writer, getCaptions());
+        }
 
-    Iterator it = rsbl.iterator ( true );
+        Iterator it = rsbl.iterator(true);
 
-    while ( it.hasNext() )
-
-        CsvYard.csv ( $writer, getList ( ( ResultSetBolt ) it.next() ) );
+        while (it.hasNext()) {
+            CsvYard.csv($writer, getList((ResultSetBolt) it.next()));
+        }
     }
 
 }

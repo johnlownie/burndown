@@ -6,39 +6,40 @@ import ca.jetsphere.core.jdbc.JDBC;
 /**
  *
  */
-
-abstract public class PolicyMap extends BoltMap
-{
-    /**
-     *
-     */
-
-    public PolicyMap() { super (); }
+abstract public class PolicyMap extends BoltMap {
 
     /**
      *
      */
-
-    public PolicyMap ( JDBC jdbc, int id ) { query ( jdbc, id ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int company_id )
-    {
-    String query = "select * from jet_base_policy";
-
-    if ( company_id > -1 )  query += " where policy_company_id = " + company_id;
-
-    query ( jdbc, query );
+    public PolicyMap() {
+        super();
     }
 
     /**
      *
      */
+    public PolicyMap(JDBC jdbc, int id) {
+        query(jdbc, id);
+    }
 
-    public String getKey() { return Policy.key(); }
+    /**
+     *
+     */
+    public void find(JDBC jdbc, int company_id) {
+        String query = "select * from jet_base_policy";
+
+        if (company_id > -1) {
+            query += " where policy_company_id = " + company_id;
+        }
+
+        query(jdbc, query);
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return Policy.key();
+    }
 
 }
-

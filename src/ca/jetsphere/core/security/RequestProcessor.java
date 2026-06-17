@@ -15,132 +15,156 @@ import java.io.IOException;
 /**
  *
  */
+public class RequestProcessor extends org.apache.struts.action.RequestProcessor {
 
-public class RequestProcessor extends org.apache.struts.action.RequestProcessor
-{
     static LockOut lockout = new LockOut();
 
     /**
      *
      */
+    protected boolean _403(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) throws IOException {
+        if (isAdministrator(request)) {
+            TabYard.setSelected(request, mapping);
+            return true;
+        }
 
-    protected boolean _403 ( HttpServletRequest request, HttpServletResponse response, ActionMapping mapping ) throws IOException
-    {
-    if ( isAdministrator ( request ) ) { TabYard.setSelected ( request, mapping ); return true; }
+        if (TabYard.hasAction(request, mapping)) {
+            TabYard.setSelected(request, mapping);
+            return isUnLocked(request, response);
+        }
 
-    if ( TabYard.hasAction ( request, mapping ) ) { TabYard.setSelected ( request, mapping ); return isUnLocked ( request, response ); }
-
-    return redirect ( request, response, "/403.do" );
+        return redirect(request, response, "/403.do");
     }
 
     /**
      *
      */
-
-    static public LockOut getLockOut() { return lockout; }
-
-    /**
-     *
-     */
-
-    protected boolean isActive ( HttpServletRequest request )
-    {
-    User user = UserYard.whoAmI ( request );
-
-    return user != null ? UserYard.isValid ( user ) : false;
+    static public LockOut getLockOut() {
+        return lockout;
     }
 
     /**
      *
      */
+    protected boolean isActive(HttpServletRequest request) {
+        User user = UserYard.whoAmI(request);
 
-    protected boolean isAdministrator ( HttpServletRequest request )
-    {
-    User user = UserYard.whoAmI ( request );
-
-    return user != null && user.isValid() ? user.isAdministrator() : false;
+        return user != null ? UserYard.isValid(user) : false;
     }
 
     /**
      *
      */
+    protected boolean isAdministrator(HttpServletRequest request) {
+        User user = UserYard.whoAmI(request);
 
-    protected boolean isCommon ( HttpServletRequest request )
-    {
-    if ( DockYard.compareTo ( request.getServletPath(), "/403.do"             ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/404.do"             ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/420.do"             ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/500.do"             ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/login.do"           ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/logout.do"          ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/maintenance.do"     ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/nowizard.do"        ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/register.do"        ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/reset_password.do"  ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/timeout.do"         ) == 0 ) return true;
-
-    if ( DockYard.compareTo ( request.getServletPath(), "/unsubscribe.do"     ) == 0 ) return true;
-
-    return false;
+        return user != null && user.isValid() ? user.isAdministrator() : false;
     }
 
     /**
      *
      */
+    protected boolean isCommon(HttpServletRequest request) {
+        if (DockYard.compareTo(request.getServletPath(), "/403.do") == 0) {
+            return true;
+        }
 
-    protected boolean isUnLocked ( HttpServletRequest request, HttpServletResponse response ) throws IOException
-    {
-    if ( getLockOut().isLock() ) return redirect ( request, response, "/lockedout.do" );
+        if (DockYard.compareTo(request.getServletPath(), "/404.do") == 0) {
+            return true;
+        }
 
-    return true; /* update ( request ); */
+        if (DockYard.compareTo(request.getServletPath(), "/420.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/500.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/login.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/logout.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/maintenance.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/nowizard.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/register.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/reset_password.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/timeout.do") == 0) {
+            return true;
+        }
+
+        if (DockYard.compareTo(request.getServletPath(), "/unsubscribe.do") == 0) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      *
      */
+    protected boolean isUnLocked(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (getLockOut().isLock()) {
+            return redirect(request, response, "/lockedout.do");
+        }
 
-    protected void processLocale ( HttpServletRequest request, HttpServletResponse response )
-    {
-    try {
+        return true;
+        /* update ( request ); */
+    }
 
-        if ( request.getCharacterEncoding() == null ) request.setCharacterEncoding ( Knock.get ( "PARAMETER-ENCODING" ) );
+    /**
+     *
+     */
+    protected void processLocale(HttpServletRequest request, HttpServletResponse response) {
+        try {
 
-    } catch ( Exception e ) {}
+            if (request.getCharacterEncoding() == null) {
+                request.setCharacterEncoding(Knock.get("PARAMETER-ENCODING"));
+            }
+
+        } catch (Exception e) {
+        }
 
     }
 
     /**
      *
      */
+    protected boolean processRoles(HttpServletRequest request, HttpServletResponse response, ActionMapping mapping) throws IOException, ServletException {
+        if (isCommon(request)) {
+            return true;
+        }
 
-    protected boolean processRoles ( HttpServletRequest request, HttpServletResponse response, ActionMapping mapping ) throws IOException, ServletException
-    {
-    if ( isCommon ( request ) ) return true ;
+        if (!isActive(request)) {
+            return redirect(request, response, "/timeout.do");
+        }
 
-    if ( ! isActive ( request ) ) return redirect ( request, response, "/timeout.do" );
-
-    return _403 ( request, response, mapping );
+        return _403(request, response, mapping);
     }
 
     /**
      *
      */
+    protected boolean redirect(HttpServletRequest request, HttpServletResponse response, String page) throws IOException {
+        response.sendRedirect(request.getContextPath() + page);
 
-    protected boolean redirect ( HttpServletRequest request, HttpServletResponse response, String page ) throws IOException
-    {
-    response.sendRedirect ( request.getContextPath() + page );
-
-    return false;
+        return false;
     }
 
 }

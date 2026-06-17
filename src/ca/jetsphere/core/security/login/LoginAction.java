@@ -21,114 +21,128 @@ import java.util.Iterator;
 /**
  *
  */
-
-public class LoginAction extends AbstractLoginAction
-{
-    /**
-     *
-     */
-
-    public String getFields ( HttpServletRequest request, Errors errors )
-    {
-    StringBuilder sb = new StringBuilder();
-
-    Iterator it = errors.iterator();
-
-    while ( it.hasNext() )
-    {
-    ActionMessage message = ( ActionMessage ) it.next();
-
-    if ( sb.length() > 0 ) sb.append ( "<br/>" ); sb.append ( Caption.get ( request, message.getKey() ) );
-    }
-
-    return sb.toString();
-    }
+public class LoginAction extends AbstractLoginAction {
 
     /**
      *
      */
+    public String getFields(HttpServletRequest request, Errors errors) {
+        StringBuilder sb = new StringBuilder();
 
-    public ActionForward fetch ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+        Iterator it = errors.iterator();
 
-        ActionForward forward = validate ( jdbc, store, errors );
+        while (it.hasNext()) {
+            ActionMessage message = (ActionMessage) it.next();
 
-        boolean isPending = DockYard.equalsIgnoreCase ( "pending", forward.getName() );
+            if (sb.length() > 0) {
+                sb.append("<br/>");
+            }
+            sb.append(Caption.get(request, message.getKey()));
+        }
 
-        String content = isPending ? RegistrationYard.getContent ( jdbc, store.getRequest(), ( User ) store.getForm(), errors ) : "";
-
-        String fields = getFields ( store.getRequest(), errors );
-
-        String path = forward.getPath(); String url = DockYard.getURL ( store.getRequest (), path.substring ( 1 ) );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        JSONObject response = new JSONObject();
-
-        response.put ( "url", url ); response.put ( "content", content ); response.put ( "fields", fields );  response.put ( "pending", isPending ); response.put ( "success", errors.isEmpty () );
-
-        out.write ( response.toString () );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        return sb.toString();
     }
 
     /**
      *
      */
+    public ActionForward fetch(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    protected ActionForward forward ( ActionStore store, String s )
-    {
-    String forward    = DockYard.getToken ( s, 1, "|" );
+            ActionForward forward = validate(jdbc, store, errors);
 
-    String parameters = DockYard.getToken ( s, 2, "|" );
+            boolean isPending = DockYard.equalsIgnoreCase("pending", forward.getName());
 
-    return DockYard.isWhiteSpace ( parameters ) ?  store.getForward ( forward ) : store.getForward ( forward, parameters );
+            String content = isPending ? RegistrationYard.getContent(jdbc, store.getRequest(), (User) store.getForm(), errors) : "";
+
+            String fields = getFields(store.getRequest(), errors);
+
+            String path = forward.getPath();
+            String url = DockYard.getURL(store.getRequest(), path.substring(1));
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            JSONObject response = new JSONObject();
+
+            response.put("url", url);
+            response.put("content", content);
+            response.put("fields", fields);
+            response.put("pending", isPending);
+            response.put("success", errors.isEmpty());
+
+            out.write(response.toString());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
+    protected ActionForward forward(ActionStore store, String s) {
+        String forward = DockYard.getToken(s, 1, "|");
 
-    final protected ActionForward validate ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+        String parameters = DockYard.getToken(s, 2, "|");
 
-        resetDefaults ( jdbc, store.getRequest() ); User login = ( User ) store.getForm();
+        return DockYard.isWhiteSpace(parameters) ? store.getForward(forward) : store.getForward(forward, parameters);
+    }
 
-        String forward = validate ( jdbc, login, errors );
+    /**
+     *
+     */
+    final protected ActionForward validate(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        if ( ! "success".equals ( forward ) ) return forward ( store, forward );
+            resetDefaults(jdbc, store.getRequest());
+            User login = (User) store.getForm();
 
-        User user = UserYard.getByUsername ( jdbc, login.getUsername() );
+            String forward = validate(jdbc, login, errors);
 
-        setCookies ( store.getRequest(), store.getResponse(), user );
+            if (!"success".equals(forward)) {
+                return forward(store, forward);
+            }
 
-        setSession ( jdbc, store.getRequest(), user );
+            User user = UserYard.getByUsername(jdbc, login.getUsername());
 
-        return getForward ( store );
+            setCookies(store.getRequest(), store.getResponse(), user);
 
-    } catch ( Exception e ) { Common.trace ( e ); return errors.forward ( "error.login.query" ); }
+            setSession(jdbc, store.getRequest(), user);
+
+            return getForward(store);
+
+        } catch (Exception e) {
+            Common.trace(e);
+            return errors.forward("error.login.query");
+        }
 
     }
 
     /**
      *
      */
+    final protected String validate(JDBC jdbc, User user, Errors errors) throws Exception {
+        if (!LoginYard.isValid(jdbc, user)) {
+            errors.add("error.login.invalid");
+            return "invalid";
+        }
 
-    final protected String validate ( JDBC jdbc, User user, Errors errors ) throws Exception
-    {
-    if ( ! LoginYard.isValid   ( jdbc, user ) ) { errors.add ( "error.login.invalid" ); return "invalid" ; }
+        if (LoginYard.isFrozen(jdbc, user)) {
+            errors.add("error.login.frozen");
+            return "invalid";
+        }
 
-    if (   LoginYard.isFrozen  ( jdbc, user ) ) { errors.add ( "error.login.frozen"  ); return "invalid" ; }
+        if (LoginYard.isPending(jdbc, user)) {
+            errors.add("error.login.pending");
+            return "pending";
+        }
 
-    if (   LoginYard.isPending ( jdbc, user ) ) { errors.add ( "error.login.pending" ); return "pending" ; }
-
-    return "success";
+        return "success";
     }
 
 }

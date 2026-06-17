@@ -12,53 +12,52 @@ import java.util.Date;
 /**
  *
  */
+public class PageHeaderFooter extends PdfPageEventHelper {
 
-public class PageHeaderFooter extends PdfPageEventHelper
-{
     protected String title;
 
     /**
      *
      */
-    public void onEndPage ( com.itextpdf.text.pdf.PdfWriter writer, Document document )
-    {
-    PdfPCell cell = null;
+    public void onEndPage(com.itextpdf.text.pdf.PdfWriter writer, Document document) {
+        PdfPCell cell = null;
 
-    Rectangle page = document.getPageSize();
+        Rectangle page = document.getPageSize();
 
-    PdfPTable head = new PdfPTable ( 3 );
+        PdfPTable head = new PdfPTable(3);
 
-    head.getDefaultCell().setBorder(  0 );
+        head.getDefaultCell().setBorder(0);
 
-    cell = new PdfPCell ( new Phrase ( "" ) );
+        cell = new PdfPCell(new Phrase(""));
 
-    cell.setBorder( 0 );
+        cell.setBorder(0);
 
-    cell.setHorizontalAlignment ( PdfPCell.ALIGN_LEFT );
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_LEFT);
 
-    head.addCell ( cell );
+        head.addCell(cell);
 
-    cell = new PdfPCell ( new Phrase ( title ) );
+        cell = new PdfPCell(new Phrase(title));
 
-    cell.setHorizontalAlignment ( PdfPCell.ALIGN_CENTER );
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_CENTER);
 
-    cell.setBorder ( 0 );
+        cell.setBorder(0);
 
-    head.addCell ( cell );
+        head.addCell(cell);
 
-    cell = new PdfPCell ( new Phrase ( new Date().toString() ) );
+        cell = new PdfPCell(new Phrase(new Date().toString()));
 
-    cell.setHorizontalAlignment (  PdfPCell.ALIGN_RIGHT );
+        cell.setHorizontalAlignment(PdfPCell.ALIGN_RIGHT);
 
-    cell.setBorder ( 0 );
+        cell.setBorder(0);
 
-    head.addCell ( cell );
+        head.addCell(cell);
     }
 
     /**
      *
      */
-
-    public void setTitle ( String title ) { this.title = title; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
 }

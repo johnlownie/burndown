@@ -15,30 +15,28 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-
-public class BuMemberDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return BuMember.key (); }
+public class BuMemberDoAction extends AbstractDoAction {
 
     /**
      *
      */
+    public String getKey() {
+        return BuMember.key();
+    }
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    BuSession         .query ( jdbc, store.getRequest(), qaf.getPeriodId(), false );
+        BuSession.query(jdbc, store.getRequest(), qaf.getPeriodId(), false);
 
-    BuMemberSession   .query ( jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getBuId(), false );
+        BuMemberSession.query(jdbc, store.getRequest(), qaf.getPeriodId(), qaf.getBuId(), false);
 
-    RoleYard          .getBuRoles ( jdbc, store.getRequest() );
+        RoleYard.getBuRoles(jdbc, store.getRequest());
 
-    return getForward ( store );
+        return getForward(store);
     }
 
 }

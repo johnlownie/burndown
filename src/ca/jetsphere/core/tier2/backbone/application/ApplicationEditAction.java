@@ -19,41 +19,38 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class ApplicationEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Application.key(); }
+public class ApplicationEditAction extends AbstractEditAction {
 
     /**
      *
      */
-
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Application application = ApplicationSession.getSelected ( store.getRequest() ); Company company = CompanySession.getSelected ( store.getRequest() );
-
-    PeriodSession.query ( jdbc, store.getRequest(), company.getId(), application.getId(), true );
-
-    RoleSession.query ( jdbc, store.getRequest(), company.getId(), true );
-
-    return getForward ( store );
+    public String getKey() {
+        return Application.key();
     }
 
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Application application = ApplicationSession.getSelected(store.getRequest());
+        Company company = CompanySession.getSelected(store.getRequest());
 
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors )
-    {
-    Application application = ( Application ) bolt;
+        PeriodSession.query(jdbc, store.getRequest(), company.getId(), application.getId(), true);
 
-    Company company = CompanySession.getSelected ( request );
+        RoleSession.query(jdbc, store.getRequest(), company.getId(), true);
 
-    application.setCompanyId ( company.getId() );
+        return getForward(store);
+    }
+
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) {
+        Application application = (Application) bolt;
+
+        Company company = CompanySession.getSelected(request);
+
+        application.setCompanyId(company.getId());
     }
 
 }

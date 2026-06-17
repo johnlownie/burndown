@@ -6,31 +6,34 @@ import ca.jetsphere.core.jdbc.JDBC;
 /**
  *
  */
-
-abstract public class UserMap extends BoltMap
-{
-    /**
-     *
-     */
-
-    public UserMap() { super(); }
+abstract public class UserMap extends BoltMap {
 
     /**
      *
      */
-
-    public UserMap ( JDBC jdbc, int id ) { query ( jdbc, -1 ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int id ) { query ( jdbc, "select * from jet_base_user" ); }
+    public UserMap() {
+        super();
+    }
 
     /**
      *
      */
+    public UserMap(JDBC jdbc, int id) {
+        query(jdbc, -1);
+    }
 
-    public String getKey() { return User.key(); }
+    /**
+     *
+     */
+    public void find(JDBC jdbc, int id) {
+        query(jdbc, "select * from jet_base_user");
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return User.key();
+    }
 
 }

@@ -6,39 +6,41 @@ import ca.jetsphere.core.jdbc.JDBC;
 /**
  *
  */
-
-abstract public class EmailMap extends BoltMap
-{
-    /**
-     *
-     */
-
-    public EmailMap() { super(); }
+abstract public class EmailMap extends BoltMap {
 
     /**
      *
      */
-
-    public EmailMap ( JDBC jdbc, int id ) { query ( jdbc, id ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int email_type_id )
-
-    { query ( jdbc, "select * from jet_base_email" + ( email_type_id > 0 ? " where email_type_id = " + email_type_id : "" ) ); }
+    public EmailMap() {
+        super();
+    }
 
     /**
      *
      */
-
-    public Email getEmail ( int id ) { return ( Email ) get ( id ); }
+    public EmailMap(JDBC jdbc, int id) {
+        query(jdbc, id);
+    }
 
     /**
      *
      */
+    public void find(JDBC jdbc, int email_type_id) {
+        query(jdbc, "select * from jet_base_email" + (email_type_id > 0 ? " where email_type_id = " + email_type_id : ""));
+    }
 
-    public String getKey() { return Email.key(); }
+    /**
+     *
+     */
+    public Email getEmail(int id) {
+        return (Email) get(id);
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return Email.key();
+    }
 
 }

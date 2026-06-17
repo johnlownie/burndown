@@ -7,59 +7,57 @@ import java.util.Iterator;
 /**
  *
  */
+public class FileAttachmentList {
 
-public class FileAttachmentList
-{
     ArrayList list = new ArrayList();
 
     /**
      *
      */
-
-    public void add ( FileAttachment fa ) { list.add ( fa ); }
-
-    /**
-     *
-     */
-
-    public MimeMultipart addTo ( MimeMultipart mp ) throws Exception
-    {
-    Iterator it = list.iterator();
-
-    while ( it.hasNext() )
-    {
-        FileAttachment fa = ( FileAttachment ) it.next();
-
-        mp.addBodyPart ( fa.get() );
-    }
-
-    return mp;
+    public void add(FileAttachment fa) {
+        list.add(fa);
     }
 
     /**
      *
      */
+    public MimeMultipart addTo(MimeMultipart mp) throws Exception {
+        Iterator it = list.iterator();
 
-    public void delete() throws Exception
-    {
-    Iterator it = list.iterator();
+        while (it.hasNext()) {
+            FileAttachment fa = (FileAttachment) it.next();
 
-    while ( it.hasNext() )
+            mp.addBodyPart(fa.get());
+        }
 
-    { FileAttachment fa = ( FileAttachment ) it.next(); fa.delete(); }
+        return mp;
+    }
+
+    /**
+     *
+     */
+    public void delete() throws Exception {
+        Iterator it = list.iterator();
+
+        while (it.hasNext()) {
+            FileAttachment fa = (FileAttachment) it.next();
+            fa.delete();
+        }
 
     }
 
     /**
      *
      */
-
-    public boolean isEmpty() { return list.size() == 0; }
+    public boolean isEmpty() {
+        return list.size() == 0;
+    }
 
     /**
      *
      */
-
-    public int size() { return list.size(); }
+    public int size() {
+        return list.size();
+    }
 
 }

@@ -11,32 +11,32 @@ import javax.servlet.http.HttpServlet;
 /**
  *
  */
-
-public class InitializationServlet extends HttpServlet
-{
-    /**
-     *
-     */
-
-    public InitializationServlet() { super (); }
+public class InitializationServlet extends HttpServlet {
 
     /**
      *
      */
+    public InitializationServlet() {
+        super();
+    }
 
-    public void init ( ServletConfig config ) throws ServletException
-    {
-    super.init ( config );
+    /**
+     *
+     */
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
 
-    JDBC jdbc = new JDBC();
+        JDBC jdbc = new JDBC();
 
-    try {
+        try {
 
-        Knock.set ( config );
+            Knock.set(config);
 
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { jdbc.close(); }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            jdbc.close();
+        }
     }
 
 }

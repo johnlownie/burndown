@@ -7,25 +7,23 @@ import java.util.Enumeration;
 /**
  *
  */
-
-public class SecurityYard
-{
+public class SecurityYard {
 
     /**
      *
      */
+    static public void clearSession(HttpServletRequest request) {
+        HttpSession session = request.getSession();
 
-    static public void clearSession ( HttpServletRequest request )
-    {
-    HttpSession session = request.getSession();
+        if (session == null) {
+            return;
+        }
 
-    if ( session == null ) return;
+        Enumeration e = session.getAttributeNames();
 
-    Enumeration e = session.getAttributeNames();
-
-    while ( e.hasMoreElements() )
-
-        session.removeAttribute ( ( String ) e.nextElement() );
+        while (e.hasMoreElements()) {
+            session.removeAttribute((String) e.nextElement());
+        }
     }
 
 }

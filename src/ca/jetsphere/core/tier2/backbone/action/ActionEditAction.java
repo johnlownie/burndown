@@ -13,26 +13,24 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class ActionEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Action.key(); }
+public class ActionEditAction extends AbstractEditAction {
 
     /**
      *
      */
+    public String getKey() {
+        return Action.key();
+    }
 
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors )
-    {
-    Action action = ( Action ) bolt;
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) {
+        Action action = (Action) bolt;
 
-    Company company = CompanySession.getSelected ( request );
+        Company company = CompanySession.getSelected(request);
 
-    action.setCompanyId ( company.getId() );
+        action.setCompanyId(company.getId());
     }
 
 }

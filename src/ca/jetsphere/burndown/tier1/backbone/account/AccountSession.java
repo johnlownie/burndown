@@ -11,69 +11,92 @@ import java.sql.ResultSet;
 /**
  *
  */
-public class AccountSession extends AccountMap implements ISessionObject
-{
-    /**
-     *
-     */
-    public AccountSession() { super(); }
+public class AccountSession extends AccountMap implements ISessionObject {
 
     /**
      *
      */
-    public AccountSession ( JDBC jdbc, int company_id ) { super ( jdbc, company_id ); }
+    public AccountSession() {
+        super();
+    }
 
     /**
      *
      */
-    public void add ( JDBC jdbc, ResultSet rs ) throws Exception { add ( new Account ( jdbc, rs ) ); }
+    public AccountSession(JDBC jdbc, int company_id) {
+        super(jdbc, company_id);
+    }
 
     /**
      *
      */
-    public String [] captions() { return Account.captions(); }
+    public void add(JDBC jdbc, ResultSet rs) throws Exception {
+        add(new Account(jdbc, rs));
+    }
 
     /**
      *
      */
-    public void clearSelected ( HttpServletRequest request ) { setNonQualifiedSelected ( request, new Account() ); }
+    public String[] captions() {
+        return Account.captions();
+    }
 
     /**
      *
      */
-    public String [] fields() { return Account.fields(); }
+    public void clearSelected(HttpServletRequest request) {
+        setNonQualifiedSelected(request, new Account());
+    }
 
     /**
      *
      */
-    static public AccountSession getInstance ( HttpServletRequest request )
-
-    { return ( AccountSession ) SessionCache.getSessionObject ( request, Account.key(), AccountSession.class ); }
-
-    /**
-     *
-     */
-    static public int getRequestedId ( HttpServletRequest request ) { return getInstance ( request ).getId ( request ); }
+    public String[] fields() {
+        return Account.fields();
+    }
 
     /**
      *
      */
-    static public Account getSelected ( HttpServletRequest request ) { return ( Account ) getInstance ( request ).getSelected(); }
+    static public AccountSession getInstance(HttpServletRequest request) {
+        return (AccountSession) SessionCache.getSessionObject(request, Account.key(), AccountSession.class);
+    }
 
     /**
      *
      */
-    static public AccountSession query ( JDBC jdbc, HttpServletRequest request, int application_id, boolean blank )
-
-    { AccountSession session = getInstance ( request ); session.find ( jdbc, application_id ); session.options ( request, blank ); return session; }
-
-    /**
-     *
-     */
-    static public void setRequested ( HttpServletRequest request ) { getInstance ( request ).setQualifiedSelected ( request, getRequestedId ( request ) ); }
+    static public int getRequestedId(HttpServletRequest request) {
+        return getInstance(request).getId(request);
+    }
 
     /**
      *
      */
-    static public void setSelected ( HttpServletRequest request, Account selected ) { getInstance ( request ).setQualifiedSelected ( request, selected ); }
+    static public Account getSelected(HttpServletRequest request) {
+        return (Account) getInstance(request).getSelected();
+    }
+
+    /**
+     *
+     */
+    static public AccountSession query(JDBC jdbc, HttpServletRequest request, int application_id, boolean blank) {
+        AccountSession session = getInstance(request);
+        session.find(jdbc, application_id);
+        session.options(request, blank);
+        return session;
+    }
+
+    /**
+     *
+     */
+    static public void setRequested(HttpServletRequest request) {
+        getInstance(request).setQualifiedSelected(request, getRequestedId(request));
+    }
+
+    /**
+     *
+     */
+    static public void setSelected(HttpServletRequest request, Account selected) {
+        getInstance(request).setQualifiedSelected(request, selected);
+    }
 }

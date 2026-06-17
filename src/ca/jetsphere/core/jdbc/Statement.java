@@ -9,70 +9,77 @@ import java.sql.SQLException;
 /**
  *
  */
+public class Statement {
 
-public class Statement
-{
-    java.sql.Connection connection; java.sql.Statement statement;
-
-    /**
-     *
-     */
-
-    public Statement ( java.sql.Connection connection )
-
-    { this.connection = connection; }
+    java.sql.Connection connection;
+    java.sql.Statement statement;
 
     /**
      *
      */
-
-    public void close() throws SQLException { if ( statement != null ) statement.close(); }
-
-    /**
-     *
-     */
-
-    public boolean closed() { return statement == null; }
+    public Statement(java.sql.Connection connection) {
+        this.connection = connection;
+    }
 
     /**
      *
      */
-
-    public ResultSet executeQuery ( String sql ) throws SQLException
-
-    { setReadOnly ( sql ); if ( closed() ) open(); return statement.executeQuery ( sql ); }
-
-    /**
-     *
-     */
-
-    public int executeUpdate ( String sql ) throws SQLException
-
-    { setReadOnly ( sql ); if ( closed() ) open(); return statement.executeUpdate ( sql ); }
+    public void close() throws SQLException {
+        if (statement != null) {
+            statement.close();
+        }
+    }
 
     /**
      *
      */
-
-    protected void finalize() throws SQLException { close(); }
-
-    /**
-     *
-     */
-
-    public void open() throws SQLException
-
-    { this.statement = connection.createStatement(); }
+    public boolean closed() {
+        return statement == null;
+    }
 
     /**
      *
      */
+    public ResultSet executeQuery(String sql) throws SQLException {
+        setReadOnly(sql);
+        if (closed()) {
+            open();
+        }
+        return statement.executeQuery(sql);
+    }
 
-    public void setReadOnly ( String sql ) throws SQLException
-    {
+    /**
+     *
+     */
+    public int executeUpdate(String sql) throws SQLException {
+        setReadOnly(sql);
+        if (closed()) {
+            open();
+        }
+        return statement.executeUpdate(sql);
+    }
+
+    /**
+     *
+     */
+    protected void finalize() throws SQLException {
+        close();
+    }
+
+    /**
+     *
+     */
+    public void open() throws SQLException {
+        this.statement = connection.createStatement();
+    }
+
+    /**
+     *
+     */
+    public void setReadOnly(String sql) throws SQLException {
 //    connection.setReadOnly ( DockYard.isInsertUpdateDelete ( sql ) ? false : true );
 
-    Common.debug ( ( connection.isReadOnly() ? "[ STATEMENT READONLY ]" : "[ STATEMENT READ/WRITE ]" ) + " QUERY: " + sql );
+        Common.debug((connection.isReadOnly() ? "[ STATEMENT READONLY ]" : "[ STATEMENT READ/WRITE ]") + " QUERY: " + sql);
     }
 
 }

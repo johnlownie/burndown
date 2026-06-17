@@ -9,42 +9,55 @@ import java.io.Writer;
 /**
  *
  */
+public class UnorderedListWriter {
 
-public class UnorderedListWriter
-{
-    protected TreeSession trees; protected String name;
-
-    /**
-     *
-     */
-
-    public UnorderedListWriter ( TreeSession trees, String name ) { super(); this.trees = trees; this.name = name; }
+    protected TreeSession trees;
+    protected String name;
 
     /**
      *
      */
-
-    public String getName() { return name; }
-
-    /**
-     *
-     */
-
-    public void print ( Writer writer, HttpServletRequest request ) throws Exception
-
-    { if ( this.trees.getRoot() == null ) return; writer.write ( "<ul id=\"tree1\">" ); tree ( writer, request, this.trees.getRoot() ); writer.write ( "</ul>" ); }
+    public UnorderedListWriter(TreeSession trees, String name) {
+        super();
+        this.trees = trees;
+        this.name = name;
+    }
 
     /**
      *
      */
+    public String getName() {
+        return name;
+    }
 
-    protected void tree ( Writer writer, HttpServletRequest request, Tree tree ) throws Exception
-    {
-    writer.write ( "<li>" ); writer.write ( tree.getName() );
+    /**
+     *
+     */
+    public void print(Writer writer, HttpServletRequest request) throws Exception {
+        if (this.trees.getRoot() == null) {
+            return;
+        }
+        writer.write("<ul id=\"tree1\">");
+        tree(writer, request, this.trees.getRoot());
+        writer.write("</ul>");
+    }
 
-    if ( ! tree.isLeaf() ) { writer.write ( "<ul>" ); for ( int i = 0; i < tree.getChildCount(); i++ ) tree ( writer, request, tree.getChild ( i ) ); writer.write ( "</ul>" ); }
+    /**
+     *
+     */
+    protected void tree(Writer writer, HttpServletRequest request, Tree tree) throws Exception {
+        writer.write("<li>");
+        writer.write(tree.getName());
 
-    writer.write ( "</li>" );
+        if (!tree.isLeaf()) {
+            writer.write("<ul>");
+            for (int i = 0; i < tree.getChildCount(); i++) {
+                tree(writer, request, tree.getChild(i));
+            }
+            writer.write("</ul>");
+        }
+
+        writer.write("</li>");
     }
 
 }

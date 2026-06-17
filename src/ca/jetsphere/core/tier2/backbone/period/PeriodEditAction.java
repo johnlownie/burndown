@@ -13,26 +13,24 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class PeriodEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Period.key(); }
+public class PeriodEditAction extends AbstractEditAction {
 
     /**
      *
      */
+    public String getKey() {
+        return Period.key();
+    }
 
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors )
-    {
-    Period period = ( Period ) bolt;
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) {
+        Period period = (Period) bolt;
 
-    Application application = ApplicationSession.getSelected ( request );
+        Application application = ApplicationSession.getSelected(request);
 
-    period.setApplicationId ( application.getId() );
+        period.setApplicationId(application.getId());
     }
 
 }

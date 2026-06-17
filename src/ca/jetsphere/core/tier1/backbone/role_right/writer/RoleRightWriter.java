@@ -7,31 +7,33 @@ import ca.jetsphere.core.tier2.tree.TreeTableWriter;
 /**
  *
  */
-
-public class RoleRightWriter extends TreeTableWriter
-{
-    /**
-     *
-     */
-
-    public RoleRightWriter ( RoleRightSession roleRights, String[] headers, String[] fields )
-
-    { super ( roleRights, headers, fields ); }
+public class RoleRightWriter extends TreeTableWriter {
 
     /**
      *
      */
-
-    protected void columns ( Tree tree )
-
-    { for ( int column = 2; column < getColumns(); column ++ ) column ( tree, column ); }
+    public RoleRightWriter(RoleRightSession roleRights, String[] headers, String[] fields) {
+        super(roleRights, headers, fields);
+    }
 
     /**
      *
      */
+    protected void columns(Tree tree) {
+        for (int column = 2; column < getColumns(); column++) {
+            column(tree, column);
+        }
+    }
 
-    protected void headers()
-
-    { write ( "<thead><tr>" ); for ( int column = 2; column < getColumns(); column ++ ) header ( column ); write ( "</tr></thead>" ); }
+    /**
+     *
+     */
+    protected void headers() {
+        write("<thead><tr>");
+        for (int column = 2; column < getColumns(); column++) {
+            header(column);
+        }
+        write("</tr></thead>");
+    }
 
 }

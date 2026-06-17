@@ -9,15 +9,13 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
+public class MaintenanceEditAction extends AbstractAction {
 
-public class MaintenanceEditAction extends AbstractAction
-{
     /**
      *
      */
-
-    public ActionForward execute ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-
-    { return query ( jdbc, store, errors ); }
+    public ActionForward execute(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        return query(jdbc, store, errors);
+    }
 
 }

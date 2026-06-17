@@ -23,63 +23,67 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-public class TransactionEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-    public String getKey() { return Transaction.key(); }
+public class TransactionEditAction extends AbstractEditAction {
 
     /**
      *
      */
-    public ActionForward jupdate ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        Transaction transaction = ( Transaction ) store.getForm();
-        
-        update ( jdbc, store.getRequest(), transaction, errors );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
-
-        errors.forward ( store );
-        
-        // update uncategorized transactions with same name
-        TransactionYard.setUncategorized ( jdbc, transaction.getCategoryId(), transaction.getName() );
-
-        jsonObject.put ( "success", errors.isEmpty() );
-
-        out.write ( jsonObject.toString() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return Transaction.key();
     }
 
     /**
      *
      */
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    Application application = ApplicationSession.getSelected ( store.getRequest() );
+    public ActionForward jupdate(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    AccountSession.query ( jdbc, store.getRequest(), application.getId(), true );
-    
-    CategorySession.query ( jdbc, store.getRequest(), application.getId(), true );
+            Transaction transaction = (Transaction) store.getForm();
 
-    return store.getForward ( "failure" );
+            update(jdbc, store.getRequest(), transaction, errors);
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
+
+            errors.forward(store);
+
+            // update uncategorized transactions with same name
+            TransactionYard.setUncategorized(jdbc, transaction.getCategoryId(), transaction.getName());
+
+            jsonObject.put("success", errors.isEmpty());
+
+            out.write(jsonObject.toString());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    Transaction transaction = ( Transaction ) bolt; int period_id = PeriodSession.getSelected ( request ).getId();
-    
-    transaction.setPeriodId ( period_id );
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        Application application = ApplicationSession.getSelected(store.getRequest());
+
+        AccountSession.query(jdbc, store.getRequest(), application.getId(), true);
+
+        CategorySession.query(jdbc, store.getRequest(), application.getId(), true);
+
+        return store.getForward("failure");
+    }
+
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        Transaction transaction = (Transaction) bolt;
+        int period_id = PeriodSession.getSelected(request).getId();
+
+        transaction.setPeriodId(period_id);
     }
 }

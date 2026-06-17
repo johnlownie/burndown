@@ -18,51 +18,50 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class NotificationDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Notification.key(); }
+public class NotificationDoAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-
-        NotificationSession notifications = NotificationSession.query ( jdbc, store.getRequest(), -1, false );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( notifications, Notification.captions(), Notification.fields() );
-
-        dataTableWriter.print ( out, store.getRequest() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return Notification.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    UserSession.query ( jdbc, store.getRequest(), qaf.getCompanyId(), false );
+            NotificationSession notifications = NotificationSession.query(jdbc, store.getRequest(), -1, false);
 
-    return getForward ( store );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(notifications, Notification.captions(), Notification.fields());
+
+            dataTableWriter.print(out, store.getRequest());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+
+        UserSession.query(jdbc, store.getRequest(), qaf.getCompanyId(), false);
+
+        return getForward(store);
     }
 
 }

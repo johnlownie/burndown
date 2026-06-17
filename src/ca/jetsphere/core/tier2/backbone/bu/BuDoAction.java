@@ -18,51 +18,51 @@ import java.io.PrintWriter;
 /**
  *
  */
+public class BuDoAction extends AbstractDoAction {
 
-public class BuDoAction extends AbstractDoAction
-{
     /**
      *
      */
+    public ActionForward fetch(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward fetch ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            int id = DockYard.toInteger(store.getRequest(), "id");
 
-        int id = DockYard.toInteger ( store.getRequest(), "id" );
+            BuSession bus = BuSession.getInstance(store.getRequest());
 
-        BuSession bus = BuSession .getInstance ( store.getRequest() );
+            store.getResponse().setContentType("text/html");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        store.getResponse().setContentType ( "text/html" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            PrintWriter out = store.getResponse().getWriter();
+            JsonWriter jsonWriter = new JsonWriter(bus);
 
-        PrintWriter out = store.getResponse().getWriter(); JsonWriter jsonWriter = new JsonWriter ( bus );
+            String s = jsonWriter.get(store.getRequest(), id);
 
-        String s = jsonWriter.get ( store.getRequest(), id );
+            out.write(s);
 
-        out.write ( s );
-
-    } catch ( Exception e ) { Common.trace ( e ); }
-        
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
-    
-    /**
-     *
-     */
-
-    public String getKey() { return Bu.key(); }
 
     /**
      *
      */
+    public String getKey() {
+        return Bu.key();
+    }
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm();
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    BuSession.query ( jdbc, store.getRequest(), qaf.getPeriodId(), false );
+        BuSession.query(jdbc, store.getRequest(), qaf.getPeriodId(), false);
 
-    return getForward ( store );
+        return getForward(store);
     }
 
 }

@@ -9,21 +9,20 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-
-public class KnockDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return "Knock"; }
+public class KnockDoAction extends AbstractDoAction {
 
     /**
      *
      */
+    public String getKey() {
+        return "Knock";
+    }
 
-    public ActionForward query (JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-
-    { return getForward ( store ); }
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        return getForward(store);
+    }
 
 }

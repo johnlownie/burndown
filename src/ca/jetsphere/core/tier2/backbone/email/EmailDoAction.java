@@ -22,81 +22,91 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class EmailDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Email.key(); }
+public class EmailDoAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-
-        EmailSession emails = EmailSession.query ( jdbc, store.getRequest(), EmailYard.MASS, false );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( emails, Email.mass_captions(), Email.mass_fields() );
-
-        dataTableWriter.print ( out, store.getRequest() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return Email.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    return getForward ( store );
+            EmailSession emails = EmailSession.query(jdbc, store.getRequest(), EmailYard.MASS, false);
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(emails, Email.mass_captions(), Email.mass_fields());
+
+            dataTableWriter.print(out, store.getRequest());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
+
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Company company = CompanySession.getSelected(store.getRequest());
 
-    public ActionForward send ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+        return getForward(store);
+    }
 
-        String uuid = DockYard.getParameter ( store.getRequest (), "csrf" ); boolean success = true;
+    /**
+     *
+     */
+    public ActionForward send(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        if ( DockYard.isWhiteSpace ( uuid ) ) success = false;
+            String uuid = DockYard.getParameter(store.getRequest(), "csrf");
+            boolean success = true;
 
-        EmailSession emails = EmailSession.getInstance ( store.getRequest() ); Email email = ( Email ) emails.getBoltByUuid ( uuid );
+            if (DockYard.isWhiteSpace(uuid)) {
+                success = false;
+            }
 
-        if ( email == null || !email.isValid() ) success = false;
+            EmailSession emails = EmailSession.getInstance(store.getRequest());
+            Email email = (Email) emails.getBoltByUuid(uuid);
 
-        if ( success )
+            if (email == null || !email.isValid()) {
+                success = false;
+            }
 
-        { email.setStatusId ( EmailYard.OUTBOX ); email.save ( jdbc ); }
+            if (success) {
+                email.setStatusId(EmailYard.OUTBOX);
+                email.save(jdbc);
+            }
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put ( "success", success );
+            jsonObject.put("success", success);
 
-        out.write ( jsonObject.toString() );
+            out.write(jsonObject.toString());
 
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
 }

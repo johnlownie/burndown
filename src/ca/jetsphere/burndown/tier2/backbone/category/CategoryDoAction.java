@@ -23,144 +23,158 @@ import net.sf.json.JSONObject;
 /**
  *
  */
-public class CategoryDoAction extends AbstractDoAction
-{
+public class CategoryDoAction extends AbstractDoAction {
+
     /**
      *
      */
-    public ActionForward close ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+    public ActionForward close(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-        
-        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        boolean expand = DockYard.toBoolean ( store.getRequest(), "expand" );
+            OpenSet openSet = (OpenSet) DockYard.getAttribute(store.getRequest(), "openset", true);
 
-        CategorySession categories = CategorySession.getInstance ( store.getRequest() );
+            boolean expand = DockYard.toBoolean(store.getRequest(), "expand");
 
-        if ( expand ) TreeYard.expand ( openSet, categories.getRoot() ); else TreeYard.collapse ( openSet, categories.getRoot() );
+            CategorySession categories = CategorySession.getInstance(store.getRequest());
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            if (expand) {
+                TreeYard.expand(openSet, categories.getRoot());
+            } else {
+                TreeYard.collapse(openSet, categories.getRoot());
+            }
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        out.write ( jsonObject.toString() );
-        
-    } catch ( Exception e ) { Common.trace ( e ); }
+            jsonObject.put("success", errors.isEmpty());
 
-    finally { return null; }
+            out.write(jsonObject.toString());
+
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-    public ActionForward export ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+    public ActionForward export(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-        
-        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        int id = DockYard.toInteger ( store.getRequest(), "nodeId" );
+            OpenSet openSet = (OpenSet) DockYard.getAttribute(store.getRequest(), "openset", true);
 
-        CategorySession categories = CategorySession.getInstance ( store.getRequest() );
+            int id = DockYard.toInteger(store.getRequest(), "nodeId");
 
-        Category category = ( Category ) categories.get ( id );
+            CategorySession categories = CategorySession.getInstance(store.getRequest());
 
-        openSet.toggle ( category.getId() );
+            Category category = (Category) categories.get(id);
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            openSet.toggle(category.getId());
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
 
-        out.write ( jsonObject.toString() );
-        
-    } catch ( Exception e ) { Common.trace ( e ); }
+            jsonObject.put("success", errors.isEmpty());
 
-    finally { return null; }
+            out.write(jsonObject.toString());
+
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-    public ActionForward fetch ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+    public ActionForward fetch(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-        
-        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-        CategorySession categories = CategorySession.query ( jdbc, store.getRequest(), qaf.getCompanyId(), false );
+            OpenSet openSet = (OpenSet) DockYard.getAttribute(store.getRequest(), "openset", true);
 
-        TreeYard.collapse ( openSet, categories.getRoot() );
+            CategorySession categories = CategorySession.query(jdbc, store.getRequest(), qaf.getCompanyId(), false);
 
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
+            TreeYard.collapse(openSet, categories.getRoot());
 
-        PrintWriter out = store.getResponse().getWriter(); JSONObject jsonObject = new JSONObject();
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
 
-        jsonObject.put ( "success", errors.isEmpty() );
+            PrintWriter out = store.getResponse().getWriter();
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("success", errors.isEmpty());
 
 //        JsonWriter jsonWriter = new JsonWriter ( categories );
-
 //        String s = jsonWriter.get ( store.getRequest(), id );
+            out.write(jsonObject.toString());
 
-        out.write ( jsonObject.toString() );
-        
-    } catch ( Exception e ) { Common.trace ( e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-    public String getKey() { return Category.key (); }
-
-    /**
-     *
-     */
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm();
-
-        OpenSet openSet = ( OpenSet ) DockYard.getAttribute ( store.getRequest(), "openset", true );
-        
-        CategorySession categories = CategorySession.getInstance ( store.getRequest() );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableTreeWriter dataTableTreeWriter = new DataTableTreeWriter ( categories, Category.captions(), Category.fields() );
-
-        dataTableTreeWriter.print ( out, store.getRequest(), openSet );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return Category.key();
     }
 
     /**
      *
      */
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    qaf.getOpenSet().clear();
-        
-    DockYard.setAttribute ( store.getRequest(), "openset", qaf.getOpenSet(), true );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
 
-    CategorySession categories = CategorySession.query ( jdbc, store.getRequest(), application.getId(), false );
+            OpenSet openSet = (OpenSet) DockYard.getAttribute(store.getRequest(), "openset", true);
 
-    return getForward ( store );
+            CategorySession categories = CategorySession.getInstance(store.getRequest());
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableTreeWriter dataTableTreeWriter = new DataTableTreeWriter(categories, Category.captions(), Category.fields());
+
+            dataTableTreeWriter.print(out, store.getRequest(), openSet);
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Application application = ApplicationSession.getSelected(store.getRequest());
+
+        qaf.getOpenSet().clear();
+
+        DockYard.setAttribute(store.getRequest(), "openset", qaf.getOpenSet(), true);
+
+        CategorySession categories = CategorySession.query(jdbc, store.getRequest(), application.getId(), false);
+
+        return getForward(store);
     }
 }

@@ -19,46 +19,47 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class ActionDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Action.key(); }
+public class ActionDoAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest() );
-
-        ActionSession actions = ActionSession.query ( jdbc, store.getRequest(), company.getId(), false );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( actions, Action.captions(), Action.fields() );
-
-        dataTableWriter.print ( out, store.getRequest() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return Action.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
+            Company company = CompanySession.getSelected(store.getRequest());
 
-    { return getForward ( store ); }
+            ActionSession actions = ActionSession.query(jdbc, store.getRequest(), company.getId(), false);
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(actions, Action.captions(), Action.fields());
+
+            dataTableWriter.print(out, store.getRequest());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        return getForward(store);
+    }
 
 }

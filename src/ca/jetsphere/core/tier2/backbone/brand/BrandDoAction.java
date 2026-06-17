@@ -14,26 +14,25 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-
-public class BrandDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return Brand.key (); }
+public class BrandDoAction extends AbstractDoAction {
 
     /**
      *
      */
+    public String getKey() {
+        return Brand.key();
+    }
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Company company = CompanySession.getSelected ( store.getRequest () );
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Company company = CompanySession.getSelected(store.getRequest());
 
-    BrandSession.query ( jdbc, store.getRequest (), company.getId (), false );
+        BrandSession.query(jdbc, store.getRequest(), company.getId(), false);
 
-    return getForward ( store );
+        return getForward(store);
     }
 
 }

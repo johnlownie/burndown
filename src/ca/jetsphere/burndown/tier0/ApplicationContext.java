@@ -11,26 +11,24 @@ import java.util.Map;
 /**
  *
  */
+public class ApplicationContext {
 
-public class ApplicationContext
-{
     static Map context = new HashMap();
 
     /**
      *
      */
-
-    public ApplicationContext()
-    {
-    context.put ( "account"     , new AccountDao    () );
-    context.put ( "category"    , new CategoryDao   () );
-    context.put ( "transaction" , new TransactionDao() );
+    public ApplicationContext() {
+        context.put("account", new AccountDao());
+        context.put("category", new CategoryDao());
+        context.put("transaction", new TransactionDao());
     }
 
     /**
      *
      */
-
-    public AbstractDao getBean ( String key, Class clazz ) { return ( AbstractDao ) context.get ( key ); }
+    public AbstractDao getBean(String key, Class clazz) {
+        return (AbstractDao) context.get(key);
+    }
 
 }

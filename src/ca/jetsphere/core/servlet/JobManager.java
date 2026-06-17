@@ -19,68 +19,67 @@ import java.util.concurrent.TimeUnit;
 /**
  *
  */
-
 @WebListener
-public class JobManager implements ServletContextListener
-{
+public class JobManager implements ServletContextListener {
+
     private ScheduledExecutorService scheduler;
 
     /**
      *
      */
     @Override
-    public void contextInitialized ( ServletContextEvent event )
-    {
-    ServletContext servletContext = event.getServletContext();
+    public void contextInitialized(ServletContextEvent event) {
+        ServletContext servletContext = event.getServletContext();
 
-    setContext ( servletContext );
+        setContext(servletContext);
 
-    scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler = Executors.newSingleThreadScheduledExecutor();
 
-    scheduler.scheduleAtFixedRate ( ( SendMailBroker ) servletContext.getAttribute( "SendMail Broker" ), 15, 30, TimeUnit.SECONDS );
+        scheduler.scheduleAtFixedRate((SendMailBroker) servletContext.getAttribute("SendMail Broker"), 15, 30, TimeUnit.SECONDS);
 
-    scheduler.scheduleAtFixedRate ( ( TokenBroker    ) servletContext.getAttribute( "Token Broker"    ), 1, 1, TimeUnit.MINUTES );
+        scheduler.scheduleAtFixedRate((TokenBroker) servletContext.getAttribute("Token Broker"), 1, 1, TimeUnit.MINUTES);
     }
 
     /**
      *
      */
     @Override
-    public void contextDestroyed ( ServletContextEvent event )
-    {
-    scheduler.shutdownNow();
+    public void contextDestroyed(ServletContextEvent event) {
+        scheduler.shutdownNow();
 
-    ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
 
-    Enumeration<Driver> drivers = DriverManager.getDrivers();
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
 
-    while ( drivers.hasMoreElements() )
-    {
-    Driver driver = drivers.nextElement();
+        while (drivers.hasMoreElements()) {
+            Driver driver = drivers.nextElement();
 
-    if ( driver.getClass().getClassLoader() != cl ) continue;
+            if (driver.getClass().getClassLoader() != cl) {
+                continue;
+            }
 
-    try {
+            try {
 
-        Common.trace("Deregistering JDBC driver: " + driver.toString());
+                Common.trace("Deregistering JDBC driver: " + driver.toString());
 
-        DriverManager.deregisterDriver(driver);
+                DriverManager.deregisterDriver(driver);
 
-    } catch (SQLException ex) {}
+            } catch (SQLException ex) {
+            }
 
-    }
+        }
 
     }
 
     /**
      *
      */
+    public void setContext(ServletContext servletContext) {
+        SendMailBroker sendMailBroker = new SendMailBroker();
+        servletContext.setAttribute("SendMail Broker", sendMailBroker);
 
-    public void setContext ( ServletContext servletContext )
-    {
-    SendMailBroker sendMailBroker = new SendMailBroker(); servletContext.setAttribute ( "SendMail Broker", sendMailBroker );
-
-    TokenBroker    tokenBroker    = new TokenBroker   (); servletContext.setAttribute ( "Token Broker"   , tokenBroker    );
+        TokenBroker tokenBroker = new TokenBroker();
+        servletContext.setAttribute("Token Broker", tokenBroker);
     }
 
 }

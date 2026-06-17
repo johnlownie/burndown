@@ -14,46 +14,47 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-
-public class KnockEditAction extends AbstractEditAction
-{
+public class KnockEditAction extends AbstractEditAction {
 
     /**
      *
      */
+    public ActionForward edit(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        KnockForm knockForm = (KnockForm) store.getForm();
+        knockForm.clear();
 
-    public ActionForward edit ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    KnockForm knockForm = ( KnockForm ) store.getForm(); knockForm.clear();
+        String key = DockYard.getParameter(store.getRequest(), "csrf");
 
-    String key = DockYard.getParameter ( store.getRequest(), "csrf" );
+        if (!DockYard.isWhiteSpace(key)) {
+            knockForm.setKey(key);
+            knockForm.setValue(Knock.get(key));
+        }
 
-    if ( !DockYard.isWhiteSpace ( key ) ) { knockForm.setKey ( key ); knockForm.setValue ( Knock.get ( key ) ); }
-
-    return query ( jdbc, store, errors );
+        return query(jdbc, store, errors);
     }
 
     /**
      *
      */
+    public ActionForward jupdate(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward jupdate ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
+            KnockForm knockForm = (KnockForm) store.getForm();
 
-        KnockForm knockForm = ( KnockForm ) store.getForm();
+            Knock.set(knockForm.getKey(), knockForm.getValue());
 
-        Knock.set ( knockForm.getKey(), knockForm.getValue() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
     }
 
     /**
      *
      */
-
-    public String getKey() { return "[knock]"; }
+    public String getKey() {
+        return "[knock]";
+    }
 
 }

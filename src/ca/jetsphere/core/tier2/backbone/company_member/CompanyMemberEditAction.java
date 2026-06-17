@@ -13,24 +13,23 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-
-public class CompanyMemberEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return CompanyMember.key(); }
+public class CompanyMemberEditAction extends AbstractEditAction {
 
     /**
      *
      */
+    public String getKey() {
+        return CompanyMember.key();
+    }
 
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    CompanyMember companyMember = ( CompanyMember ) bolt; Company company = CompanySession.getSelected ( request );
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        CompanyMember companyMember = (CompanyMember) bolt;
+        Company company = CompanySession.getSelected(request);
 
-    companyMember.setCompanyId ( company.getId() );
+        companyMember.setCompanyId(company.getId());
     }
 
 }

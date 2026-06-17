@@ -19,46 +19,51 @@ import java.io.PrintWriter;
 /**
  *
  */
-public class AccountDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-    public String getKey() { return Account.key (); }
+public class AccountDoAction extends AbstractDoAction {
 
     /**
      *
      */
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
-
-        AccountSession accounts = AccountSession.query ( jdbc, store.getRequest(), application.getId(), false );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        DataTableWriter dataTableWriter = new DataTableWriter ( accounts, Account.captions(), Account.fields() );
-
-        dataTableWriter.print ( out, store.getRequest() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return Account.key();
     }
 
     /**
      *
      */
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    AccountSession accounts = AccountSession.query ( jdbc, store.getRequest(), application.getId(), false );
+            QueryActionForm qaf = (QueryActionForm) store.getForm();
+            Application application = ApplicationSession.getSelected(store.getRequest());
 
-    return getForward ( store );
+            AccountSession accounts = AccountSession.query(jdbc, store.getRequest(), application.getId(), false);
+
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            DataTableWriter dataTableWriter = new DataTableWriter(accounts, Account.captions(), Account.fields());
+
+            dataTableWriter.print(out, store.getRequest());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Application application = ApplicationSession.getSelected(store.getRequest());
+
+        AccountSession accounts = AccountSession.query(jdbc, store.getRequest(), application.getId(), false);
+
+        return getForward(store);
     }
 }

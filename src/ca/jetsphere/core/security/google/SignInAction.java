@@ -14,28 +14,25 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
+public class SignInAction extends AbstractDoAction {
 
-public class SignInAction extends AbstractDoAction
-{
     /*
      * Default HTTP transport to use to make HTTP requests.
      */
-
     private static final HttpTransport TRANSPORT = new NetHttpTransport();
 
     /**
      *
      */
-
-    public String getKey() { return "google"; }
+    public String getKey() {
+        return "google";
+    }
 
     /**
      *
      */
-
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    return store.getForward ( "failure" );
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        return store.getForward("failure");
     }
 
 }

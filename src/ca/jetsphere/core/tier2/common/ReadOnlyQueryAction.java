@@ -10,60 +10,60 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 
+ *
  */
+public class ReadOnlyQueryAction extends AbstractAction {
 
-public class ReadOnlyQueryAction extends AbstractAction
-{
     /**
      *
      */
+    public ActionForward execute(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        HttpServletRequest request = store.getRequest();
 
-    public ActionForward execute ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    HttpServletRequest request = store.getRequest();
+        if (!DockYard.isWhiteSpace(request.getParameter("query"))) {
+            return query(jdbc, store, errors);
+        }
 
-    if ( ! DockYard.isWhiteSpace ( request.getParameter ( "query" ) ) ) return query ( jdbc, store, errors );
-
-    return store.getForward ( "failure" );
+        return store.getForward("failure");
     }
 
     /**
      *
      */
+    protected String getQuery(HttpServletRequest request) {
+        String query = request.getParameter("query");
 
-    protected String getQuery ( HttpServletRequest request )
-    {
-    String query = request.getParameter ( "query" );
+        if (!DockYard.isWhiteSpace(query) && !query.startsWith("select")) {
+            return "";
+        }
 
-    if ( ! DockYard.isWhiteSpace ( query ) && ! query.startsWith ( "select" ) ) return "";
-
-    return query;
+        return query;
     }
 
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        HttpServletRequest request = store.getRequest();
+        HttpServletResponse response = store.getResponse();
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    HttpServletRequest request = store.getRequest(); HttpServletResponse response = store.getResponse();
+        DockYard.setAttribute(request, ResultSetBolt.key(), null, false);
 
-    DockYard.setAttribute ( request, ResultSetBolt.key(), null, false );
+        DockYard.setAttribute(request, "query", "", false);
 
-    DockYard.setAttribute ( request, "query", "", false );
+        String query = getQuery(request);
 
-    String query = getQuery ( request );
+        if (DockYard.isWhiteSpace(query)) {
+            return errors.forward();
+        }
 
-    if ( DockYard.isWhiteSpace ( query ) ) return errors.forward();
+        ResultSetBoltMap rsbl = new ResultSetBoltMap(jdbc, query);
 
-    ResultSetBoltMap rsbl = new ResultSetBoltMap ( jdbc, query );
+        DockYard.setAttribute(request, ResultSetBolt.key(), rsbl, false);
 
-    DockYard.setAttribute ( request, ResultSetBolt.key(), rsbl, false );
+        DockYard.setAttribute(request, "query", request.getParameter("query"), false);
 
-    DockYard.setAttribute ( request, "query", request.getParameter ( "query" ), false );
-
-    return errors.forward();
+        return errors.forward();
     }
 
 }

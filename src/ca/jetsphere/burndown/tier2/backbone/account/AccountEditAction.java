@@ -13,20 +13,22 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
-public class AccountEditAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-    public String getKey() { return Account.key(); }
+public class AccountEditAction extends AbstractEditAction {
 
     /**
      *
      */
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    Account account = ( Account ) bolt; Application application = ApplicationSession.getSelected ( request );
+    public String getKey() {
+        return Account.key();
+    }
 
-    account.setApplicationId ( application.getId() );
+    /**
+     *
+     */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        Account account = (Account) bolt;
+        Application application = ApplicationSession.getSelected(request);
+
+        account.setApplicationId(application.getId());
     }
 }

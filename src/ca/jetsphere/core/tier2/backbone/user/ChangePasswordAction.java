@@ -20,83 +20,91 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class ChangePasswordAction extends AbstractEditAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return User.key(); }
+public class ChangePasswordAction extends AbstractEditAction {
 
     /**
      *
      */
-
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors )
-    {
-    User whoamI = UserYard.whoAmI ( store.getRequest() );
-
-    UserSession users = UserSession.getInstance ( store.getRequest() );
-
-    users.setNonQualifiedSelected ( store.getRequest(), whoamI );
-
-    return getForward ( store );
+    public String getKey() {
+        return User.key();
     }
 
     /**
      *
      */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) {
+        User whoamI = UserYard.whoAmI(store.getRequest());
 
-    public void setup ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    User user = ( User ) bolt; User whoAmI = UserYard.whoAmI ( request );
+        UserSession users = UserSession.getInstance(store.getRequest());
 
-    user.copy ( whoAmI ); user.setPassword ( PasswordHash.createHash ( user.getNewPassword() ) );
+        users.setNonQualifiedSelected(store.getRequest(), whoamI);
+
+        return getForward(store);
     }
 
     /**
      *
      */
+    public void setup(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        User user = (User) bolt;
+        User whoAmI = UserYard.whoAmI(request);
 
-    public ActionForward update ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        User user = ( User ) store.getForm();
-
-        update ( jdbc, store.getRequest(), user, errors );
-
-        JSONObject fields = errors.getFields ( store.getRequest() );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        JSONObject response = new JSONObject();
-
-        response.put ( "fields", fields ); response.put ( "success", errors.isEmpty() );
-
-        out.write ( response.toString() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+        user.copy(whoAmI);
+        user.setPassword(PasswordHash.createHash(user.getNewPassword()));
     }
 
     /**
      *
      */
+    public ActionForward update(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    protected void validate ( JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors ) throws Exception
-    {
-    User user = ( User ) bolt; User whoAmI = UserYard.whoAmI ( request );
+            User user = (User) store.getForm();
 
-    if ( whoAmI == null || !whoAmI.isValid() ) { errors.add ( "password", "error.password.change.invalid.user" ); return; }
+            update(jdbc, store.getRequest(), user, errors);
 
-    if ( ! PasswordHash.validatePassword ( user.getPassword(), whoAmI.getPassword () ) ) { errors.add ( "password", "error.password.change.invalid.current" ); return; }
+            JSONObject fields = errors.getFields(store.getRequest());
 
-    if ( DockYard.compareTo ( user.getNewPassword(), user.getConfirmPassword() ) != 0 ) { errors.add ( "newPassword", "error.password.change.nomatch" ); return; }
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            JSONObject response = new JSONObject();
+
+            response.put("fields", fields);
+            response.put("success", errors.isEmpty());
+
+            out.write(response.toString());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    protected void validate(JDBC jdbc, HttpServletRequest request, Bolt bolt, Errors errors) throws Exception {
+        User user = (User) bolt;
+        User whoAmI = UserYard.whoAmI(request);
+
+        if (whoAmI == null || !whoAmI.isValid()) {
+            errors.add("password", "error.password.change.invalid.user");
+            return;
+        }
+
+        if (!PasswordHash.validatePassword(user.getPassword(), whoAmI.getPassword())) {
+            errors.add("password", "error.password.change.invalid.current");
+            return;
+        }
+
+        if (DockYard.compareTo(user.getNewPassword(), user.getConfirmPassword()) != 0) {
+            errors.add("newPassword", "error.password.change.nomatch");
+            return;
+        }
     }
 
 }

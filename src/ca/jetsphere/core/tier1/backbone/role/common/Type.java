@@ -9,48 +9,51 @@ import java.util.ArrayList;
 /**
  *
  */
+public class Type {
 
-public class Type
-{
-    static final public int SYSTEM  = 0x01;
-    static final public int SITE    = 0x02;
+    static final public int SYSTEM = 0x01;
+    static final public int SITE = 0x02;
     static final public int COMPANY = 0x04;
-    static final public int BU      = 0x08;
+    static final public int BU = 0x08;
 
     /**
      *
      */
+    static public String getType(int type) {
+        if (type == SYSTEM) {
+            return "system";
+        }
 
-    static public String getType ( int type )
-    {
-    if ( type == SYSTEM  ) return "system"  ;
+        if (type == SITE) {
+            return "site";
+        }
 
-    if ( type == SITE    ) return "site"    ;
+        if (type == COMPANY) {
+            return "company";
+        }
 
-    if ( type == COMPANY ) return "company" ;
+        if (type == BU) {
+            return "bu";
+        }
 
-    if ( type == BU      ) return "bu"      ;
-
-    return "unknown";
+        return "unknown";
     }
 
     /**
      *
      */
+    static public ArrayList getTypes(HttpServletRequest request) {
+        ArrayList list = new ArrayList();
 
-    static public ArrayList getTypes ( HttpServletRequest request )
-    {
-    ArrayList list = new ArrayList();
+        list.add(new LabelValueBean(Caption.get(request, "system"), "" + SYSTEM));
 
-    list.add ( new LabelValueBean ( Caption.get ( request, "system"  ), "" + SYSTEM  ) );
+        list.add(new LabelValueBean(Caption.get(request, "site"), "" + SITE));
 
-    list.add ( new LabelValueBean ( Caption.get ( request, "site"    ), "" + SITE    ) );
+        list.add(new LabelValueBean(Caption.get(request, "company"), "" + COMPANY));
 
-    list.add ( new LabelValueBean ( Caption.get ( request, "company" ), "" + COMPANY ) );
+        list.add(new LabelValueBean(Caption.get(request, "bu"), "" + BU));
 
-    list.add ( new LabelValueBean ( Caption.get ( request, "bu"      ), "" + BU      ) );
-
-    return list;
+        return list;
     }
 
 }

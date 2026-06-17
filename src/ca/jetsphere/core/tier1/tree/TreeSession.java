@@ -3,13 +3,13 @@ package ca.jetsphere.core.tier1.tree;
 /**
  *
  */
+abstract public class TreeSession extends TreeMap {
 
-abstract public class TreeSession extends TreeMap
-{
     /**
      *
      */
-
-    public TreeSession() { super(); }
+    public TreeSession() {
+        super();
+    }
 
 }

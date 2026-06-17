@@ -22,49 +22,52 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
-public class MonthlyReportAction extends AbstractAction
-{
+public class MonthlyReportAction extends AbstractAction {
+
     /**
      *
      */
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected ( store.getRequest() );
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Application application = ApplicationSession.getSelected(store.getRequest());
 
-    int period_id = qaf.getPeriodId () <= 0 ? PeriodSession.getSelected ( store.getRequest() ).getId() : qaf.getPeriodId();
+        int period_id = qaf.getPeriodId() <= 0 ? PeriodSession.getSelected(store.getRequest()).getId() : qaf.getPeriodId();
 
-    qaf.setPeriodId ( period_id ); 
-    
-    String today = CalendarYard.now ( "yyyy-MM-dd" );
-    
-    qaf.setStartDateAsString ( CalendarYard.getFirstDayOfYear ( today ) ); qaf.setEndDateAsString ( CalendarYard.getLastDayOfYear ( today ) );
-    
-    qaf.setTypeId ( TYPE_DEBIT );
+        qaf.setPeriodId(period_id);
 
-    AccountSession.query ( jdbc, store.getRequest(), application.getId(), true );
-    
-    CategorySession.query ( jdbc, store.getRequest(), application.getId(), true );
+        String today = CalendarYard.now("yyyy-MM-dd");
 
-    return getForward ( store );
+        qaf.setStartDateAsString(CalendarYard.getFirstDayOfYear(today));
+        qaf.setEndDateAsString(CalendarYard.getLastDayOfYear(today));
+
+        qaf.setTypeId(TYPE_DEBIT);
+
+        AccountSession.query(jdbc, store.getRequest(), application.getId(), true);
+
+        CategorySession.query(jdbc, store.getRequest(), application.getId(), true);
+
+        return getForward(store);
     }
 
     /**
      *
      */
-    public ActionForward report ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    QueryActionForm qaf = ( QueryActionForm ) store.getForm(); Application application = ApplicationSession.getSelected( store.getRequest() );
-    
-    qaf.setApplicationId ( application.getId() );
-    
-    boolean isOkay = ApplicationYard.hasPeriod ( jdbc, qaf.getApplicationId(), qaf.getPeriodId() );
-    
-    if (!isOkay ) { qaf.setPeriodId ( application.getPeriodId() ); }
-    
-    ResultSetBoltMap rsbm = new Monthly().getReport ( jdbc, qaf );
+    public ActionForward report(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        QueryActionForm qaf = (QueryActionForm) store.getForm();
+        Application application = ApplicationSession.getSelected(store.getRequest());
 
-    DockYard.setAttribute ( store.getRequest(), ResultSetBolt.key(), rsbm, false );
+        qaf.setApplicationId(application.getId());
 
-    return getForward ( store );
+        boolean isOkay = ApplicationYard.hasPeriod(jdbc, qaf.getApplicationId(), qaf.getPeriodId());
+
+        if (!isOkay) {
+            qaf.setPeriodId(application.getPeriodId());
+        }
+
+        ResultSetBoltMap rsbm = new Monthly().getReport(jdbc, qaf);
+
+        DockYard.setAttribute(store.getRequest(), ResultSetBolt.key(), rsbm, false);
+
+        return getForward(store);
     }
 }

@@ -12,73 +12,69 @@ import java.util.List;
 /**
  *
  */
-public class Monthly
-{
+public class Monthly {
+
     /**
      *
      */
-    public String getMonthsQuery ( Pair[] monthDates, int max_month )
-    {
-    StringBuilder sb = new StringBuilder();
+    public String getMonthsQuery(Pair[] monthDates, int max_month) {
+        StringBuilder sb = new StringBuilder();
 
-    for ( Pair monthDate: monthDates )
-    {
-    List<String> monthNames = CalendarYard.getMonthsBetween ( ( String ) monthDate.getKey(), ( String ) monthDate.getValue(), "yyyy-MM-dd", "MMM" );
-    
-    sb.append ( ", sum(if(transaction_date >= " + DockYard.quote ( ( String ) monthDate.getKey() ) + " and transaction_date <= " + DockYard.quote ( ( String ) monthDate.getValue() ) );
-    sb.append ( ", transaction_amount" );
-    sb.append ( ", 0)) as " + DockYard.quote ( monthNames.size() > 0 ? monthNames.get ( 0 ) : "???" ) );
+        for (Pair monthDate : monthDates) {
+            List<String> monthNames = CalendarYard.getMonthsBetween((String) monthDate.getKey(), (String) monthDate.getValue(), "yyyy-MM-dd", "MMM");
+
+            sb.append(", sum(if(transaction_date >= " + DockYard.quote((String) monthDate.getKey()) + " and transaction_date <= " + DockYard.quote((String) monthDate.getValue()));
+            sb.append(", transaction_amount");
+            sb.append(", 0)) as " + DockYard.quote(monthNames.size() > 0 ? monthNames.get(0) : "???"));
+        }
+
+        sb.append(", sum(transaction_amount) as 'Total'");
+        sb.append(", sum(transaction_amount) div " + max_month + " as 'Avg/Month'");
+
+        return sb.toString();
     }
 
-    sb.append ( ", sum(transaction_amount) as 'Total'" );
-    sb.append ( ", sum(transaction_amount) div " + max_month + " as 'Avg/Month'" );
-
-    return sb.toString();
-    }
-    
     /**
-     * 
+     *
      */
-    private String getQuery ( Pair[] monthDates, int application_id, int period_id, int account_id, int category_id, int transaction_type, String start_date, String end_date, int max_month )
-    {
-    StringBuilder sb = new StringBuilder();
+    private String getQuery(Pair[] monthDates, int application_id, int period_id, int account_id, int category_id, int transaction_type, String start_date, String end_date, int max_month) {
+        StringBuilder sb = new StringBuilder();
 
-    sb.append ( "select concat(p.category_id, ':', p.category_depth, ':', p.category_name) as 'Category'" );
+        sb.append("select concat(p.category_id, ':', p.category_depth, ':', p.category_name) as 'Category'");
 
-    sb.append ( getMonthsQuery ( monthDates, max_month ) );
-    
-    sb.append ( " from jet_burndown_category p" );
-    sb.append ( " inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')" );
-    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id" );
+        sb.append(getMonthsQuery(monthDates, max_month));
+
+        sb.append(" from jet_burndown_category p");
+        sb.append(" inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')");
+        sb.append(" inner join jet_burndown_transaction on transaction_category_id = c.category_id");
 //    sb.append ( " where p.category_depth > 0" );
-    sb.append ( " where p.category_application_id = " + application_id + " and c.category_application_id  = " + application_id );
-    sb.append ( " and p.category_included and c.category_included" );
-    sb.append ( " and transaction_period_id = " + period_id );
-    sb.append ( " and transaction_date >= " + DockYard.quote ( start_date ) + " and transaction_date <= " + DockYard.quote ( end_date ) );
-    
-    sb.append ( account_id       > 0 ? " and transaction_account_id = " + account_id : "" );
-    sb.append ( category_id      > 0 ? " and (p.category_id = " + category_id + " or c.category_parent_id = " + category_id + ")" : "" );
-    sb.append ( transaction_type > 0 ? " and transaction_type = " + transaction_type : "" );
-    
-    sb.append ( " group by concat(p.category_id, ':', p.category_depth, ':', p.category_name)" );
-    sb.append ( " order by concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/'), c.category_ordinal" );
+        sb.append(" where p.category_application_id = " + application_id + " and c.category_application_id  = " + application_id);
+        sb.append(" and p.category_included and c.category_included");
+        sb.append(" and transaction_period_id = " + period_id);
+        sb.append(" and transaction_date >= " + DockYard.quote(start_date) + " and transaction_date <= " + DockYard.quote(end_date));
 
-    return sb.toString();
+        sb.append(account_id > 0 ? " and transaction_account_id = " + account_id : "");
+        sb.append(category_id > 0 ? " and (p.category_id = " + category_id + " or c.category_parent_id = " + category_id + ")" : "");
+        sb.append(transaction_type > 0 ? " and transaction_type = " + transaction_type : "");
+
+        sb.append(" group by concat(p.category_id, ':', p.category_depth, ':', p.category_name)");
+        sb.append(" order by concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/'), c.category_ordinal");
+
+        return sb.toString();
     }
 
     /**
      *
      */
-    public ResultSetBoltMap getReport ( JDBC jdbc, QueryActionForm qaf ) throws Exception
-    { 
-    List<String> monthNames = CalendarYard.getMonthsBetween ( qaf.getStartDateAsString(), qaf.getEndDateAsString(), "yyyy-MM-dd", "MMM" );
+    public ResultSetBoltMap getReport(JDBC jdbc, QueryActionForm qaf) throws Exception {
+        List<String> monthNames = CalendarYard.getMonthsBetween(qaf.getStartDateAsString(), qaf.getEndDateAsString(), "yyyy-MM-dd", "MMM");
 
-    Pair[] monthDates = CalendarYard.getMonthDates ( qaf.getStartDateAsString(), monthNames.size() );
-    
-    int maxMonth = TransactionYard.maxMonth ( jdbc, qaf.getPeriodId(), qaf.getStartDateAsString(), qaf.getEndDateAsString() );
+        Pair[] monthDates = CalendarYard.getMonthDates(qaf.getStartDateAsString(), monthNames.size());
 
-    String query = getQuery ( monthDates, qaf.getApplicationId(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString(), maxMonth );
-       
-    return new ResultSetBoltMap ( jdbc, query );
+        int maxMonth = TransactionYard.maxMonth(jdbc, qaf.getPeriodId(), qaf.getStartDateAsString(), qaf.getEndDateAsString());
+
+        String query = getQuery(monthDates, qaf.getApplicationId(), qaf.getPeriodId(), qaf.getAccountId(), qaf.getCategoryId(), qaf.getTypeId(), qaf.getStartDateAsString(), qaf.getEndDateAsString(), maxMonth);
+
+        return new ResultSetBoltMap(jdbc, query);
     }
 }

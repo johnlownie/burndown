@@ -16,57 +16,58 @@ import java.io.PrintWriter;
 /**
  *
  */
-
-public class UserProfileDoAction extends AbstractDoAction
-{
-    /**
-     *
-     */
-
-    public String getKey() { return User.key (); }
+public class UserProfileDoAction extends AbstractDoAction {
 
     /**
      *
      */
-
-    public ActionForward json ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-        CompanyMember companyMember = ( CompanyMember ) store.getForm();
-
-        update ( jdbc, store.getRequest(), companyMember, errors );
-
-        JSONObject fields = errors.getFields ( store.getRequest() );
-
-        store.getResponse().setContentType ( "application/json" ); store.getResponse().setCharacterEncoding ( "UTF-8" );
-
-        PrintWriter out = store.getResponse().getWriter();
-
-        JSONObject response = new JSONObject();
-
-        response.put ( "fields", fields ); response.put ( "success", errors.isEmpty() );
-
-        out.write ( response.toString() );
-
-    } catch ( Exception e ) { Common.trace ( this, e ); }
-
-    finally { return null; }
+    public String getKey() {
+        return User.key();
     }
 
     /**
      *
      */
+    public ActionForward json(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public ActionForward query ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    User whoAmI = UserYard.whoAmI ( store.getRequest() ); User user = new User();
+            CompanyMember companyMember = (CompanyMember) store.getForm();
 
-    user.setActionForm ( store.getRequest() );
+            update(jdbc, store.getRequest(), companyMember, errors);
 
-    whoAmI.getCompanyMember().setActionForm ( store.getRequest () );
+            JSONObject fields = errors.getFields(store.getRequest());
 
-    return getForward ( store );
+            store.getResponse().setContentType("application/json");
+            store.getResponse().setCharacterEncoding("UTF-8");
+
+            PrintWriter out = store.getResponse().getWriter();
+
+            JSONObject response = new JSONObject();
+
+            response.put("fields", fields);
+            response.put("success", errors.isEmpty());
+
+            out.write(response.toString());
+
+        } catch (Exception e) {
+            Common.trace(this, e);
+        } finally {
+            return null;
+        }
+    }
+
+    /**
+     *
+     */
+    public ActionForward query(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        User whoAmI = UserYard.whoAmI(store.getRequest());
+        User user = new User();
+
+        user.setActionForm(store.getRequest());
+
+        whoAmI.getCompanyMember().setActionForm(store.getRequest());
+
+        return getForward(store);
     }
 
 }

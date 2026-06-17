@@ -10,31 +10,28 @@ import org.apache.struts.action.ActionForward;
 /**
  *
  */
+public class LogoutAction extends AbstractAction {
 
-public class LogoutAction extends AbstractAction
-{
     /**
      *
      */
+    public ActionForward execute(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        logout(jdbc, store, errors);
 
-    public ActionForward execute ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    logout ( jdbc, store, errors );
+        store.getRequest().getSession().invalidate();
 
-    store.getRequest().getSession().invalidate();
-
-    return store.getForward ( "success" );
+        return store.getForward("success");
     }
 
     /**
      *
      */
+    public void logout(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        try {
 
-    public void logout ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    try {
-
-    } catch ( Exception e ) { Common.trace ( e ); }
+        } catch (Exception e) {
+            Common.trace(e);
+        }
 
     }
 

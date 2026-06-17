@@ -6,44 +6,47 @@ import ca.jetsphere.core.jdbc.JDBC;
 /**
  *
  */
-
-abstract public class RoleMap extends BoltMap
-{
-    /**
-     *
-     */
-
-    public RoleMap() { super(); }
+abstract public class RoleMap extends BoltMap {
 
     /**
      *
      */
-
-    public RoleMap ( JDBC jdbc, int id ) throws Exception { query ( jdbc, id ); }
-
-    /**
-     *
-     */
-
-    public void find ( JDBC jdbc, int company_id )
-    {
-    String query = "select jet_base_role.* from jet_base_role";
-
-    if ( company_id > 0 ) query += " where role_company_id = " + company_id;
-
-    query ( jdbc, query );
+    public RoleMap() {
+        super();
     }
 
     /**
      *
      */
-
-    public String getKey() { return Role.key(); }
+    public RoleMap(JDBC jdbc, int id) throws Exception {
+        query(jdbc, id);
+    }
 
     /**
      *
      */
+    public void find(JDBC jdbc, int company_id) {
+        String query = "select jet_base_role.* from jet_base_role";
 
-    public Role getRole ( int id ) { return ( Role ) get ( id ); }
+        if (company_id > 0) {
+            query += " where role_company_id = " + company_id;
+        }
+
+        query(jdbc, query);
+    }
+
+    /**
+     *
+     */
+    public String getKey() {
+        return Role.key();
+    }
+
+    /**
+     *
+     */
+    public Role getRole(int id) {
+        return (Role) get(id);
+    }
 
 }

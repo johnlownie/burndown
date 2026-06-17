@@ -15,34 +15,32 @@ import javax.servlet.http.HttpServletRequest;
 /**
  *
  */
+public class LogEditAction extends AbstractEditAction {
 
-public class LogEditAction extends AbstractEditAction
-{
     /**
      *
      */
+    public ActionForward edit(JDBC jdbc, ActionStore store, Errors errors) throws Exception {
+        HttpServletRequest request = store.getRequest();
 
-    public ActionForward edit ( JDBC jdbc, ActionStore store, Errors errors ) throws Exception
-    {
-    HttpServletRequest request = store.getRequest();
+        ISessionObject iso = SessionCache.getSessionObject(request, getKey());
 
-    ISessionObject iso = SessionCache.getSessionObject ( request, getKey () );
+        int id = DockYard.toInteger(request, "id");
 
-    int id = DockYard.toInteger ( request, "id" );
+        iso.setQualifiedSelected(request, id);
 
-    iso.setQualifiedSelected ( request, id );
+        Log log = (Log) iso.getSelected();
 
-    Log log = ( Log ) iso.getSelected();
+        log.setText();
 
-    log.setText();
-
-    return getForward ( store );
+        return getForward(store);
     }
 
     /**
      *
      */
-
-    public String getKey() { return Log.key(); }
+    public String getKey() {
+        return Log.key();
+    }
 
 }
