@@ -190,6 +190,7 @@ public class TransactionYard {
         switch (formFile.getContentType()) {
 
             case "text/csv":
+            case "application/vnd.ms-excel":
                 parseAttachmentCsv(jdbc, transactions, formFile);
 
             default:
