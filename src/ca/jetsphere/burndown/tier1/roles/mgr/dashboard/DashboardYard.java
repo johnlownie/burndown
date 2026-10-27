@@ -22,31 +22,32 @@ public class DashboardYard {
     /**
      *
      */
-    static public String getByCategory(JDBC jdbc, int period_id, int application_id, Category category, String start_date, String end_date) {
-        StringBuilder sb = new StringBuilder();
+    static public String getByCategory ( JDBC jdbc, int period_id, int application_id, Category category, String start_date, String end_date )
+    {
+    StringBuilder sb = new StringBuilder();
 
-        sb.append("[");
+    sb.append ( "[" );
 
-        String query = getByCategoryQuery(jdbc, period_id, application_id, category, start_date, end_date);
+    String query = getByCategoryQuery ( jdbc, period_id, application_id, category, start_date, end_date );
 
-        Map<Integer, String> categories = QueryYard.getIntStringMap(jdbc, query, 2, 1);
+    Map<Integer, String> categories = QueryYard.getIntStringMap ( jdbc, query, 2, 1 );
 
-        int total = getTotal(categories);
-        boolean firstCall = true;
+    int total = getTotal ( categories ); boolean firstCall = true;
 
-        for (Map.Entry<Integer, String> entry : categories.entrySet()) {
-            int value = entry.getKey();
+    for ( Map.Entry<Integer, String> entry : categories.entrySet() )
+    {
+    int value = entry.getKey();
 
-            sb.append(firstCall ? "" : ", ");
+    sb.append ( firstCall ? "" : ", " );
 
-            sb.append("{label: " + DockYard.quote(entry.getValue()) + ", value: " + Math.floor(((double) value / total * 100)) + "}");
+    sb.append ( "{label: " ).append ( DockYard.quote ( entry.getValue() ) ).append ( ", value: " ).append ( Math.floor ( ( ( double ) value / total * 100 ) ) ).append ( "}" );
 
-            firstCall = false;
-        }
+    firstCall = false;
+    }
 
-        sb.append("]");
+    sb.append ( "]" );
 
-        return sb.toString();
+    return sb.toString();
     }
 
     /**
@@ -194,135 +195,124 @@ public class DashboardYard {
     /**
      *
      */
-    static public Category getCategory(JDBC jdbc, String category_name) {
-        Category category = new Category();
+    static public Category getCategory ( JDBC jdbc, String category_name )
+    {
+    Category category = new Category();
 
-        if (!DockYard.isWhiteSpace(category_name)) {
-            category.query(jdbc, "select * from jet_burndown_category where category_name like " + DockYard.quote(category_name));
+    if ( !DockYard.isWhiteSpace ( category_name ) )
+    {
+    category.query(jdbc, "select * from jet_burndown_category where category_name like " + DockYard.quote(category_name));
 
-            if (category.getDepth() > 1 || !CategoryYard.hasChildren(jdbc, category.getId())) {
-                category.clear();
-            }
-        }
+    if ( category.getDepth() > 1 || !CategoryYard.hasChildren ( jdbc, category.getId() ) ) {  category.clear(); }
+    }
 
-        return category;
+    return category;
     }
 
     /**
      *
      */
-    static public Pair getMonthDates(JDBC jdbc, int period_id, String month) {
-        if (DockYard.isWhiteSpace(month)) {
-            return new Pair("", "");
-        }
+    static public Pair getMonthDates ( JDBC jdbc, int period_id, String month )
+    {
+    if ( DockYard.isWhiteSpace ( month ) ) { return new Pair ( "", "" ); }
 
-        Period period = new Period(jdbc, period_id);
+    Period period = new Period ( jdbc, period_id );
 
-        if (!period.isValid()) {
-            return new Pair("", "");
-        }
+    String year = period.isValid() ? period.getStartDateAsString().substring ( 0, 4 ) : month.substring ( month.length() - 4 );
 
-        String now = period.getStartDateAsString();
+    String start_date = year + "-" + CalendarYard.getMonthAsString ( month.substring ( 0, 3 ) ) + "-01";
 
-        String start_date = now.substring(0, 5) + CalendarYard.getMonthAsString(month) + "-01";
+    String end_date = CalendarYard.getLastDayOfMonth ( start_date );
 
-        String end_date = CalendarYard.getLastDayOfMonth(start_date);
-
-        return new Pair(start_date, end_date);
+    return new Pair ( start_date, end_date );
     }
 
     /**
      *
      */
-    static private int getTotal(Map<Integer, String> map) {
-        int total = 0;
+    static private int getTotal ( Map<Integer, String> map )
+    {
+    int total = 0;
 
-        for (Integer value : map.keySet()) {
-            total += value;
-        }
+    for (Integer value : map.keySet())
 
-        return total;
+    { total += value; }
+
+    return total;
     }
 
     /**
      *
      */
-    static public String setTransactions(JDBC jdbc, HttpServletRequest request, int application_id, int period_id, String category_name, String start_date, String end_date) {
-        TransactionSession transactions = TransactionSession.getInstance(request);
-        String query;
+    static public String setTransactions ( JDBC jdbc, HttpServletRequest request, int application_id, int period_id, String category_name, String start_date, String end_date )
+    {
+    TransactionSession transactions = TransactionSession.getInstance ( request ); String query;
 
-        if (DockYard.isWhiteSpace(category_name) && DockYard.isWhiteSpace(start_date)) {
-            query = TransactionYard.getLatestQuery(application_id, period_id);
-        } else {
-            query = getTransactionsQuery(application_id, period_id, category_name, start_date, end_date);
-        }
+    if ( DockYard.isWhiteSpace ( category_name ) && DockYard.isWhiteSpace ( start_date ) )
 
-        transactions.query(jdbc, query);
+    { query = TransactionYard.getLatestQuery ( application_id, period_id ); }
 
-        String title = "";
+    else
 
-        if (!DockYard.isWhiteSpace(category_name)) {
-            title = category_name;
-        }
+    { query = getTransactionsQuery ( application_id, period_id, category_name, start_date, end_date ); }
 
-        if (!DockYard.isWhiteSpace(start_date)) {
-            title += !DockYard.isWhiteSpace(title) ? "/" + start_date + " to " + end_date : start_date + " to " + end_date;
-        }
+    transactions.query ( jdbc, query );
 
-        if (DockYard.isWhiteSpace(title)) {
-            title = Caption.get(request, "latest");
-        }
+    String title = "";
 
-        return title;
+    if ( !DockYard.isWhiteSpace ( category_name ) ) {  title = category_name; }
+
+    if ( !DockYard.isWhiteSpace ( start_date ) ) { title += !DockYard.isWhiteSpace ( title ) ? "/" + start_date + " to " + end_date : start_date + " to " + end_date; }
+
+    if ( DockYard.isWhiteSpace ( title ) ) { title = Caption.get ( request, "latest" ); }
+
+    return title;
     }
 
     /**
      *
      */
-    static private String getTransactionsQuery(int application_id, int period_id, String category_name, String start_date, String end_date) {
-        StringBuilder sb = new StringBuilder();
+    static private String getTransactionsQuery ( int application_id, int period_id, String category_name, String start_date, String end_date )
+    {
+    StringBuilder sb = new StringBuilder();
 
-        sb.append("select jet_burndown_transaction.*");
-        sb.append(" from jet_burndown_category p");
-        sb.append(" inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')");
-        sb.append(" inner join jet_burndown_transaction on transaction_category_id = c.category_id ");
+    sb.append ( "select jet_burndown_transaction.*" );
 
-        if (!DockYard.isWhiteSpace(category_name)) {
-            sb.append(" and p.category_name = " + DockYard.quote(category_name));
-        }
+    sb.append ( " from jet_burndown_category p" );
+    sb.append ( " inner join jet_burndown_category c on c.category_id = p.category_id or c.category_lineage like concat(p.category_lineage, lpad(p.category_ordinal, 2, 0), '/%')" );
+    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = c.category_id " );
 
-        sb.append(" and p.category_application_id = " + application_id + " and c.category_application_id = " + application_id);
-        sb.append(" and p.category_included and c.category_included");
-        sb.append(" and transaction_period_id = " + period_id);
-        sb.append(" and transaction_type = 1");
+    sb.append ( " where p.category_application_id = " ).append ( application_id ).append ( " and c.category_application_id = " ).append ( application_id );
+    sb.append ( " and p.category_included and c.category_included" );
+    sb.append ( " and transaction_type = 1" );
 
-        if (!DockYard.isWhiteSpace(start_date)) {
-            sb.append(" and transaction_date >= " + DockYard.quote(start_date));
-            sb.append(" and transaction_date <= " + DockYard.quote(end_date));
-        }
+    if (  period_id > 0                           ) { sb.append ( " and transaction_period_id = " ).append ( period_id ); }
+    if ( !DockYard.isWhiteSpace ( category_name ) ) { sb.append ( " and p.category_name = " ).append ( DockYard.quote ( category_name ) ); }
+    if ( !DockYard.isWhiteSpace ( start_date )    ) { sb.append ( " and transaction_date >= " ).append ( DockYard.quote ( start_date ) ).append ( " and transaction_date <= " ).append ( DockYard.quote ( end_date ) ); }
 
-        sb.append(" order by transaction_name, transaction_date");
+    sb.append ( " order by transaction_date desc, transaction_name asc" );
 
-        return sb.toString();
+    return sb.toString();
     }
 
     /**
      *
      */
-    static private void setTransactionsByMonth(JDBC jdbc, HttpServletRequest request, int period_id, String start_date, String end_date) {
-        TransactionSession transactions = TransactionSession.getInstance(request);
+    static private void setTransactionsByMonth ( JDBC jdbc, HttpServletRequest request, int period_id, String start_date, String end_date )
+    {
+    TransactionSession transactions = TransactionSession.getInstance(request);
 
-        StringBuilder sb = new StringBuilder();
+    StringBuilder sb = new StringBuilder();
 
-        sb.append("select jet_burndown_transaction.* from jet_burndown_category");
-        sb.append(" inner join jet_burndown_transaction on transaction_category_id = category_id");
-        sb.append(" where transaction_period_id = " + period_id);
-        sb.append(" and transaction_type = 1");
-        sb.append(" and transaction_date >= " + DockYard.quote(start_date));
-        sb.append(" and transaction_date <= " + DockYard.quote(end_date));
-        sb.append(" and category_included");
-        sb.append(" order by transaction_name, transaction_date");
+    sb.append ( "select jet_burndown_transaction.* from jet_burndown_category" );
+    sb.append ( " inner join jet_burndown_transaction on transaction_category_id = category_id" );
+    sb.append ( " where transaction_period_id = " ).append ( period_id );
+    sb.append ( " and transaction_type = 1" );
+    sb.append ( " and transaction_date >= " ).append ( DockYard.quote ( start_date ) );
+    sb.append ( " and transaction_date <= " ).append ( DockYard.quote ( end_date ) );
+    sb.append ( " and category_included" );
+    sb.append ( " order by transaction_date desc, transaction_name asc" );
 
-        transactions.query(jdbc, sb.toString());
+    transactions.query ( jdbc, sb.toString() );
     }
 }

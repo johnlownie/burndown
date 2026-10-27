@@ -676,20 +676,19 @@ public class CalendarYard {
     /**
      *
      */
-    static public int getNumDays(String start_date, String end_date) {
-        try {
+    static public int getNumDays(String start_date, String end_date)
+    {
+    try {
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern ( "yyyy-MM-dd" );
 
-            LocalDate startDate = LocalDate.parse(start_date, formatter);
-            LocalDate endDate = LocalDate.parse(end_date, formatter);
+        LocalDate startDate = LocalDate.parse ( start_date, formatter );
 
-            return DockYard.toInteger(Duration.between(startDate.atTime(0, 0), endDate.atTime(0, 0)).toDays());
+        LocalDate endDate = LocalDate.parse ( end_date, formatter) ;
 
-        } catch (Exception e) {
-            Common.trace(e);
-            return 0;
-        }
+        return DockYard.toInteger ( Duration.between ( startDate.atTime ( 0, 0 ), endDate.atTime ( 0, 0 ) ).toDays() );
+
+    } catch ( Exception e ) { Common.trace ( e ); return 0; }
 
     }
 
@@ -822,27 +821,25 @@ public class CalendarYard {
     /**
      *
      */
-    static public String getUniqueDaysOfWeek(String[] dates) {
-        StringBuilder sb = new StringBuilder();
-        Set<String> set = new HashSet<String>();
+    static public String getUniqueDaysOfWeek ( String[] dates )
+    {
+    StringBuilder sb = new StringBuilder();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    Set<String> set = new HashSet<String>();
 
-        Arrays.sort(dates);
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        for (String date : dates) {
-            LocalDate localDate = LocalDate.parse(date, formatter);
-            set.add(localDate.getDayOfWeek().toString().substring(0, 3));
-        }
+    Arrays.sort ( dates );
 
-        for (String day : set) {
-            if (sb.length() > 0) {
-                sb.append(", ");
-            }
-            sb.append(day);
-        }
+    for ( String date : dates )
 
-        return sb.toString();
+    { LocalDate localDate = LocalDate.parse ( date, formatter ); set.add ( localDate.getDayOfWeek().toString().substring ( 0, 3 ) ); }
+
+    for ( String day : set )
+
+    { if ( sb.length() > 0 ) { sb.append ( ", " ); } sb.append ( day ); }
+
+    return sb.toString();
     }
 
     /**

@@ -6,25 +6,23 @@
 <%@ page import="ca.jetsphere.core.tier2.table.TableWriter" %>
 
 <div class="panel">
+
 <input type="hidden" name="typeId" id="typeId" value=""/>
 
 <div class="panel-heading">
-    
+
 <h3 id="transactions-title" class="panel-title">
-    
+
 <span><bean:message key="dashboard.by.transactions.debit"/></span>
 
 <div class="btn-group pull-right" role="group">
-    
-<input id="btnAll" class="btn-check" type="radio" name="btnradio" autocomplete="off" checked="">
-<label class="btn btn-outline-primary" for ="btnAll">All</label>
-    
-<input id="btnFixed" class="btn-check" type="radio" name="btnradio" autocomplete="off">
-<label class="btn btn-outline-primary" for ="btnFixed">Fixed</label>
-    
-<input id="btnDiscretionary" class="btn-check" type="radio" name="btnradio" autocomplete="off">
-<label class="btn btn-outline-primary" for ="btnDiscretionary">Discretionary</label>
-    
+
+<input id="btnAll" class="btn-check" type="radio" name="btnradio" autocomplete="off" checked=""><label class="btn btn-outline-primary" for ="btnAll">All</label>
+
+<input id="btnFixed" class="btn-check" type="radio" name="btnradio" autocomplete="off"><label class="btn btn-outline-primary" for ="btnFixed">Fixed</label>
+
+<input id="btnDiscretionary" class="btn-check" type="radio" name="btnradio" autocomplete="off"><label class="btn btn-outline-primary" for ="btnDiscretionary">Discretionary</label>
+
 </div>
 
 </h3>
@@ -34,7 +32,7 @@
 <div class="panel-body">
 
 <% TransactionSession transactions = TransactionSession.getInstance ( request ); new TableWriter ( transactions, Transaction.captions_dashboard(), Transaction.fields_dashboard() ).print ( out, request, true ); %>
-    
+
 </div>
 
 </div>

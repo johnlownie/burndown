@@ -21,7 +21,7 @@
         }).on('click', function(i, row){
             getTransactionData("&category=" + row.label);
         });
-        
+
         var bar = Morris.Bar({
             element: 'by-month',
             data: [{nb: 0}],
@@ -32,7 +32,7 @@
         }).on('click', function(i, row){
             getTransactionData("&month=" + row.month);
         });
-//        
+//
 //        var area = Morris.Bar({
 //            element: 'by-income',
 //            data: [],
@@ -53,6 +53,7 @@
                     d.typeId    = $("#typeId" ).val();
                 }
             },
+            order: [[3, 'desc'], [0, 'asc']],
             responsive: true,
             paging: true,
             ordering: true,
@@ -77,8 +78,8 @@
                 $('#transactions-title span').text(response.transactionsTitle);
                 donut.setData(response.categoryData);
                 bar.setData(response.monthData);
-                area.setData(response.incomeData);
-                $("#table").dataTable().api().ajax.reload();
+//                area.setData(response.incomeData);
+                $("#table").dataTable().api() .ajax.reload();
                 if (response.showCatReset) {
                     $('#resetCat').show();
                 } else {
@@ -94,22 +95,22 @@
                 notifyError();
             });
         }
-        
+
         $('#resetCat, #resetMth').click(function(e) {
             e.preventDefault();
             getTransactionData("&reset=true");
         });
-        
+
         $('#btnAll').click(function(e) {
             $('#typeId').val('');
             $("#table").dataTable().api().ajax.reload();
         });
-        
+
         $('#btnFixed').click(function(e) {
             $('#typeId').val('1');
              $("#table").dataTable().api().ajax.reload();
        });
-        
+
         $('#btnDiscretionary').click(function(e) {
             $('#typeId').val('2');
             $("#table").dataTable().api().ajax.reload();
@@ -121,7 +122,7 @@
             $("#table").dataTable().api().ajax.reload();
             return false;
         });
-        
+
         getTransactionData("");
     });
 </script>

@@ -14,15 +14,15 @@
 
 <div class="form-group">
 
-<label class="col-md-4 control-label"><bean:message key="date"/></label>
-
-<div class="col-md-6"><div class="input-group date"><html:text property="dateAsString" styleId="date" styleClass="form-control" size="12" readonly="false"/><span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span></div></div>
-
-</div><div class="form-group">
-
 <label class="col-md-4 control-label"><bean:message key="name"/></label>
 
 <div class="col-md-6"><html:text property="name" styleId="name" styleClass="form-control"/></div>
+
+</div><div class="form-group">
+
+<label class="col-md-4 control-label"><bean:message key="date"/></label>
+
+<div class="col-md-6"><div class="input-group date"><html:text property="dateAsString" styleId="date" styleClass="form-control" size="12" readonly="false"/><span class="input-group-addon"><i class="fa fa-calendar fa-lg"></i></span></div></div>
 
 </div><div class="form-group">
 
