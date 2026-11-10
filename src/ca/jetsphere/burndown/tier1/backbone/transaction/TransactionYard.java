@@ -185,159 +185,140 @@ public class TransactionYard
     /**
      *
      */
-    static public void parseAttachment(JDBC jdbc, TransactionSession transactions, FormFile formFile) {
-        if (formFile == null || formFile.getFileSize() == 0) {
-            return;
-        }
+    static public void parseAttachment ( JDBC jdbc, TransactionSession transactions, FormFile formFile )
+    {
+    if ( formFile == null || formFile.getFileSize() == 0 ) { return; }
 
-        switch (formFile.getContentType()) {
+    switch ( formFile.getContentType() )
+    {
+    case "text/csv":
+    case "application/vnd.ms-excel" : parseAttachmentCsv ( jdbc, transactions, formFile );
 
-            case "text/csv":
-            case "application/vnd.ms-excel":
-                parseAttachmentCsv(jdbc, transactions, formFile);
-
-            default:
-                parseAttachmentOfx(jdbc, transactions, formFile);
-        }
-    }
+    default                         : parseAttachmentOfx ( jdbc, transactions, formFile );
+    } }
 
     /**
      *
      */
-    static public void parseAttachmentCsv(JDBC jdbc, TransactionSession transactions, FormFile formFile) {
-        if (formFile == null || formFile.getFileSize() == 0) {
-            return;
-        }
+    static public void parseAttachmentCsv ( JDBC jdbc, TransactionSession transactions, FormFile formFile )
+    {
+    if ( formFile == null || formFile.getFileSize() == 0 ) { return; }
 
-        try {
+    try {
 
-            String[][] values = ExcelCSVParser.parse(new InputStreamReader(formFile.getInputStream(), StandardCharsets.UTF_8));
+        String[][] values = ExcelCSVParser.parse ( new InputStreamReader ( formFile.getInputStream(), StandardCharsets.UTF_8 ) );
 
-            if (values == null || values[0].length == 0) {
-                return;
-            }
+        if ( values == null || values[0].length == 0 ) { return; }
 
-            String[] parts = formFile.getFileName().split("-");
-            String accountName = parts[4];
+        String[] parts = formFile.getFileName().split ( "-" ); String accountName = parts[4];
 
-            int accountId = AccountYard.getId(jdbc, accountName);
+        int accountId = AccountYard.getId ( jdbc, accountName );
 
-            for (int i = 1; i < values[0].length; i++) {
+        for ( int i = 1; i < values.length; i++ )
+        {
+            Transaction transaction = new Transaction();
 
-                Transaction transaction = new Transaction();
+            transaction.setId ( i ); transaction.setAccountId ( accountId ); transaction.setAccount ( accountName );
 
-                transaction.setId(i);
-                transaction.setAccountId(accountId);
-                transaction.setAccount(accountName);
+            for ( int j = 0; j < values[i].length; j++ )
+            {
+                if ( j == 0 )
+                {
+                Date date = CalendarYard.getDate ( values[i][j], "yyyy-MM-dd" );
 
-                for (int j = 0; j < values[i].length; j++) {
+                if ( date == null ) { continue; }
 
-                    if (j == 0) {
-
-                        Date date = CalendarYard.getDate(values[i][j], "yyyy-MM-dd");
-
-                        if (date == null) {
-                            continue;
-                        }
-
-                        transaction.setDateAsString(values[i][j]);
-                    }
-
-                    if (j == 2) {
-
-                        transaction.setName(values[i][j]);
-
-                        int similar = TransactionYard.getCategoryIdBySimilarTransaction(jdbc, transaction.getName());
-
-                        transaction.setCategoryId(similar);
-
-                        if (similar > 0) {
-                            try {
-                                transaction.foreign(jdbc);
-                            } catch (Exception e) {
-                                Common.trace(e);
-                            }
-                        }
-                    }
-
-                    if (j == 3) {
-
-                        int amount = DockYard.toInt(DockYard.toDouble(values[i][j]) * 100);
-
-                        transaction.setAmount(amount);
-
-                        transaction.setType(amount > 0 ? TYPE_CREDIT : TYPE_DEBIT);
-
-                    }
+                transaction.setDateAsString ( values[i][j] );
                 }
 
-                transactions.add(transaction);
+                else if ( j == 2 )
+                {
+                transaction.setName ( values[i][j] );
+
+                int similar = TransactionYard.getCategoryIdBySimilarTransaction ( jdbc, transaction.getName() );
+
+                transaction.setCategoryId ( similar );
+
+                if ( similar > 0 )
+                {
+                try {
+
+                    transaction.foreign ( jdbc );
+
+                } catch ( Exception e ) { Common.trace ( e ); }
+
+                } }
+
+                else if ( j == 3 )
+                {
+                int amount = DockYard.toInt ( DockYard.toDouble ( values[i][j] ) * 100 );
+
+                transaction.setAmount(amount);
+
+                transaction.setType ( amount > 0 ? TYPE_CREDIT : TYPE_DEBIT );
+                }
             }
 
-        } catch (Exception e) {
-            Common.trace(e);
+            transactions.add ( transaction );
         }
 
+    }
+
+    catch ( Exception e ) { Common.trace ( e ); }
     }
 
     /**
      *
      */
-    static public void parseAttachmentOfx(JDBC jdbc, TransactionSession transactions, FormFile formFile) {
-        if (formFile == null || formFile.getFileSize() == 0) {
-            return;
-        }
+    static public void parseAttachmentOfx ( JDBC jdbc, TransactionSession transactions, FormFile formFile )
+    {
+    if ( formFile == null || formFile.getFileSize() == 0 ) { return; }
 
-        try {
+    try {
 
-            OfxParser ofxParser = new OfxParser();
+        OfxParser ofxParser = new OfxParser();
 
-            ofxParser.parse(jdbc, transactions, formFile.getInputStream());
+        ofxParser.parse(jdbc, transactions, formFile.getInputStream());
 
-        } catch (Exception e) {
-            Common.trace(e);
-        }
-
+    }catch ( Exception e ) { Common.trace ( e ); }
     }
 
     /**
      *
      */
-    static public TransactionSession set(JDBC jdbc, HttpServletRequest request, int period_id, int account_id, int category_id, int type_id, boolean toggle, String start_date, String end_date) {
-        TransactionSession transactions = TransactionSession.getInstance(request);
+    static public TransactionSession set ( JDBC jdbc, HttpServletRequest request, int period_id, int account_id, int category_id, int type_id, boolean toggle, String start_date, String end_date )
+    {
+    TransactionSession transactions = TransactionSession.getInstance ( request );
 
-        String query = getQuery(period_id, account_id, category_id, type_id, toggle, start_date, end_date);
+    String query = getQuery ( period_id, account_id, category_id, type_id, toggle, start_date, end_date );
 
-        transactions.clear();
+    transactions.clear();
 
-        transactions.query(jdbc, query);
+    transactions.query ( jdbc, query );
 
-        return transactions;
+    return transactions;
     }
 
     /**
      *
      */
-    static public void setUncategorized(JDBC jdbc, int category_id, String name) {
-        String query = "select * from jet_burndown_transaction where transaction_category_id = 1 and transaction_name like '%" + name.substring(0, name.length() > 10 ? 10 : name.length()) + "%'";
+    static public void setUncategorized ( JDBC jdbc, int category_id, String name )
+    {
+    String query = "select * from jet_burndown_transaction where transaction_category_id = 1 and transaction_name like '%" + name.substring(0, name.length() > 10 ? 10 : name.length()) + "%'";
 
-        TransactionSession transactions = new TransactionSession();
-        transactions.query(jdbc, query);
+    TransactionSession transactions = new TransactionSession(); transactions.query ( jdbc, query );
 
-        Iterator it = transactions.iterator();
+    Iterator it = transactions.iterator();
 
-        while (it.hasNext()) {
-            Transaction transaction = (Transaction) it.next();
-            transaction.setCategoryId(category_id);
+    while ( it.hasNext() )
+    {
+    Transaction transaction = (Transaction) it.next(); transaction.setCategoryId ( category_id );
 
-            try {
+    try {
 
-                transaction.update(jdbc);
+        transaction.update(jdbc);
 
-            } catch (Exception e) {
-                Common.trace(e);
-            }
-
-        }
-    }
+    } catch (Exception e) { Common.trace ( e ); }
+    
+    } }
 }
